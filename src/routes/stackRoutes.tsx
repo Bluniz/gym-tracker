@@ -1,4 +1,4 @@
-import { useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 
@@ -12,7 +12,7 @@ export const StackRoutes = () => {
   const { user } = useAuth();
   const navigation = useNavigation();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!!user) {
       navigation.navigate('app' as never);
     } else {
