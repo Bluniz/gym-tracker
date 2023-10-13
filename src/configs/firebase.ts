@@ -1,4 +1,5 @@
 import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
 import { Platform } from 'react-native';
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -9,7 +10,7 @@ const androidCredentials = {
     '175722923818-518j5jehh35e688b205r37r3e87q3ir0.apps.googleusercontent.com',
   appId: '1:175722923818:android:6f9072d8e82f3c28458053',
   apiKey: 'AIzaSyCPbeEJsFBSASXqwQ5kMrV_cL3wFooORuA',
-  databaseURL: '',
+  databaseURL: 'gs://gym-tracker-e6904.appspot.com',
   storageBucket: 'gym-tracker-e6904.appspot.com',
   messagingSenderId: '',
   projectId: 'gym-tracker-e6904',
@@ -21,7 +22,7 @@ const iosCredentials = {
     '175722923818-fl6fm9tn815n95g94hi05kh22fr6nn8d.apps.googleusercontent.com',
   appId: '1:175722923818:ios:71fe71b1f716eda3458053',
   apiKey: 'AIzaSyBecK4vFamcl51gppq8qLIev62GVjRKylc',
-  databaseURL: '',
+  databaseURL: 'gs://gym-tracker-e6904.appspot.com',
   storageBucket: 'gym-tracker-e6904.appspot.com',
   messagingSenderId: '',
   projectId: 'gym-tracker-e6904',
@@ -38,6 +39,8 @@ const config = {
 };
 
 export const app = initializeApp(credentials, config);
+
+export const database = getFirestore(app);
 
 const reactNativePersistence = (firebaseAuth as any).getReactNativePersistence;
 
