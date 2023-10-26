@@ -1,17 +1,17 @@
 import { ReactNode } from 'react';
 
 export interface User {
-  name: string;
-  email: string;
+  name: string | null;
+  email: string | null;
 }
 
 export interface AuthContextProps {
-  user?: User;
+  user?: User | null;
   signIn?: (email: string, password: string) => void;
   createUser?: (email: string, password: string, displayName: string) => void;
   signOut?: () => void;
   isLoading?: boolean;
-  error?: string;
+  error?: string | null;
   clearError?: () => void;
 }
 

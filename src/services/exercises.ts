@@ -5,9 +5,8 @@ import {
   getDocs,
   deleteDoc,
   updateDoc,
-  where,
-  query,
   getDoc,
+  DocumentData,
 } from 'firebase/firestore';
 
 import { database } from '../configs/firebase';
@@ -66,7 +65,7 @@ export async function listExercises() {
   try {
     const data = await getDocs(db);
 
-    const parsedData = [];
+    const parsedData: DocumentData[] = [];
     data.forEach((doc) => {
       parsedData.push(doc.data());
     });
@@ -86,14 +85,14 @@ export async function deleteExercise(id: string) {
 }
 
 export async function updateExercise({
-  weight = null,
+  weight ,
   id,
-  name = null,
-  reps = null,
-  series = null,
+  name,
+  reps,
+  series,
 }: Partial<CreateExercisesProps>) {
   try {
-    const docRef = doc(database, collectionName, id);
+    const docRef = doc(database, collectionName, id!);
 
     const oldData = await getDoc(docRef);
 

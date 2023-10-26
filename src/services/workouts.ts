@@ -6,9 +6,8 @@ import {
   getDocs,
   deleteDoc,
   updateDoc,
-  where,
-  query,
   getDoc,
+  DocumentData,
 } from 'firebase/firestore';
 
 interface Workout {
@@ -55,7 +54,7 @@ export async function listWorkouts() {
   try {
     const data = await getDocs(db);
 
-    const parsedData = [];
+    const parsedData: DocumentData[] = [];
     data.forEach((doc) => {
       parsedData.push(doc.data());
     });
@@ -112,7 +111,7 @@ export async function deleteWorkout(id: string) {
 }
 
 export async function completeWorkout({
-  complete_time = null,
+  complete_time,
   id,
 }: CompleteWorkoutProps) {
   try {

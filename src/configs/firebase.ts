@@ -38,10 +38,11 @@ const config = {
   name: 'gym-tracker',
 };
 
-export const app = initializeApp(credentials, config);
+export const app = initializeApp(credentials!, config);
 
 export const database = getFirestore(app);
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const reactNativePersistence = (firebaseAuth as any).getReactNativePersistence;
 
 export const auth = firebaseAuth.initializeAuth(app, {

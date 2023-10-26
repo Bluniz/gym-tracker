@@ -3,7 +3,7 @@ import { Home } from '../screens/Home';
 
 const Tab = createBottomTabNavigator();
 
-export const TabRoutes = () => {
+export const TrainingTabRoutes = () => {
   return (
     <Tab.Navigator
       screenOptions={{ headerShown: false, tabBarShowLabel: false }}

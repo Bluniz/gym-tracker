@@ -12,7 +12,7 @@ export const authContext = createContext<AuthContextProps>({});
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>();
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   useLayoutEffect(() => {
     const currentUser = getCurrentUser();

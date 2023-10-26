@@ -1,6 +1,5 @@
 import { Text, View, Button } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { createUser, logIn } from '../../services/users';
+import React from 'react';
 import { useAuth } from '../../contexts/auth';
 import {
   createExercises,
@@ -41,8 +40,8 @@ export function Home() {
 
       <Button
         title='Atualizar Exercicio'
-        onPress={() => {
-          updateExercise({
+        onPress={async () => {
+          await updateExercise({
             id: 'tJDgzvfzxYAmu6OjvCI4',
             weight: 25,
           });
@@ -51,8 +50,8 @@ export function Home() {
 
       <Button
         title='Criar Treino'
-        onPress={() => {
-          WorkoutService.createWorkout({
+        onPress={async () => {
+          await WorkoutService.createWorkout({
             name: 'Treino A',
             exercices: ['2JvgA6KzmzHV8zZXfuwx', 'tJDgzvfzxYAmu6OjvCI4'],
           });
@@ -61,8 +60,8 @@ export function Home() {
 
       <Button
         title='Atualizar Treino'
-        onPress={() => {
-          WorkoutService.updateWorkout({
+        onPress={async () => {
+          await WorkoutService.updateWorkout({
             name: 'Treino A',
             exercices: ['2JvgA6KzmzHV8zZXfuwx'],
             id: 'StwXNrHq3142gY6DjlPy',
@@ -71,14 +70,14 @@ export function Home() {
       />
       <Button
         title='Deletar Treino'
-        onPress={() => {
-          WorkoutService.deleteWorkout('ndbqYR4kvtd041Eg9soc');
+        onPress={async () => {
+          await WorkoutService.deleteWorkout('ndbqYR4kvtd041Eg9soc');
         }}
       />
       <Button
         title='Concluir Treino'
-        onPress={() => {
-          WorkoutService.completeWorkout({
+        onPress={async () => {
+          await WorkoutService.completeWorkout({
             id: 'DSocaAM1FFylAqbfeovA',
             complete_time: 50,
           });

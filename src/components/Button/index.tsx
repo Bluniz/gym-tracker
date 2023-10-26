@@ -1,12 +1,10 @@
 import {
-  SafeAreaView,
-  View,
   Text,
-  TextInput,
   StyleSheet,
   Pressable,
   PressableProps,
 } from 'react-native';
+import { Theme } from '../../styles/theme';
 
 interface ButtonPrps extends PressableProps {
   title: string;
@@ -29,7 +27,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#A0DDE6',
+    backgroundColor: Theme.colors.red500,
 
     paddingHorizontal: 12,
     paddingVertical: 20,
@@ -39,5 +37,6 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: Theme.colors.white,
   },
 });
