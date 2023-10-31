@@ -9,6 +9,7 @@ import {
 } from '../../services/exercises';
 
 import * as WorkoutService from '../../services/workouts';
+import { Theme } from '../../styles/theme';
 
 export function Home() {
   const { signOut } = useAuth();
@@ -19,6 +20,7 @@ export function Home() {
         alignItems: 'center',
         justifyContent: 'center',
         gap: 16,
+        backgroundColor: Theme.colors.gray500
       }}
     >
       <Text>Welcome</Text>

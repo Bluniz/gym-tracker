@@ -7,22 +7,43 @@ import {
   getCurrentUser,
 } from '../../services/users';
 import { AuthContextProps, AuthProviderProps, User } from './authContext.types';
+import { useNavigation } from '@react-navigation/native';
+import { auth } from '../../configs/firebase';
 export const authContext = createContext<AuthContextProps>({});
+
+
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const navigation = useNavigation();
+
+
+
   useLayoutEffect(() => {
-    const currentUser = getCurrentUser();
-    if (currentUser) {
-      setUser({
-        name: currentUser.displayName,
-        email: currentUser.email,
-      });
-    }
-  }, []);
+    auth.onAuthStateChanged((user) => {
+      if(user) {
+        const currentUser = getCurrentUser();
+        if (currentUser) {
+
+          setUser({
+            name: currentUser.displayName,
+            email: currentUser.email,
+          });
+          navigation.navigate('app' as never);
+
+        }
+      }
+    });
+
+    
+    return () => {
+      setIsLoading(false);
+    };
+   
+  }, [navigation]);
 
   const signIn = async (email: string, password: string) => {
     try {
@@ -30,6 +51,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       const userData = await logIn(email, password);
       setUser(userData);
       setError(null);
+      navigation.navigate('app' as never);
     } catch (error) {
       console.log(error);
 
@@ -61,6 +83,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setIsLoading(true);
       await logOut();
       setUser(null);
+      navigation.navigate('signIn' as never);
     } catch (error) {
       console.log(error);
     } finally {

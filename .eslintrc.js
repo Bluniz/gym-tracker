@@ -1,6 +1,7 @@
 module.exports = {
     'env': {
         'es2021': true,
+        'es2022': true,
         'node': true,
         'jest': true,
     },
@@ -55,7 +56,8 @@ module.exports = {
         '@typescript-eslint/no-misused-promises': 'off',
         '@typescript-eslint/no-unsafe-call': 'off',
         '@typescript-eslint/no-var-requires': 'off',
-        '@typescript-eslint/no-unsafe-call': 'off'
+        '@typescript-eslint/no-unsafe-call': 'off',
+        "linebreak-style": 'off'
     },
      'settings': {
      'react': {

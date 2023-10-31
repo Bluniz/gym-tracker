@@ -6,17 +6,32 @@ import { Modal } from '../../components/Modal';
 import { DismissKeyboard } from '../../components/DismissKeyboard';
 import { useAuth } from '../../contexts/auth';
 
+import {Theme} from '../../styles/theme';
+import {useLayoutEffect} from 'react';
+import { useNavigation } from '@react-navigation/native';
+
 export const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const { signIn, isLoading, error, clearError } = useAuth();
+  const { signIn, isLoading, error, clearError, user } = useAuth();
+
+  const navigation = useNavigation();
+
+
+  useLayoutEffect(() => {
+    if(user) {
+      console.log('opa');
+      navigation.navigate('app' as never);
+    }
+  }, [user, navigation]);
+
 
   return (
     <DismissKeyboard style={{ flex: 1 }}>
       <View style={styles.container}>
         {isLoading ? (
-          <ActivityIndicator size='large' color='#A0DDE6' />
+          <ActivityIndicator size='large' color={Theme.colors.red500} />
         ) : (
           <>
             <Text style={styles.title}>Entre com seus dados</Text>
@@ -24,15 +39,13 @@ export const Login = () => {
               placeholder='Digite seu e-mail'
               keyboardType='email-address'
               onChangeText={setEmail}
-              placeholderTextColor='#7C7C8A'
             />
             <Input
               placeholder='Digite sua senha'
               secureTextEntry
               onChangeText={setPassword}
-              placeholderTextColor='#7C7C8A'
             />
-            <Button title='Entrar' onPress={() => signIn(email, password)} />
+            <Button title='Entrar' onPress={() => signIn?.(email, password)} />
           </>
         )}
 
@@ -58,11 +71,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     gap: 8,
-    backgroundColor: '#202024',
+    backgroundColor: Theme.colors.gray500,
   },
   title: {
     textAlign: 'center',
-    color: '#E1E1E6',
+    color: Theme.colors.white,
     fontSize: 18,
     fontWeight: 'bold',
     paddingBottom: 8,
