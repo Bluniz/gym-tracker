@@ -20,12 +20,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const navigation = useNavigation();
 
-
+  console.log('isLoading', isLoading);
 
   useLayoutEffect(() => {
     auth.onAuthStateChanged((user) => {
       if(user) {
         const currentUser = getCurrentUser();
+
         if (currentUser) {
 
           setUser({
@@ -35,6 +36,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           navigation.navigate('app' as never);
 
         }
+      } else {
+        setIsLoading(false);
       }
     });
 

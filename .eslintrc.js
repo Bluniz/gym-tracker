@@ -57,7 +57,8 @@ module.exports = {
         '@typescript-eslint/no-unsafe-call': 'off',
         '@typescript-eslint/no-var-requires': 'off',
         '@typescript-eslint/no-unsafe-call': 'off',
-        "linebreak-style": 'off'
+        "linebreak-style": 'off',
+        "@typescript-eslint/no-floating-promises": 'off'
     },
      'settings': {
      'react': {

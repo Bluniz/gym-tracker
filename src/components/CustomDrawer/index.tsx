@@ -13,7 +13,7 @@ export function CustomDrawer(props) {
       
       <DrawerItemList {...props} />
 
-      <DrawerItem label="Sair"  onPress={() => signOut?.()}  labelStyle={{
+      <DrawerItem label="Sair"  onPress={() => signOut?.()}   labelStyle={{
         textAlign: 'center',
         color: Theme.colors.white
       }}/>
