@@ -1,38 +1,32 @@
-import { View, StyleSheet, Text, ScrollView } from 'react-native';
-import { useState, useCallback} from 'react';
+import {View, StyleSheet, Text, ScrollView} from 'react-native';
+import {useState, useCallback} from 'react';
 
-import { Background } from '../../components/Background';
-import { Theme } from '../../styles/theme';
+import {Background} from '../../components/Background';
+import {currentTheme} from '../../styles/theme';
 
 import {TrainingItem} from './TrainingItem';
-import { listWorkouts } from '../../services/workouts';
-import { useFocusEffect } from '@react-navigation/native';
-import { DocumentData} from 'firebase/firestore';
-
+import {listWorkouts} from '../../services/workouts';
+import {useFocusEffect} from '@react-navigation/native';
+import {DocumentData} from 'firebase/firestore';
 
 export const TrainingScreen = () => {
-
   const [trainingList, setTrainingList] = useState<DocumentData[]>([]);
 
-
-  
   const getList = async () => {
     try {
-      const data =  await listWorkouts();
+      const data = await listWorkouts();
 
       setTrainingList(data);
-
-    }
-    catch(error){
+    } catch (error) {
       console.log('error');
     }
   };
 
-
-  useFocusEffect(useCallback( () => {
-    getList();
-  }, []));
-  
+  useFocusEffect(
+    useCallback(() => {
+      getList();
+    }, [])
+  );
 
   return (
     <Background>
@@ -41,14 +35,17 @@ export const TrainingScreen = () => {
           <Text style={styles.headerTitle}>Time for Training</Text>
           <Text style={styles.headerSubtitle}>Choose your today training </Text>
         </View>
-        <ScrollView style={styles.body}>
+        <ScrollView style={styles.body} contentContainerStyle={{flexGrow: 1}}>
           <View style={styles.list}>
             {trainingList.map(training => {
               return (
-                <TrainingItem key={training?.name + Math.random()} title={training.name} doneQtd={training.complete_qtd}/>
+                <TrainingItem
+                  key={training?.name + Math.random()}
+                  title={training.name}
+                  doneQtd={training.complete_qtd}
+                />
               );
             })}
-           
           </View>
         </ScrollView>
       </View>
@@ -56,29 +53,29 @@ export const TrainingScreen = () => {
   );
 };
 
-
 const styles = StyleSheet.create({
   container: {
-    gap: 38
+    gap: 38,
   },
   header: {
-    paddingHorizontal: 36
+    paddingHorizontal: 36,
   },
   headerTitle: {
-    color: Theme.colors.white,
+    color: currentTheme.colors.text,
     fontSize: 24,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   headerSubtitle: {
-    color: Theme.colors.white,
-    fontSize: 12
+    color: currentTheme.colors.text,
+    fontSize: 12,
   },
 
   body: {
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
 
   list: {
-    gap: 24
+    gap: 24,
+    paddingBottom: 100,
   },
 });

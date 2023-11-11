@@ -6,7 +6,7 @@ import {
   Pressable,
 } from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Theme } from '../../styles/theme';
+import {currentTheme} from '../../styles/theme';
 
 interface CustomModalProps extends ModalProps {}
 
@@ -20,15 +20,13 @@ export const Modal = ({
       animationType="slide"
       transparent
       visible={visible}
-      onRequestClose={onRequestClose}
-    >
-      <Pressable onPress={onRequestClose} style={{ flex: 1 }}>
+      onRequestClose={onRequestClose}>
+      <Pressable onPress={onRequestClose} style={{flex: 1}}>
         <View style={styles.container}>
           <View
             style={styles.content}
             onStartShouldSetResponder={() => true}
-            onTouchEnd={(event) => event.stopPropagation()}
-          >
+            onTouchEnd={event => event.stopPropagation()}>
             <View style={styles.header}>
               <FontAwesome.Button
                 name="close"
@@ -50,9 +48,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    shadowColor: '#171717',
+    shadowOffset: {width: -2, height: 4},
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
   },
   content: {
-    backgroundColor: Theme.colors.white,
+    backgroundColor: currentTheme.colors.background,
     width: '80%',
     height: '30%',
     borderRadius: 8,

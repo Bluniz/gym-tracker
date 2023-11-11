@@ -51,5 +51,8 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "prettier": "^3.0.3"
   },
-  "private": true
+  "private": true,
+  "repository": "git@github.com:Bluniz/gym-tracker.git",
+  "author": "Lucas Rosa <lucas.rosa@bankly.com.br>",
+  "license": "MIT"
 }

@@ -1,51 +1,49 @@
-import { Text, StyleSheet, View, ActivityIndicator } from 'react-native';
-import { useState } from 'react';
-import { Button } from '../../components/Button/index';
-import { Input } from '../../components/Input/index';
-import { Modal } from '../../components/Modal';
-import { DismissKeyboard } from '../../components/DismissKeyboard';
-import { useAuth } from '../../contexts/auth';
+import {Text, StyleSheet, View, ActivityIndicator} from 'react-native';
+import {useState} from 'react';
+import {Button} from '../../components/Button/index';
+import {Input} from '../../components/Input/index';
+import {Modal} from '../../components/Modal';
+import {DismissKeyboard} from '../../components/DismissKeyboard';
+import {useAuth} from '../../contexts/auth';
 
-import {Theme} from '../../styles/theme';
+import {currentTheme} from '../../styles/theme';
 import {useLayoutEffect} from 'react';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 export const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const { signIn, isLoading, error, clearError, user } = useAuth();
+  const {signIn, isLoading, error, clearError, user} = useAuth();
 
   const navigation = useNavigation();
 
-
   useLayoutEffect(() => {
-    if(user) {
+    if (user) {
       console.log('opa');
       navigation.navigate('app' as never);
     }
   }, [user, navigation]);
 
-
   return (
-    <DismissKeyboard style={{ flex: 1 }}>
+    <DismissKeyboard style={{flex: 1}}>
       <View style={styles.container}>
         {isLoading ? (
-          <ActivityIndicator size='large' color={Theme.colors.red500} />
+          <ActivityIndicator size="large" color={currentTheme.colors.primary} />
         ) : (
           <>
             <Text style={styles.title}>Entre com seus dados</Text>
             <Input
-              placeholder='Digite seu e-mail'
-              keyboardType='email-address'
+              placeholder="Digite seu e-mail"
+              keyboardType="email-address"
               onChangeText={setEmail}
             />
             <Input
-              placeholder='Digite sua senha'
+              placeholder="Digite sua senha"
               secureTextEntry
               onChangeText={setPassword}
             />
-            <Button title='Entrar' onPress={() => signIn?.(email, password)} />
+            <Button title="Entrar" onPress={() => signIn?.(email, password)} />
           </>
         )}
 
@@ -71,11 +69,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     gap: 8,
-    backgroundColor: Theme.colors.gray500,
+    backgroundColor: currentTheme.colors.background,
   },
   title: {
     textAlign: 'center',
-    color: Theme.colors.white,
+    color: currentTheme.colors.text,
     fontSize: 18,
     fontWeight: 'bold',
     paddingBottom: 8,

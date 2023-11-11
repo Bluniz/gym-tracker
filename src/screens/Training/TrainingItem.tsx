@@ -1,16 +1,12 @@
-import { View, StyleSheet, Text } from 'react-native';
-import { Theme } from '../../styles/theme';
-
+import {View, StyleSheet, Text} from 'react-native';
+import {currentTheme} from '../../styles/theme';
 
 interface TrainingItemProps {
-  title: string 
-  doneQtd?: number
+  title: string;
+  doneQtd?: number;
 }
 
-
 export const TrainingItem = ({title, doneQtd = 0}: TrainingItemProps) => {
-
-
   return (
     <View style={styles.listItem}>
       <View style={styles.itemBody}>
@@ -23,36 +19,32 @@ export const TrainingItem = ({title, doneQtd = 0}: TrainingItemProps) => {
   );
 };
 
-
 const styles = StyleSheet.create({
   listItem: {
     width: '100%',
     height: 148,
-    backgroundColor: Theme.colors.gray300,
-    borderColor: Theme.colors.red500,
-    borderWidth: 2,
+    borderColor: currentTheme.colors.primary,
+    borderWidth: 1,
     padding: 8,
-    position: 'relative'
+    position: 'relative',
+    borderRadius: 4,
   },
-
 
   itemBody: {
     alignItems: 'center',
     justifyContent: 'center',
-    flex: 1
+    flex: 1,
   },
-  itemFooter: {
-  
-  },
+  itemFooter: {},
   itemTitle: {
-    color: Theme.colors.white,
+    color: currentTheme.colors.text,
     fontSize: 24,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   itemDoneText: {
     position: 'absolute',
     fontSize: 12,
-    color: Theme.colors.white,
-    bottom: 0
-  }
+    color: currentTheme.colors.text,
+    bottom: 0,
+  },
 });

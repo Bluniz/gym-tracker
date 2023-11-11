@@ -1,22 +1,16 @@
-import {
-  Text,
-  StyleSheet,
-  Pressable,
-  PressableProps,
-} from 'react-native';
-import { Theme } from '../../styles/theme';
+import {Text, StyleSheet, Pressable, PressableProps} from 'react-native';
+import {currentTheme} from '../../styles/theme';
 
 interface ButtonPrps extends PressableProps {
   title: string;
 }
 
-export function Button({ title, onPress, ...rest }: ButtonPrps) {
+export function Button({title, onPress, ...rest}: ButtonPrps) {
   return (
     <Pressable
       {...rest}
       onPress={onPress}
-      style={({ pressed }) => [styles.button, pressed ? { opacity: 0.9 } : {}]}
-    >
+      style={({pressed}) => [styles.button, pressed ? {opacity: 0.9} : {}]}>
       <Text style={styles.buttonText}>{title}</Text>
     </Pressable>
   );
@@ -27,7 +21,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Theme.colors.red500,
+    backgroundColor: currentTheme.colors.primary,
 
     paddingHorizontal: 12,
     paddingVertical: 20,
@@ -37,6 +31,6 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: Theme.colors.white,
+    color: currentTheme.colors.white,
   },
 });

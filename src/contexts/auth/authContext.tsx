@@ -1,4 +1,4 @@
-import React, { createContext, useState, useLayoutEffect } from 'react';
+import React, {createContext, useState, useLayoutEffect} from 'react';
 import {
   createUser as createRegister,
   logIn,
@@ -6,52 +6,46 @@ import {
   parseErrors,
   getCurrentUser,
 } from '../../services/users';
-import { AuthContextProps, AuthProviderProps, User } from './authContext.types';
-import { useNavigation } from '@react-navigation/native';
-import { auth } from '../../configs/firebase';
+import {AuthContextProps, AuthProviderProps, User} from './authContext.types';
+import {useNavigation} from '@react-navigation/native';
+import {auth} from '../../configs/firebase';
 export const authContext = createContext<AuthContextProps>({});
 
-
-
-export const AuthProvider = ({ children }: AuthProviderProps) => {
+export const AuthProvider = ({children}: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const navigation = useNavigation();
 
-  console.log('isLoading', isLoading);
-
   useLayoutEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      if(user) {
+    auth.onAuthStateChanged(user => {
+      if (user) {
         const currentUser = getCurrentUser();
 
         if (currentUser) {
-
           setUser({
             name: currentUser.displayName,
             email: currentUser.email,
           });
           navigation.navigate('app' as never);
-
         }
       } else {
         setIsLoading(false);
       }
     });
 
-    
     return () => {
       setIsLoading(false);
     };
-   
   }, [navigation]);
 
   const signIn = async (email: string, password: string) => {
     try {
       setIsLoading(true);
+      console.log({email, password});
       const userData = await logIn(email, password);
+      console.log('userData', userData);
       setUser(userData);
       setError(null);
       navigation.navigate('app' as never);
@@ -108,8 +102,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         isLoading,
         error,
         clearError,
-      }}
-    >
+      }}>
       {children}
     </authContext.Provider>
   );
