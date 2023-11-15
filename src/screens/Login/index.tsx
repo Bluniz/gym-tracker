@@ -20,7 +20,6 @@ export const Login = () => {
 
   useLayoutEffect(() => {
     if (user) {
-      console.log('opa');
       navigation.navigate('app' as never);
     }
   }, [user, navigation]);

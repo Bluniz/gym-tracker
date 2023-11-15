@@ -1,21 +1,34 @@
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {currentTheme} from '../../styles/theme';
+
+import {useWorkoutStackNavigation} from '../../hooks/useWorkoutStackNavigation';
 
 interface TrainingItemProps {
   title: string;
   doneQtd?: number;
+  id: string;
 }
 
-export const TrainingItem = ({title, doneQtd = 0}: TrainingItemProps) => {
+export const TrainingItem = ({title, doneQtd = 0, id}: TrainingItemProps) => {
+  const navigation = useWorkoutStackNavigation();
+
+  const handleGoToWorkout = () => {
+    navigation.navigate('workout', {
+      id,
+    });
+  };
+
   return (
-    <View style={styles.listItem}>
-      <View style={styles.itemBody}>
-        <Text style={styles.itemTitle}>{title}</Text>
+    <TouchableOpacity onPress={() => handleGoToWorkout()}>
+      <View style={styles.listItem}>
+        <View style={styles.itemBody}>
+          <Text style={styles.itemTitle}>{title}</Text>
+        </View>
+        <View style={styles.itemFooter}>
+          <Text style={styles.itemDoneText}>Done: {doneQtd} times</Text>
+        </View>
       </View>
-      <View style={styles.itemFooter}>
-        <Text style={styles.itemDoneText}>Done: {doneQtd} times</Text>
-      </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

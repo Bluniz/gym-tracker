@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import {NavigationContainer} from '@react-navigation/native';
 
-import {Platform, SafeAreaView, Appearance} from 'react-native';
+import {Platform, SafeAreaView} from 'react-native';
 import {AuthProvider} from './src/contexts/auth';
 import {Routes} from './src/routes';
 import {StatusBar} from 'expo-status-bar';
@@ -10,8 +10,6 @@ import 'react-native-gesture-handler';
 import {currentTheme} from './src/styles/theme';
 
 export default function App() {
-  console.log(Appearance.getColorScheme());
-
   return (
     <NavigationContainer>
       <AuthProvider>

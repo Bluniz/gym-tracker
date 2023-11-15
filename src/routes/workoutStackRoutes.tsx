@@ -1,14 +1,14 @@
 import {createStackNavigator} from '@react-navigation/stack';
-
-import {Login} from '../screens/Login';
 import {currentTheme} from '../styles/theme';
-import {AppTabRoutes} from './AppTabRoutes';
+import {TrainingScreen} from '../screens/Training';
+import {Workout} from '../screens/Workout';
 
 const Stack = createStackNavigator();
 
-export const StackRoutes = () => {
+export const WorkoutStackRoutes = () => {
   return (
     <Stack.Navigator
+      initialRouteName="workouts"
       screenOptions={{
         headerShown: false,
         gestureEnabled: false,
@@ -16,8 +16,12 @@ export const StackRoutes = () => {
           backgroundColor: currentTheme.colors.background,
         },
       }}>
-      <Stack.Screen name="signIn" component={Login} />
-      <Stack.Screen name="app" component={AppTabRoutes} />
+      <Stack.Screen name="workouts" component={TrainingScreen} />
+      <Stack.Screen
+        name="workout"
+        component={Workout}
+        initialParams={{id: null}}
+      />
     </Stack.Navigator>
   );
 };

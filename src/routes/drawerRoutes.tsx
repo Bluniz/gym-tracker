@@ -2,11 +2,13 @@ import React from 'react';
 
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {CustomDrawer} from '../components/CustomDrawer';
-import {TrainingTabRoutes} from './TrainingTabRoutes';
+import {AppTabRoutes} from './AppTabRoutes';
 import {DrawerHeader} from '../components/CustomDrawer/CustomDrawerHeader';
 import {currentTheme} from '../styles/theme';
 
 const Drawer = createDrawerNavigator();
+
+//! Matar Drawer
 
 export const DrawerRoutes = () => {
   return (
@@ -18,8 +20,9 @@ export const DrawerRoutes = () => {
         },
         drawerActiveBackgroundColor: currentTheme.colors.primaryLight,
         drawerActiveTintColor: currentTheme.colors.white,
+        drawerPosition: 'right',
       }}>
-      <Drawer.Screen name="Treino" component={TrainingTabRoutes} />
+      <Drawer.Screen name="Treino" component={AppTabRoutes} />
     </Drawer.Navigator>
   );
 };

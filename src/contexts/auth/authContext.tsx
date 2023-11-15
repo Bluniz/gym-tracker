@@ -43,9 +43,7 @@ export const AuthProvider = ({children}: AuthProviderProps) => {
   const signIn = async (email: string, password: string) => {
     try {
       setIsLoading(true);
-      console.log({email, password});
       const userData = await logIn(email, password);
-      console.log('userData', userData);
       setUser(userData);
       setError(null);
       navigation.navigate('app' as never);

@@ -1,9 +1,9 @@
 import React from 'react';
-import {StyleSheet, View, Pressable} from 'react-native';
-import {Ionicons} from '@expo/vector-icons';
+import {StyleSheet, View} from 'react-native';
 import {currentTheme} from '../../styles/theme';
 import {DrawerNavigationProp} from '@react-navigation/drawer';
 import {ParamListBase} from '@react-navigation/native';
+import {IconButton} from '../IconButton';
 
 interface DrawerHeaderProps {
   navigation: DrawerNavigationProp<ParamListBase, string, undefined>;
@@ -12,11 +12,13 @@ interface DrawerHeaderProps {
 export const DrawerHeader = ({navigation}: DrawerHeaderProps) => {
   return (
     <View style={styles.container}>
-      <Pressable
+      <IconButton
+        icon="md-menu"
+        onPress={() => navigation.openDrawer()}
         style={styles.iconContainer}
-        onPress={() => navigation.openDrawer()}>
-        <Ionicons name="md-menu" size={24} color="red" />
-      </Pressable>
+        size={24}
+        color="primary"
+      />
     </View>
   );
 };
@@ -28,10 +30,11 @@ const styles = StyleSheet.create({
     height: 80,
     flexDirection: 'row',
     alignContent: 'center',
+    justifyContent: 'flex-end',
     backgroundColor: currentTheme.colors.background,
   },
   iconContainer: {
     paddingTop: 16,
-    paddingLeft: 16,
+    paddingRight: 16,
   },
 });

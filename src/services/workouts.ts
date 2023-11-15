@@ -1,4 +1,4 @@
-import { database } from '../configs/firebase';
+import {database} from '../configs/firebase';
 import {
   doc,
   collection,
@@ -9,19 +9,7 @@ import {
   getDoc,
   DocumentData,
 } from 'firebase/firestore';
-
-interface Workout {
-  name: string;
-  exercices: string[];
-  id: string;
-  complete_history: CompleteHistoryProps[];
-  complete_qtd: number;
-}
-
-interface CompleteHistoryProps {
-  date: string;
-  time: string;
-}
+import {Workout} from '../types/workout';
 
 interface CreateWorkoutProps extends Pick<Workout, 'name' | 'exercices'> {}
 
@@ -36,7 +24,7 @@ const collectionName = 'workouts';
 
 const db = collection(database, collectionName);
 
-export async function createWorkout({ exercices, name }: CreateWorkoutProps) {
+export async function createWorkout({exercices, name}: CreateWorkoutProps) {
   try {
     await addDoc(db, {
       name,
@@ -55,11 +43,11 @@ export async function listWorkouts() {
     const data = await getDocs(db);
 
     const parsedData: DocumentData[] = [];
-    data.forEach((doc) => {
-      parsedData.push(doc.data());
+    data.forEach(doc => {
+      parsedData.push({...doc.data(), id: doc.id});
     });
 
-    return parsedData;
+    return parsedData as Workout[];
   } catch (error) {
     console.log(error);
   }
@@ -71,7 +59,7 @@ export async function getWorkout(id: string) {
     const workout = await getDoc(docRef);
 
     if (workout.exists()) {
-      return workout.data();
+      return {...workout.data(), id: workout.id} as Workout;
     } else {
       throw new Error('Workout not found');
     }
@@ -80,11 +68,7 @@ export async function getWorkout(id: string) {
   }
 }
 
-export async function updateWorkout({
-  id,
-  exercices,
-  name,
-}: UpdateWorkoutProps) {
+export async function updateWorkout({id, exercices, name}: UpdateWorkoutProps) {
   try {
     const docRef = doc(database, collectionName, id);
     const oldData = await getDoc(docRef);

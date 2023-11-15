@@ -1,8 +1,8 @@
-import {View, StyleSheet, Text, ScrollView} from 'react-native';
+import {View, StyleSheet, ScrollView} from 'react-native';
 import {useState, useCallback} from 'react';
 
 import {Background} from '../../components/Background';
-import {currentTheme} from '../../styles/theme';
+import {Header} from '../../components/Header';
 
 import {TrainingItem} from './TrainingItem';
 import {listWorkouts} from '../../services/workouts';
@@ -16,7 +16,7 @@ export const TrainingScreen = () => {
     try {
       const data = await listWorkouts();
 
-      setTrainingList(data);
+      setTrainingList(data || []);
     } catch (error) {
       console.log('error');
     }
@@ -31,10 +31,11 @@ export const TrainingScreen = () => {
   return (
     <Background>
       <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>Time for Training</Text>
-          <Text style={styles.headerSubtitle}>Choose your today training </Text>
-        </View>
+        <Header
+          title="Time for Training"
+          subTitle="Choose your today training"
+        />
+
         <ScrollView style={styles.body} contentContainerStyle={{flexGrow: 1}}>
           <View style={styles.list}>
             {trainingList.map(training => {
@@ -43,6 +44,7 @@ export const TrainingScreen = () => {
                   key={training?.name + Math.random()}
                   title={training.name}
                   doneQtd={training.complete_qtd}
+                  id={training?.id}
                 />
               );
             })}
@@ -56,18 +58,6 @@ export const TrainingScreen = () => {
 const styles = StyleSheet.create({
   container: {
     gap: 38,
-  },
-  header: {
-    paddingHorizontal: 36,
-  },
-  headerTitle: {
-    color: currentTheme.colors.text,
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  headerSubtitle: {
-    color: currentTheme.colors.text,
-    fontSize: 12,
   },
 
   body: {
