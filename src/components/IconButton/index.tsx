@@ -38,8 +38,6 @@ export const IconButton = ({
 
 const styles = StyleSheet.create({
   container: {
-    borderWidth: 1,
-    borderColor: 'red',
     width: 36,
     height: 36,
   },

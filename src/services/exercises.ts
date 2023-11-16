@@ -9,7 +9,8 @@ import {
   DocumentData,
 } from 'firebase/firestore';
 
-import { database } from '../configs/firebase';
+import {database} from '../configs/firebase';
+import {Exercise} from '../types/exercises';
 
 interface CreateExercisesProps {
   name: string;
@@ -52,7 +53,7 @@ export async function getExercise(id: string) {
     const exercise = await getDoc(docRef);
 
     if (exercise.exists()) {
-      return exercise.data();
+      return exercise.data() as Exercise;
     } else {
       throw new Error('Exercise not found');
     }
@@ -66,7 +67,7 @@ export async function listExercises() {
     const data = await getDocs(db);
 
     const parsedData: DocumentData[] = [];
-    data.forEach((doc) => {
+    data.forEach(doc => {
       parsedData.push(doc.data());
     });
 
@@ -85,7 +86,7 @@ export async function deleteExercise(id: string) {
 }
 
 export async function updateExercise({
-  weight ,
+  weight,
   id,
   name,
   reps,

@@ -9,7 +9,9 @@ import {
   getDoc,
   DocumentData,
 } from 'firebase/firestore';
-import {Workout} from '../types/workout';
+import {Workout, WorkoutWithExercises} from '../types/workout';
+import {Exercise} from '../types/exercises';
+import {getExercise} from './exercises';
 
 interface CreateWorkoutProps extends Pick<Workout, 'name' | 'exercices'> {}
 
@@ -59,7 +61,21 @@ export async function getWorkout(id: string) {
     const workout = await getDoc(docRef);
 
     if (workout.exists()) {
-      return {...workout.data(), id: workout.id} as Workout;
+      const exercises: Exercise[] = [];
+      const workoutData = workout.data() as Workout;
+
+      workoutData.exercices.forEach(async exercise => {
+        const data = await getExercise(exercise);
+        if (data) {
+          exercises.push(data);
+        }
+      });
+
+      return {
+        ...workout.data(),
+        id: workout.id,
+        exercises,
+      } as WorkoutWithExercises;
     } else {
       throw new Error('Workout not found');
     }

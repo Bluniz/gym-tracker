@@ -3,7 +3,7 @@ import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 
 import {
-  Workout as WorkoutProps,
+  WorkoutWithExercises,
   WorkoutScreenRouteProp,
 } from '../../types/workout';
 import {Header} from '../../components/Header';
@@ -16,7 +16,7 @@ export const Workout = () => {
   const navigation = useNavigation();
 
   const [isLoading, setIsLoading] = useState(true);
-  const [workoutData, setWorkoutData] = useState<WorkoutProps>();
+  const [workoutData, setWorkoutData] = useState<WorkoutWithExercises>();
 
   useEffect(() => {
     (async () => {

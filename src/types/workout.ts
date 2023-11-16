@@ -1,4 +1,5 @@
 import {RouteProp} from '@react-navigation/native';
+import {Exercise} from './exercises';
 
 export type WorkoutParamsList = {
   workout: {id: string} | undefined;
@@ -18,4 +19,8 @@ export interface Workout {
   exercices: string[];
   name: string;
   id: string;
+}
+
+export interface WorkoutWithExercises extends Workout {
+  exercises: Exercise[];
 }
