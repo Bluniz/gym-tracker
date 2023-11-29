@@ -5,9 +5,15 @@ import {Platform, SafeAreaView} from 'react-native';
 import {AuthProvider} from './src/contexts/auth';
 import {Routes} from './src/routes';
 import {StatusBar} from 'expo-status-bar';
+
+import {currentTheme} from './src/styles/theme';
+
 import './src/configs/firebase';
 import 'react-native-gesture-handler';
-import {currentTheme} from './src/styles/theme';
+
+if (__DEV__) {
+  require('./src/configs/ReactotronConfig');
+}
 
 export default function App() {
   return (
