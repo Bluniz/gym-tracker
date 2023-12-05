@@ -21,6 +21,6 @@ export interface Workout {
   id: string;
 }
 
-export interface WorkoutWithExercises extends Workout {
-  exercises: Exercise[];
+export interface WorkoutWithExercises extends Omit<Workout, 'exercices'> {
+  exercices: Exercise[];
 }

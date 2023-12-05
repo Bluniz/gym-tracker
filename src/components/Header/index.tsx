@@ -39,8 +39,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 36,
-    paddingTop: 26,
     position: 'relative',
+    marginTop: 16
   },
   iconBtn: {
     position: 'absolute',

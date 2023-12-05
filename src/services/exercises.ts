@@ -71,7 +71,7 @@ export async function listExercises() {
       parsedData.push(doc.data());
     });
 
-    return parsedData;
+    return parsedData as Exercise[];
   } catch (error) {
     console.log('error', error);
   }

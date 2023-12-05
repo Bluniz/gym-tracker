@@ -12,7 +12,9 @@ import './src/configs/firebase';
 import 'react-native-gesture-handler';
 
 if (__DEV__) {
-  require('./src/configs/ReactotronConfig');
+  // require('./src/configs/ReactotronConfig');
+  import('./src/configs/ReactotronConfig').then(() => console.log('Reactotron Configured'));
+
 }
 
 export default function App() {
@@ -25,7 +27,7 @@ export default function App() {
             backgroundColor={currentTheme.colors.background}
             style={Platform.select({
               ios: 'dark',
-              android: 'light',
+              android: 'dark',
             })}
           />
         </SafeAreaView>

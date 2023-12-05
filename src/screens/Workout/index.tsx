@@ -1,4 +1,4 @@
-import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
+import {ActivityIndicator,  FlatList} from 'react-native';
 
 import {useNavigation, useRoute} from '@react-navigation/native';
 
@@ -10,6 +10,10 @@ import {Header} from '../../components/Header';
 import {currentTheme} from '../../styles/theme';
 import {useEffect, useState} from 'react';
 import {getWorkout} from '../../services/workouts';
+import { Container } from '../../components/Container';
+import { ExerciseItem } from '../../components/ExerciseItem';
+import { Content } from '../../components/Content';
+
 
 export const Workout = () => {
   const {params} = useRoute<WorkoutScreenRouteProp>();
@@ -26,8 +30,9 @@ export const Workout = () => {
     })();
   }, [params]);
 
+
   return (
-    <View>
+    <Container>
       <Header
         title={isLoading ? '' : workoutData!.name}
         subTitle={
@@ -37,79 +42,18 @@ export const Workout = () => {
         onGoBackPress={navigation.goBack}
       />
 
-      <View>
-        <View style={styles.exerciseContainer}>
-          <Text style={styles.exerciseTitle}>Supino Reto</Text>
-
-          <View style={styles.weightContainer}>
-            <Text style={styles.exerciseReps}>Reps: 3 x 12</Text>
-            <Text style={styles.exercisesWeight}>Weight: 30kg</Text>
-            <Text>Aumentou</Text>
-          </View>
-        </View>
-        <View style={styles.exerciseContainer}>
-          <Text style={styles.exerciseTitle}>Supino Reto</Text>
-
-          <View style={styles.weightContainer}>
-            <Text style={styles.exerciseReps}>Reps: 3 x 12</Text>
-            <Text style={styles.exercisesWeight}>Weight: 30kg</Text>
-            <Text>Aumentou</Text>
-          </View>
-        </View>
-        <View style={styles.exerciseContainer}>
-          <Text style={styles.exerciseTitle}>Supino Reto</Text>
-
-          <View style={styles.weightContainer}>
-            <Text style={styles.exerciseReps}>Reps: 3 x 12</Text>
-            <Text style={styles.exercisesWeight}>Weight: 30kg</Text>
-            <Text>Aumentou</Text>
-          </View>
-        </View>
-        <View style={styles.exerciseContainer}>
-          <Text style={styles.exerciseTitle}>Supino Reto</Text>
-
-          <View style={styles.weightContainer}>
-            <Text style={styles.exerciseReps}>Reps: 3 x 12</Text>
-            <Text style={styles.exercisesWeight}>Weight: 30kg</Text>
-            <Text>Aumentou</Text>
-          </View>
-        </View>
-        <View style={styles.exerciseContainer}>
-          <Text style={styles.exerciseTitle}>Supino Reto</Text>
-
-          <View style={styles.weightContainer}>
-            <Text style={styles.exerciseReps}>Reps: 3 x 12</Text>
-            <Text style={styles.exercisesWeight}>Weight: 30kg</Text>
-            <Text>Aumentou</Text>
-          </View>
-        </View>
-      </View>
+      <Content>
+        <FlatList
+          data={workoutData?.exercices}
+          keyExtractor={(item, index) => `${item.name}__${index}`}
+          renderItem={(item) => <ExerciseItem data={item}/>}
+        />
+      </Content>
 
       {isLoading && (
         <ActivityIndicator size="large" color={currentTheme.colors.primary} />
       )}
-    </View>
+    </Container>
   );
 };
 
-const styles = StyleSheet.create({
-  exerciseContainer: {
-    borderBottomWidth: 0.5,
-    borderBottomColor: currentTheme.colors.primary,
-    padding: 8,
-    gap: 4,
-  },
-  exerciseTitle: {
-    fontSize: 18,
-  },
-  exerciseReps: {
-    color: currentTheme.colors.primary,
-  },
-  exercisesWeight: {
-    color: currentTheme.colors.primary,
-  },
-  weightContainer: {
-    flexDirection: 'row',
-    gap: 16,
-  },
-});

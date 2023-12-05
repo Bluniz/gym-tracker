@@ -1,9 +1,9 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Home} from '../screens/Home';
 import {currentTheme} from '../styles/theme';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 
 import {WorkoutStackRoutes} from './workoutStackRoutes';
+import {ExercisesScreen} from '../screens/Exercises';
 
 const Tab = createBottomTabNavigator();
 
@@ -36,7 +36,7 @@ export const AppTabRoutes = () => {
       />
       <Tab.Screen
         name="Exercises"
-        component={Home}
+        component={ExercisesScreen}
         options={{
           tabBarIcon: props => {
             return <MaterialCommunityIcons name="bike" {...props} />;

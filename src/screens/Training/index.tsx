@@ -1,7 +1,7 @@
 import {View, StyleSheet, ScrollView} from 'react-native';
 import {useState, useCallback} from 'react';
 
-import {Background} from '../../components/Background';
+import {Container} from '../../components/Container';
 import {Header} from '../../components/Header';
 
 import {TrainingItem} from './TrainingItem';
@@ -29,7 +29,7 @@ export const TrainingScreen = () => {
   );
 
   return (
-    <Background>
+    <Container>
       <View style={styles.container}>
         <Header
           title="Time for Training"
@@ -51,7 +51,7 @@ export const TrainingScreen = () => {
           </View>
         </ScrollView>
       </View>
-    </Background>
+    </Container>
   );
 };
 

@@ -61,20 +61,22 @@ export async function getWorkout(id: string) {
     const workout = await getDoc(docRef);
 
     if (workout.exists()) {
-      const exercises: Exercise[] = [];
+      const exercices: Exercise[] = [];
       const workoutData = workout.data() as Workout;
 
-      workoutData.exercices.forEach(async exercise => {
+
+      for await (const exercise of workoutData.exercices) {
         const data = await getExercise(exercise);
-        if (data) {
-          exercises.push(data);
+        if(data){
+          exercices.push(data);
         }
-      });
+      }
+
 
       return {
         ...workout.data(),
         id: workout.id,
-        exercises,
+        exercices,
       } as WorkoutWithExercises;
     } else {
       throw new Error('Workout not found');

@@ -10,12 +10,12 @@ import {
 
 import * as WorkoutService from '../../services/workouts';
 
-import {Background} from '../../components/Background';
+import {Container} from '../../components/Container';
 
 export function Home() {
   const { signOut } = useAuth();
   return (
-    <Background>
+    <Container>
       <View
         style={{
           flex: 1,
@@ -87,6 +87,6 @@ export function Home() {
           }}
         />
       </View>
-    </Background>
+    </Container>
   );
 }
