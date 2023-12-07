@@ -12,9 +12,8 @@ import './src/configs/firebase';
 import 'react-native-gesture-handler';
 
 if (__DEV__) {
-  // require('./src/configs/ReactotronConfig');
-  import('./src/configs/ReactotronConfig').then(() => console.log('Reactotron Configured'));
-
+  require('./src/configs/ReactotronConfig');
+  //import('./src/configs/ReactotronConfig').then(() => console.log('Reactotron Configured'));
 }
 
 export default function App() {
