@@ -16,8 +16,6 @@ export const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: 'red',
   },
   header: {
     alignItems: 'center',
