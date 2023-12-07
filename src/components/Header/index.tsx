@@ -1,14 +1,8 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Text, View} from 'react-native';
 import {IconButton} from '../IconButton';
 
-import {currentTheme} from '../../styles/theme';
-
-export interface HeaderProps {
-  title: string;
-  subTitle?: string;
-  enableGoBack?: boolean;
-  onGoBackPress?: () => void;
-}
+import {styles} from './styles';
+import {HeaderProps} from './types';
 
 export const Header = ({
   title,
@@ -33,35 +27,3 @@ export const Header = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 36,
-    position: 'relative',
-    marginTop: 16
-  },
-  iconBtn: {
-    position: 'absolute',
-    top: 20,
-    left: 26,
-    right: 0,
-    bottom: 0,
-    justifyContent: 'center',
-  },
-  header: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-  },
-  headerTitle: {
-    color: currentTheme.colors.text,
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  headerSubtitle: {
-    color: currentTheme.colors.primary,
-    fontSize: 12,
-  },
-});
