@@ -1,68 +1,53 @@
-import {
-  View,
-  Modal as RnModal,
-  StyleSheet,
-  ModalProps,
-  Pressable,
-} from 'react-native';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import {currentTheme} from '../../styles/theme';
-
-interface CustomModalProps extends ModalProps {}
+import {View, Modal as RnModal, Pressable, Animated} from 'react-native';
+import {Ionicons} from '@expo/vector-icons';
+import {useEffect, useRef} from 'react';
+import {styles} from './styles';
+import {CustomModalProps} from './types';
+import reactotron from 'reactotron-react-native';
 
 export const Modal = ({
   visible,
   onRequestClose,
   children,
+  isLoading,
 }: CustomModalProps) => {
+  const fadeInAnimation = useRef(new Animated.Value(0)).current;
+
+  reactotron.log(isLoading);
+
+  useEffect(() => {
+    Animated.timing(fadeInAnimation, {
+      toValue: 0.6,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
+  }, [fadeInAnimation]);
+
   return (
-    <RnModal
-      animationType="slide"
-      transparent
-      visible={visible}
-      onRequestClose={onRequestClose}>
-      <Pressable onPress={onRequestClose} style={{flex: 1}}>
-        <View style={styles.container}>
-          <View
-            style={styles.content}
-            onStartShouldSetResponder={() => true}
-            onTouchEnd={event => event.stopPropagation()}>
-            <View style={styles.header}>
-              <FontAwesome.Button
-                name="close"
-                onPress={onRequestClose}
-                backgroundColor="white"
-                color="black"
-              />
+    <Animated.View style={[styles.backdrop, {opacity: fadeInAnimation}]}>
+      <RnModal
+        animationType="slide"
+        transparent
+        visible={visible}
+        onRequestClose={!isLoading ? onRequestClose : () => {}}>
+        <Pressable onPress={onRequestClose} style={{flex: 1}}>
+          <View style={styles.container}>
+            <View
+              style={styles.content}
+              onStartShouldSetResponder={() => true}
+              onTouchEnd={event => event.stopPropagation()}>
+              <View style={styles.header}>
+                <Pressable onPress={onRequestClose}>
+                  <View style={styles.closeButton}>
+                    <Ionicons name="close" size={18} />
+                  </View>
+                </Pressable>
+              </View>
+              <View style={styles.body}>{children}</View>
             </View>
-            <View style={styles.body}>{children}</View>
           </View>
-        </View>
-      </Pressable>
-    </RnModal>
+        </Pressable>
+      </RnModal>
+    </Animated.View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#171717',
-    shadowOffset: {width: -2, height: 4},
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-  },
-  content: {
-    backgroundColor: currentTheme.colors.background,
-    width: '80%',
-    height: '30%',
-    borderRadius: 8,
-  },
-  header: {
-    alignItems: 'flex-end',
-  },
-  body: {
-    flex: 1,
-  },
-});
