@@ -11,3 +11,8 @@ export interface WeightHistory {
   value: number;
   date: string;
 }
+
+export type ExercisesParamslist = {
+  Exercises: undefined;
+  addExercises: undefined;
+};

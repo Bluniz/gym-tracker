@@ -3,7 +3,7 @@ import {currentTheme} from '../styles/theme';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 
 import {WorkoutStackRoutes} from './workoutStackRoutes';
-import {ExercisesScreen} from '../screens/Exercises';
+import {ExercisesStackRoutes} from './exercisesStackRoutes';
 
 const Tab = createBottomTabNavigator();
 
@@ -36,7 +36,7 @@ export const AppTabRoutes = () => {
       />
       <Tab.Screen
         name="Exercises"
-        component={ExercisesScreen}
+        component={ExercisesStackRoutes}
         options={{
           tabBarIcon: props => {
             return <MaterialCommunityIcons name="bike" {...props} />;

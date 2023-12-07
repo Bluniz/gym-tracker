@@ -12,15 +12,29 @@ interface TrainingItemProps {
 export const TrainingItem = ({title, doneQtd = 0, id}: TrainingItemProps) => {
   const navigation = useWorkoutStackNavigation();
 
+  //const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  //reactotron?.log('fadeAnim', fadeAnim);
+
   const handleGoToWorkout = () => {
     navigation.navigate('workout', {
       id,
     });
   };
 
+  // useEffect(() => {
+  //   reactotron?.log('useEffect');
+  //   // Will change fadeAnim value to 1 in 5 seconds
+  //   Animated.timing(fadeAnim, {
+  //     toValue: 1,
+  //     duration: 2000,
+  //     useNativeDriver: true,
+  //   }).start();
+  // }, []);
+
   return (
     <TouchableOpacity onPress={() => handleGoToWorkout()}>
-      <View style={styles.listItem}>
+      <View style={[styles.listItem]}>
         <View style={styles.itemBody}>
           <Text style={styles.itemTitle}>{title}</Text>
         </View>
