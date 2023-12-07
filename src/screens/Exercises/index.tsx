@@ -33,12 +33,10 @@ export const ExercisesScreen = () => {
           handleStartLoading();
           const data = await listExercises();
           setExercises(data || []);
-          console.log('setDat');
         } catch (error) {
           console.log(error);
           handleFinishLoading();
         } finally {
-          console.log('finally');
           handleFinishLoading();
         }
       })();
