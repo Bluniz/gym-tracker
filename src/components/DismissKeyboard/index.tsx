@@ -1,4 +1,4 @@
-import { PropsWithChildren, ReactNode } from 'react';
+import {PropsWithChildren, ReactNode} from 'react';
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -11,15 +11,11 @@ interface DismissKeyboardProps extends KeyboardAvoidingViewProps {
   children?: ReactNode;
 }
 
-export function DismissKeyboard({
-  children,
-  ...rest
-}: PropsWithChildren<DismissKeyboardProps>) {
+export function DismissKeyboard({children, ...rest}: DismissKeyboardProps) {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      {...rest}
-    >
+      {...rest}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         {children}
       </TouchableWithoutFeedback>
