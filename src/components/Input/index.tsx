@@ -1,26 +1,20 @@
-import {TextInput, StyleSheet, TextInputProps} from 'react-native';
+import {forwardRef} from 'react';
+import {TextInput} from 'react-native';
 import {currentTheme} from '../../styles/theme';
+import {styles} from './styles';
+import {InputProps} from './types';
+import reactotron from 'reactotron-react-native';
 
-interface InputProps extends TextInputProps {}
-
-export function Input(props: InputProps) {
+function InputComponent(props: InputProps, ref) {
   return (
     <TextInput
       {...props}
-      style={styles.input}
+      ref={ref}
+      style={[styles.input, props.style]}
       placeholderTextColor={currentTheme.colors.backgroundLight}
       autoCapitalize="none"
     />
   );
 }
 
-const styles = StyleSheet.create({
-  input: {
-    height: 56,
-    padding: 16,
-    backgroundColor: currentTheme.colors.backgroundMedium,
-    color: currentTheme.colors.text,
-    shadowOpacity: 0,
-    borderRadius: 6,
-  },
-});
+export const Input = forwardRef(InputComponent);
