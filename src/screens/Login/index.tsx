@@ -1,4 +1,4 @@
-import {Text, StyleSheet, View, ActivityIndicator} from 'react-native';
+import {Text, View, ActivityIndicator} from 'react-native';
 import {useState} from 'react';
 import {Button} from '../../components/Button/index';
 import {Input} from '../../components/Input/index';
@@ -9,6 +9,7 @@ import {useAuth} from '../../contexts/auth';
 import {currentTheme} from '../../styles/theme';
 import {useLayoutEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import {styles} from './styles';
 
 export const Login = () => {
   const [email, setEmail] = useState('');
@@ -55,31 +56,3 @@ export const Login = () => {
     </DismissKeyboard>
   );
 };
-
-const styles = StyleSheet.create({
-  modal: {
-    flex: 1,
-    alignContent: 'center',
-    justifyContent: 'center',
-  },
-  container: {
-    paddingHorizontal: 16,
-    alignContent: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    gap: 8,
-    backgroundColor: currentTheme.colors.background,
-  },
-  title: {
-    textAlign: 'center',
-    color: currentTheme.colors.text,
-    fontSize: 18,
-    fontWeight: 'bold',
-    paddingBottom: 8,
-  },
-  errorMessage: {
-    textAlign: 'center',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-});
