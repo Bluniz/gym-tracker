@@ -13,8 +13,6 @@ export const Modal = ({
 }: CustomModalProps) => {
   const fadeInAnimation = useRef(new Animated.Value(0)).current;
 
-  reactotron.log(isLoading);
-
   useEffect(() => {
     Animated.timing(fadeInAnimation, {
       toValue: 0.6,
@@ -22,6 +20,10 @@ export const Modal = ({
       useNativeDriver: true,
     }).start();
   }, [fadeInAnimation]);
+
+  if (!visible) {
+    return <></>;
+  }
 
   return (
     <Animated.View style={[styles.backdrop, {opacity: fadeInAnimation}]}>
