@@ -8,7 +8,7 @@ const Stack = createStackNavigator();
 export const ExercisesStackRoutes = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Exercises"
+      initialRouteName="listExercises"
       screenOptions={{
         headerShown: false,
         gestureEnabled: false,
@@ -16,7 +16,7 @@ export const ExercisesStackRoutes = () => {
           backgroundColor: currentTheme.colors.background,
         },
       }}>
-      <Stack.Screen name="Exercises" component={ExercisesScreen} />
+      <Stack.Screen name="listExercises" component={ExercisesScreen} />
       <Stack.Screen name="addExercises" component={AddExercisesScreen} />
     </Stack.Navigator>
   );
