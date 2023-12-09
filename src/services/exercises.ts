@@ -10,16 +10,7 @@ import {
 } from 'firebase/firestore';
 
 import {database} from '../configs/firebase';
-import {Exercise} from '../types/exercises';
-
-interface CreateExercisesProps {
-  name: string;
-  series?: number;
-  reps?: number;
-  weight?: number;
-  last_weight?: number;
-  id?: string;
-}
+import {CreateExercisesProps, Exercise} from '../types/exercises';
 
 const collectionName = 'exercices';
 

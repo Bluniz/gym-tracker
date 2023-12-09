@@ -1,10 +1,19 @@
 export interface Exercise {
   name: string;
-  series: number;
-  reps: number;
-  weight: number;
-  last_weight: number;
+  series: string;
+  reps: string;
+  weight: string;
+  last_weight: string;
   id: string;
+}
+
+export interface CreateExercisesProps {
+  name: string;
+  series?: string;
+  reps?: string;
+  weight?: string;
+  last_weight?: string;
+  id?: string;
 }
 
 export interface WeightHistory {
@@ -13,6 +22,6 @@ export interface WeightHistory {
 }
 
 export type ExercisesParamslist = {
-  Exercises: undefined;
+  listExercises: undefined;
   addExercises: undefined;
 };
