@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import {NavigationContainer} from '@react-navigation/native';
+import {RootSiblingParent} from 'react-native-root-siblings';
 
 import {Platform, SafeAreaView} from 'react-native';
 import {AuthProvider} from './src/contexts/auth';
@@ -18,19 +19,21 @@ if (__DEV__) {
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <AuthProvider>
-        <SafeAreaView style={{flex: 1}}>
-          <Routes />
-          <StatusBar
-            backgroundColor={currentTheme.colors.background}
-            style={Platform.select({
-              ios: 'dark',
-              android: 'dark',
-            })}
-          />
-        </SafeAreaView>
-      </AuthProvider>
-    </NavigationContainer>
+    <RootSiblingParent>
+      <NavigationContainer>
+        <AuthProvider>
+          <SafeAreaView style={{flex: 1}}>
+            <Routes />
+            <StatusBar
+              backgroundColor={currentTheme.colors.background}
+              style={Platform.select({
+                ios: 'dark',
+                android: 'dark',
+              })}
+            />
+          </SafeAreaView>
+        </AuthProvider>
+      </NavigationContainer>
+    </RootSiblingParent>
   );
 }
