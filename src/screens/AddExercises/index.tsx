@@ -1,28 +1,41 @@
-import {StyleSheet, View} from 'react-native';
-import {Container} from '../../components/Container';
-import {Header} from '../../components/Header';
-import {useExercisesStackNavigation} from '../../hooks/useExercisesStackNavigation';
-import {Content} from '../../components/Content';
-import {Input} from '../../components/Input';
-import {DismissKeyboard} from '../../components/DismissKeyboard';
-import {Button} from '../../components/Button';
-
-import {useLoading} from '../../hooks/useLoading';
-import {createExercises} from '../../services/exercises';
+import {View} from 'react-native';
 import Toast from 'react-native-root-toast';
-
+import {zodResolver} from '@hookform/resolvers/zod';
 import {useForm, Controller} from 'react-hook-form';
-import {CreateExercisesProps} from '../../types/exercises';
+import reactotron from 'reactotron-react-native';
+
+import {
+  Container,
+  Header,
+  Content,
+  Input,
+  DismissKeyboard,
+  Button,
+} from '../../components';
+import {useExercisesStackNavigation, useLoading} from '../../hooks';
+
+import {createExercises} from '../../services';
+import {Schema, schema} from './types';
+import {styles} from './styles';
 
 export const AddExercisesScreen = () => {
   const navigation = useExercisesStackNavigation();
 
-  const {formState, handleSubmit, watch, control} =
-    useForm<CreateExercisesProps>();
+  const {
+    formState: {errors},
+    handleSubmit,
+    control,
+  } = useForm<Schema>({
+    resolver: zodResolver(schema),
+    mode: 'onSubmit',
+    reValidateMode: 'onChange',
+  });
 
   const {isLoading, handleStartLoading, handleFinishLoading} = useLoading();
 
   const onSubmit = handleSubmit(async data => {
+    reactotron?.log('data', data);
+    return;
     try {
       handleStartLoading();
 
@@ -37,7 +50,7 @@ export const AddExercisesScreen = () => {
     }
   });
 
-  const disableSubmit = !watch('name');
+  reactotron?.log(errors);
 
   return (
     <Container>
@@ -51,15 +64,16 @@ export const AddExercisesScreen = () => {
           <>
             <Controller
               control={control}
-              rules={{required: true}}
               name="name"
               render={({field: {onChange, onBlur, value}}) => (
                 <Input
                   placeholder="name"
+                  label="name"
                   value={value}
                   onChangeText={onChange}
                   onBlur={onBlur}
                   editable={!isLoading}
+                  errorMessage={errors?.name?.message}
                 />
               )}
             />
@@ -71,28 +85,35 @@ export const AddExercisesScreen = () => {
                 render={({field: {onChange, onBlur, value}}) => (
                   <Input
                     placeholder="weight"
+                    label="Weight"
                     style={styles.flex}
+                    flex={1}
                     onBlur={onBlur}
                     keyboardType="numeric"
+                    maxLength={3}
                     value={value}
                     onChangeText={onChange}
                     editable={!isLoading}
+                    errorMessage={errors?.weight?.message}
                   />
                 )}
               />
-
               <Controller
                 control={control}
                 name="last_weight"
                 render={({field: {onChange, onBlur, value}}) => (
                   <Input
                     placeholder="last weight"
+                    label="Last Weight"
                     style={styles.flex}
                     onBlur={onBlur}
                     keyboardType="numeric"
                     value={value}
+                    flex={1}
+                    maxLength={3}
                     onChangeText={onChange}
                     editable={!isLoading}
+                    errorMessage={errors?.last_weight?.message}
                   />
                 )}
               />
@@ -104,11 +125,14 @@ export const AddExercisesScreen = () => {
               render={({field: {onChange, onBlur, value}}) => (
                 <Input
                   placeholder="reps"
+                  label="Reps"
                   onBlur={onBlur}
                   keyboardType="numeric"
+                  maxLength={3}
                   value={value}
                   onChangeText={onChange}
                   editable={!isLoading}
+                  errorMessage={errors?.reps?.message}
                 />
               )}
             />
@@ -118,11 +142,14 @@ export const AddExercisesScreen = () => {
               render={({field: {onChange, onBlur, value}}) => (
                 <Input
                   placeholder="series"
+                  label="Series"
                   onBlur={onBlur}
                   keyboardType="numeric"
                   value={value}
+                  maxLength={3}
                   onChangeText={onChange}
                   editable={!isLoading}
+                  errorMessage={errors?.series?.message}
                 />
               )}
             />
@@ -132,7 +159,7 @@ export const AddExercisesScreen = () => {
               style={styles.button}
               onPress={onSubmit}
               isLoading={isLoading}
-              disabled={isLoading || disableSubmit}
+              disabled={isLoading || Object.keys(errors).length > 0}
             />
           </>
         </DismissKeyboard>
@@ -140,21 +167,3 @@ export const AddExercisesScreen = () => {
     </Container>
   );
 };
-
-const styles = StyleSheet.create({
-  content: {
-    gap: 16,
-    justifyContent: 'center',
-  },
-  box: {
-    flexDirection: 'row',
-    gap: 16,
-    width: '100%',
-  },
-  flex: {
-    flex: 1,
-  },
-  button: {
-    marginTop: 36,
-  },
-});
