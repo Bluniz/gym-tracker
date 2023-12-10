@@ -9,6 +9,7 @@ export const styles = StyleSheet.create({
 
   input: {
     maxHeight: 56,
+    minHeight: 56,
     height: 56,
     padding: 16,
     backgroundColor: currentTheme.colors.backgroundMedium,
