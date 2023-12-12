@@ -1,8 +1,7 @@
 import {View} from 'react-native';
 import Toast from 'react-native-root-toast';
 import {zodResolver} from '@hookform/resolvers/zod';
-import {useForm, Controller} from 'react-hook-form';
-import reactotron from 'reactotron-react-native';
+import {useForm} from 'react-hook-form';
 
 import {
   Container,
