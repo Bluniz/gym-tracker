@@ -1,21 +1,28 @@
 import {Text, View, ActivityIndicator} from 'react-native';
-import {useState} from 'react';
-import {Button} from '../../components/Button/index';
-import {Input} from '../../components/Input/index';
-import {Modal} from '../../components/Modal';
-import {DismissKeyboard} from '../../components/DismissKeyboard';
+import {useLayoutEffect} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {useForm} from 'react-hook-form';
+import {zodResolver} from '@hookform/resolvers/zod';
+
+import {Button, Input, Modal, DismissKeyboard} from '../../components';
 import {useAuth} from '../../contexts/auth';
 
 import {currentTheme} from '../../styles/theme';
-import {useLayoutEffect} from 'react';
-import {useNavigation} from '@react-navigation/native';
 import {styles} from './styles';
+import {LoginSchema, loginSchema} from './types';
 
 export const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
   const {signIn, isLoading, error, clearError, user} = useAuth();
+
+  const {
+    formState: {errors},
+    handleSubmit,
+    control,
+  } = useForm<LoginSchema>({
+    resolver: zodResolver(loginSchema),
+    mode: 'onSubmit',
+    reValidateMode: 'onChange',
+  });
 
   const navigation = useNavigation();
 
@@ -25,6 +32,8 @@ export const Login = () => {
     }
   }, [user, navigation]);
 
+  const onSubmit = handleSubmit(data => signIn?.(data.email, data.password));
+
   return (
     <DismissKeyboard style={{flex: 1}}>
       <View style={styles.container}>
@@ -33,17 +42,29 @@ export const Login = () => {
         ) : (
           <>
             <Text style={styles.title}>Entre com seus dados</Text>
-            <Input
-              placeholder="Digite seu e-mail"
+
+            <Input<LoginSchema>
+              placeholder="Write your e-mail"
               keyboardType="email-address"
-              onChangeText={setEmail}
+              name="email"
+              label="E-mail"
+              control={control}
+              errorMessage={errors?.email?.message}
             />
-            <Input
-              placeholder="Digite sua senha"
+            <Input<LoginSchema>
+              name="password"
+              label="Password"
+              placeholder="Write your password"
               secureTextEntry
-              onChangeText={setPassword}
+              control={control}
+              errorMessage={errors?.password?.message}
             />
-            <Button title="Entrar" onPress={() => signIn?.(email, password)} />
+
+            <Button
+              title="Entrar"
+              onPress={onSubmit}
+              disabled={isLoading || Object.keys(errors).length > 0}
+            />
           </>
         )}
 
