@@ -34,8 +34,6 @@ export const AddExercisesScreen = () => {
   const {isLoading, handleStartLoading, handleFinishLoading} = useLoading();
 
   const onSubmit = handleSubmit(async data => {
-    reactotron?.log('data', data);
-    return;
     try {
       handleStartLoading();
 
@@ -50,8 +48,6 @@ export const AddExercisesScreen = () => {
     }
   });
 
-  reactotron?.log(errors);
-
   return (
     <Container>
       <Header
@@ -62,96 +58,62 @@ export const AddExercisesScreen = () => {
       <Content>
         <DismissKeyboard style={[{flex: 1}, styles.content]}>
           <>
-            <Controller
+            <Input<Schema>
+              placeholder="name"
+              label="name"
+              editable={!isLoading}
+              errorMessage={errors?.name?.message}
               control={control}
               name="name"
-              render={({field: {onChange, onBlur, value}}) => (
-                <Input
-                  placeholder="name"
-                  label="name"
-                  value={value}
-                  onChangeText={onChange}
-                  onBlur={onBlur}
-                  editable={!isLoading}
-                  errorMessage={errors?.name?.message}
-                />
-              )}
             />
 
             <View style={styles.box}>
-              <Controller
+              <Input<Schema>
                 control={control}
                 name="weight"
-                render={({field: {onChange, onBlur, value}}) => (
-                  <Input
-                    placeholder="weight"
-                    label="Weight"
-                    style={styles.flex}
-                    flex={1}
-                    onBlur={onBlur}
-                    keyboardType="numeric"
-                    maxLength={3}
-                    value={value}
-                    onChangeText={onChange}
-                    editable={!isLoading}
-                    errorMessage={errors?.weight?.message}
-                  />
-                )}
+                placeholder="weight"
+                label="Weight"
+                style={styles.flex}
+                flex={1}
+                keyboardType="numeric"
+                maxLength={3}
+                editable={!isLoading}
+                errorMessage={errors?.weight?.message}
               />
-              <Controller
+              <Input<Schema>
+                placeholder="last weight"
+                label="Last Weight"
+                style={styles.flex}
+                keyboardType="numeric"
+                flex={1}
+                maxLength={3}
+                editable={!isLoading}
+                errorMessage={errors?.last_weight?.message}
                 control={control}
                 name="last_weight"
-                render={({field: {onChange, onBlur, value}}) => (
-                  <Input
-                    placeholder="last weight"
-                    label="Last Weight"
-                    style={styles.flex}
-                    onBlur={onBlur}
-                    keyboardType="numeric"
-                    value={value}
-                    flex={1}
-                    maxLength={3}
-                    onChangeText={onChange}
-                    editable={!isLoading}
-                    errorMessage={errors?.last_weight?.message}
-                  />
-                )}
               />
             </View>
 
-            <Controller
+            <Input<Schema>
               control={control}
               name="reps"
-              render={({field: {onChange, onBlur, value}}) => (
-                <Input
-                  placeholder="reps"
-                  label="Reps"
-                  onBlur={onBlur}
-                  keyboardType="numeric"
-                  maxLength={3}
-                  value={value}
-                  onChangeText={onChange}
-                  editable={!isLoading}
-                  errorMessage={errors?.reps?.message}
-                />
-              )}
+              placeholder="reps"
+              label="Reps"
+              keyboardType="numeric"
+              maxLength={3}
+              editable={!isLoading}
+              errorMessage={errors?.reps?.message}
             />
-            <Controller
+
+            <Input
               control={control}
               name="series"
-              render={({field: {onChange, onBlur, value}}) => (
-                <Input
-                  placeholder="series"
-                  label="Series"
-                  onBlur={onBlur}
-                  keyboardType="numeric"
-                  value={value}
-                  maxLength={3}
-                  onChangeText={onChange}
-                  editable={!isLoading}
-                  errorMessage={errors?.series?.message}
-                />
-              )}
+              placeholder="series"
+              label="Series"
+              keyboardType="numeric"
+              maxLength={3}
+              editable={!isLoading}
+              errorMessage={errors?.series?.message}
             />
 
             <Button

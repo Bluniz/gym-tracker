@@ -5,7 +5,6 @@ export const schema = z.object({
   name: z.string(),
   series: z
     .string()
-    .min(1)
     .max(3)
     .transform(e => (e === '' ? undefined : e))
     .refine(value => (value ? numberRegex.test(value) : true), {
