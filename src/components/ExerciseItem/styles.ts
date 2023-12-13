@@ -1,10 +1,14 @@
-import { StyleSheet } from 'react-native';
-import { currentTheme } from '../../styles/theme';
+import {StyleSheet} from 'react-native';
+import {currentTheme} from '../../styles/theme';
 
 export const styles = StyleSheet.create({
-  exerciseContainer: {
+  container: {
+    flexDirection: 'row',
     borderBottomWidth: 0.5,
     borderBottomColor: currentTheme.colors.primary,
+    overflow: 'hidden',
+  },
+  exerciseContainer: {
     padding: 8,
     gap: 4,
   },
@@ -18,7 +22,15 @@ export const styles = StyleSheet.create({
     color: currentTheme.colors.primary,
   },
   weightContainer: {
-    flexDirection: 'row',
-    gap: 16,
+    gap: 6,
+    flexWrap: 'wrap',
+  },
+  deleteBtn: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: currentTheme.colors.primary,
+  },
+  actionIcon: {
+    marginHorizontal: 10,
   },
 });
