@@ -1,13 +1,12 @@
-import {Text, View, ActivityIndicator} from 'react-native';
+import {Text, View} from 'react-native';
 import {useLayoutEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 
-import {Button, Input, Modal, DismissKeyboard} from '../../components';
+import {Button, Input, Modal, DismissKeyboard, Loading} from '../../components';
 import {useAuth} from '../../contexts/auth';
 
-import {currentTheme} from '../../styles/theme';
 import {styles} from './styles';
 import {LoginSchema, loginSchema} from './types';
 
@@ -38,7 +37,7 @@ export const Login = () => {
     <DismissKeyboard style={{flex: 1}}>
       <View style={styles.container}>
         {isLoading ? (
-          <ActivityIndicator size="large" color={currentTheme.colors.primary} />
+          <Loading />
         ) : (
           <>
             <Text style={styles.title}>Entre com seus dados</Text>

@@ -1,4 +1,4 @@
-import {ActivityIndicator,  FlatList} from 'react-native';
+import {FlatList} from 'react-native';
 
 import {useNavigation, useRoute} from '@react-navigation/native';
 
@@ -6,14 +6,17 @@ import {
   WorkoutWithExercises,
   WorkoutScreenRouteProp,
 } from '../../types/workout';
-import {Header} from '../../components/Header';
 import {currentTheme} from '../../styles/theme';
 import {useEffect, useState} from 'react';
 import {getWorkout} from '../../services/workouts';
-import { Container } from '../../components/Container';
-import { ExerciseItem } from '../../components/ExerciseItem';
-import { Content } from '../../components/Content';
 
+import {
+  Loading,
+  Content,
+  ExerciseItem,
+  Container,
+  Header,
+} from '../../components';
 
 export const Workout = () => {
   const {params} = useRoute<WorkoutScreenRouteProp>();
@@ -30,7 +33,6 @@ export const Workout = () => {
     })();
   }, [params]);
 
-
   return (
     <Container>
       <Header
@@ -46,14 +48,13 @@ export const Workout = () => {
         <FlatList
           data={workoutData?.exercices}
           keyExtractor={(item, index) => `${item.name}__${index}`}
-          renderItem={(item) => <ExerciseItem data={item}/>}
+          renderItem={item => <ExerciseItem data={item} />}
         />
       </Content>
 
       {isLoading && (
-        <ActivityIndicator size="large" color={currentTheme.colors.primary} />
+        <Loading size="large" color={currentTheme.colors.primary} />
       )}
     </Container>
   );
 };
-

@@ -1,10 +1,4 @@
-import {
-  FlatList,
-  ActivityIndicator,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {FlatList, TouchableOpacity, View} from 'react-native';
 import {Container} from '../../components/Container';
 import {currentTheme} from '../../styles/theme';
 
@@ -19,6 +13,8 @@ import {Content} from '../../components/Content';
 import {Ionicons} from '@expo/vector-icons';
 
 import {useExercisesStackNavigation} from '../../hooks/useExercisesStackNavigation';
+import {Loading} from '../../components';
+import {styles} from './styles';
 
 export const ExercisesScreen = () => {
   const [exercises, setExercises] = useState<Exercise[]>([]);
@@ -46,36 +42,33 @@ export const ExercisesScreen = () => {
   return (
     <Container>
       <Header title="Exercises" />
-      <Content>
-        {isLoading && (
-          <ActivityIndicator size="large" color={currentTheme.colors.primary} />
-        )}
-        <FlatList
-          data={exercises}
-          keyExtractor={(item, index) => `${item.name}__${index}`}
-          renderItem={item => <ExerciseItem data={item} />}
-        />
-      </Content>
 
-      <TouchableOpacity onPress={() => navigation.navigate('addExercises')}>
-        <View style={styles.buttonContainer}>
-          <Ionicons name="add" color={currentTheme.colors.white} size={20} />
-        </View>
-      </TouchableOpacity>
+      <Content>
+        {isLoading ? (
+          <View style={styles.loadingContainer}>
+            <Loading />
+          </View>
+        ) : (
+          <>
+            <FlatList
+              data={exercises}
+              keyExtractor={(item, index) => `${item.name}__${index}`}
+              renderItem={item => <ExerciseItem data={item} />}
+            />
+
+            <TouchableOpacity
+              onPress={() => navigation.navigate('addExercises')}>
+              <View style={styles.buttonContainer}>
+                <Ionicons
+                  name="add"
+                  color={currentTheme.colors.white}
+                  size={20}
+                />
+              </View>
+            </TouchableOpacity>
+          </>
+        )}
+      </Content>
     </Container>
   );
 };
-
-const styles = StyleSheet.create({
-  buttonContainer: {
-    backgroundColor: currentTheme.colors.primary,
-    width: 40,
-    height: 40,
-    borderRadius: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    bottom: 12,
-    right: 12,
-  },
-});

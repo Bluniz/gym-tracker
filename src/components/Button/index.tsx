@@ -1,11 +1,6 @@
-import {
-  Text,
-  StyleSheet,
-  Pressable,
-  PressableProps,
-  ActivityIndicator,
-} from 'react-native';
+import {Text, StyleSheet, Pressable, PressableProps} from 'react-native';
 import {currentTheme} from '../../styles/theme';
+import {Loading} from '../Loading';
 
 interface ButtonPrps extends PressableProps {
   title: string;
@@ -35,7 +30,7 @@ export function Button({
           : {},
       ]}>
       {isLoading ? (
-        <ActivityIndicator size="small" color={currentTheme.colors.white} />
+        <Loading size="small" color={currentTheme.colors.white} />
       ) : (
         <Text style={styles.buttonText}>{title}</Text>
       )}
