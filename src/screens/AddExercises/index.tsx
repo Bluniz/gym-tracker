@@ -42,6 +42,7 @@ export const AddExercisesScreen = () => {
       navigation.navigate('listExercises');
     } catch (error) {
       console.log(error);
+      Toast.show('Something is wrong!');
     } finally {
       handleFinishLoading();
     }

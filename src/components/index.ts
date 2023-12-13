@@ -8,3 +8,4 @@ export * from './Header';
 export * from './IconButton';
 export * from './Input';
 export * from './Modal';
+export * from './Loading';

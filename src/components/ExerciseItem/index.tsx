@@ -6,15 +6,26 @@ import {styles} from './styles';
 import reactotron from 'reactotron-react-native';
 import {RectButton, Swipeable} from 'react-native-gesture-handler';
 import {currentTheme} from '../../styles/theme';
+import Toast from 'react-native-root-toast';
+import {deleteExercise} from '../../services';
 
 const AnimatedIcon = Animated.createAnimatedComponent(Ionicons);
 
 export const ExerciseItem = ({data}: WorkoutItemProps) => {
   const exercise = data.item;
 
+  const handleDeleteExercise = async () => {
+    try {
+      await deleteExercise(exercise.id);
+      Toast.show('Exercise deleted!');
+    } catch (error) {
+      Toast.show('Something is wrong!');
+    }
+  };
+
   const renderRightActions = () => {
     return (
-      <RectButton style={styles.deleteBtn}>
+      <RectButton style={styles.deleteBtn} onPress={handleDeleteExercise}>
         <AnimatedIcon
           name="trash"
           size={22}
