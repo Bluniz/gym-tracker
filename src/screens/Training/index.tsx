@@ -1,71 +1,47 @@
-import {View, StyleSheet, ScrollView} from 'react-native';
-import {useState, useCallback} from 'react';
+import {View} from 'react-native';
+import {useEffect} from 'react';
 
 import {Container} from '../../components/Container';
 import {Header} from '../../components/Header';
 
-import {TrainingItem} from './TrainingItem';
-import {listWorkouts} from '../../services/workouts';
-import {useFocusEffect} from '@react-navigation/native';
-import {DocumentData} from 'firebase/firestore';
+import {useIsFocused} from '@react-navigation/native';
+import {useStore} from '../../stores';
+import {useShallow} from 'zustand/react/shallow';
+import {styles} from './styles';
+import {Content, Loading} from '../../components';
+import {WorkoutList} from './WorkoutList';
 
 export const TrainingScreen = () => {
-  const [trainingList, setTrainingList] = useState<DocumentData[]>([]);
-
-  const getList = async () => {
-    try {
-      const data = await listWorkouts();
-
-      setTrainingList(data || []);
-    } catch (error) {
-      console.log('error');
-    }
-  };
-
-  useFocusEffect(
-    useCallback(() => {
-      getList();
-    }, [])
+  const {getWorkouts, isLoading, workouts} = useStore(
+    useShallow(state => ({
+      workouts: state.workouts,
+      isLoading: state.isWorkoutsLoading,
+      getWorkouts: state.getWorkouts,
+    }))
   );
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      (async () => {
+        await getWorkouts();
+      })();
+    }
+  }, [isFocused, getWorkouts]);
 
   return (
     <Container>
-      <View style={styles.container}>
-        <Header
-          title="Time for Training"
-          subTitle="Choose your today training"
-        />
-
-        <ScrollView style={styles.body} contentContainerStyle={{flexGrow: 1}}>
-          <View style={styles.list}>
-            {trainingList.map(training => {
-              return (
-                <TrainingItem
-                  key={training?.name + Math.random()}
-                  title={training.name}
-                  doneQtd={training.complete_qtd}
-                  id={training?.id}
-                />
-              );
-            })}
+      <Header title="Time for Training" subTitle="Choose your today training" />
+      <Content>
+        {isLoading ? (
+          <View style={styles.loadingContainer}>
+            <Loading />
           </View>
-        </ScrollView>
-      </View>
+        ) : (
+          <WorkoutList workouts={workouts} />
+        )}
+      </Content>
     </Container>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    gap: 38,
-  },
-
-  body: {
-    paddingHorizontal: 20,
-  },
-
-  list: {
-    gap: 24,
-    paddingBottom: 100,
-  },
-});
