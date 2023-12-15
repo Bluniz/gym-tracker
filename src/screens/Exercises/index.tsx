@@ -15,7 +15,6 @@ import {Loading} from '../../components';
 import {styles} from './styles';
 import {useStore} from '../../stores';
 import {ExerciseList} from './ExerciseList';
-import {Exercise} from '../../types/exercises';
 
 export const ExercisesScreen = () => {
   const isFocused = useIsFocused();
@@ -28,10 +27,6 @@ export const ExercisesScreen = () => {
       getExercises: state.getExercises,
     }))
   );
-
-  const handleEditExercise = (data: Exercise) => {
-    navigation.navigate('addExercises', data);
-  };
 
   useEffect(() => {
     if (isFocused) {
@@ -52,10 +47,7 @@ export const ExercisesScreen = () => {
           </View>
         ) : (
           <>
-            <ExerciseList
-              exercises={exercises}
-              handleEditExercise={handleEditExercise}
-            />
+            <ExerciseList exercises={exercises} />
 
             <TouchableOpacity
               onPress={() => navigation.navigate('addExercises')}>

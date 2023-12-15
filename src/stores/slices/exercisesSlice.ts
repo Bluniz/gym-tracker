@@ -12,11 +12,14 @@ import {GlobalLoadingSlice} from './globalLoadingSlice';
 export interface ExercisesSlice {
   exercises: Exercise[];
   isExercisesLoading: boolean;
+  isExercisesRefreshing: boolean;
 
   startExercisesLoading: () => void;
   finishExercisesLoading: () => void;
+  startRefreshExercisesLoading: () => void;
+  finishRefreshExercisesLoading: () => void;
 
-  getExercises: (isUpdate?: boolean) => Promise<void>;
+  getExercises: (type?: 'update' | 'refresh') => Promise<void>;
   deleteExercise: (id: string) => Promise<void>;
   createExercise: (
     variables: CreateExercisesProps,
@@ -36,13 +39,19 @@ export const createExercisesSlice: StateCreator<
 > = (set, get) => ({
   exercises: [],
   isExercisesLoading: false,
+  isExercisesRefreshing: false,
 
   startExercisesLoading: () => set(() => ({isExercisesLoading: true})),
   finishExercisesLoading: () => set(() => ({isExercisesLoading: false})),
+  startRefreshExercisesLoading: () =>
+    set(() => ({isExercisesRefreshing: true})),
+  finishRefreshExercisesLoading: () =>
+    set(() => ({isExercisesRefreshing: false})),
 
-  getExercises: async isUpdate => {
+  getExercises: async type => {
     try {
-      if (!isUpdate) get().startExercisesLoading();
+      if (!type) get().startExercisesLoading();
+      if (type === 'refresh') get().startRefreshExercisesLoading();
 
       const exercises = await listExercises();
       set(() => ({exercises}));
@@ -51,7 +60,8 @@ export const createExercisesSlice: StateCreator<
       Toast.show('Something is wrong!');
       if (error instanceof Error) Toast.show(error.message);
     } finally {
-      if (!isUpdate) get().finishExercisesLoading();
+      if (!type) get().finishExercisesLoading();
+      if (type === 'refresh') get().finishRefreshExercisesLoading();
     }
   },
 
@@ -60,7 +70,7 @@ export const createExercisesSlice: StateCreator<
       get().startLoading();
 
       await deleteExercise(id);
-      await get().getExercises(true);
+      await get().getExercises('update');
       Toast.show('Exercise deleted!');
     } catch (error) {
       console.log(error);
