@@ -1,5 +1,4 @@
 import {View} from 'react-native';
-import Toast from 'react-native-root-toast';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {useForm} from 'react-hook-form';
 
@@ -11,14 +10,22 @@ import {
   DismissKeyboard,
   Button,
 } from '../../components';
-import {useExercisesStackNavigation, useLoading} from '../../hooks';
+import {useExercisesStackNavigation} from '../../hooks';
 
-import {createExercises} from '../../services';
 import {Schema, schema} from './types';
 import {styles} from './styles';
+import {useStore} from '../../stores';
+import {useShallow} from 'zustand/react/shallow';
 
 export const AddExercisesScreen = () => {
   const navigation = useExercisesStackNavigation();
+
+  const {isLoading, createExercises} = useStore(
+    useShallow(state => ({
+      createExercises: state.createExercise,
+      isLoading: state.isLoading,
+    }))
+  );
 
   const {
     formState: {errors},
@@ -30,22 +37,8 @@ export const AddExercisesScreen = () => {
     reValidateMode: 'onChange',
   });
 
-  const {isLoading, handleStartLoading, handleFinishLoading} = useLoading();
-
   const onSubmit = handleSubmit(async data => {
-    try {
-      handleStartLoading();
-
-      await createExercises(data);
-
-      Toast.show('Exercise created!');
-      navigation.navigate('listExercises');
-    } catch (error) {
-      console.log(error);
-      Toast.show('Something is wrong!');
-    } finally {
-      handleFinishLoading();
-    }
+    await createExercises(data, () => navigation.navigate('listExercises'));
   });
 
   return (
