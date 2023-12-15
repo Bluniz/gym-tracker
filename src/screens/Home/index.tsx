@@ -1,6 +1,5 @@
-import { Text, View, Button } from 'react-native';
+import {Text, View, Button} from 'react-native';
 import React from 'react';
-import { useAuth } from '../../contexts/auth';
 import {
   createExercises,
   listExercises,
@@ -11,9 +10,10 @@ import {
 import * as WorkoutService from '../../services/workouts';
 
 import {Container} from '../../components/Container';
+import {useStore} from '../../stores';
 
 export function Home() {
-  const { signOut } = useAuth();
+  const signOut = useStore(state => state.signOut);
   return (
     <Container>
       <View
@@ -22,12 +22,11 @@ export function Home() {
           alignItems: 'center',
           justifyContent: 'center',
           gap: 16,
-        }}
-      >
+        }}>
         <Text>Welcome</Text>
-        <Button title='Sair' onPress={signOut} />
+        <Button title="Sair" onPress={signOut} />
         <Button
-          title='Criar exercicios'
+          title="Criar exercicios"
           onPress={() =>
             createExercises({
               name: 'Teste23',
@@ -35,14 +34,14 @@ export function Home() {
           }
         />
         <Button
-          title='Deletar exercicios'
+          title="Deletar exercicios"
           onPress={() => deleteExercise('7BD1E8ZSGSt0VXC5pPyK')}
         />
 
-        <Button title='Listar Exercicios' onPress={listExercises} />
+        <Button title="Listar Exercicios" onPress={listExercises} />
 
         <Button
-          title='Atualizar Exercicio'
+          title="Atualizar Exercicio"
           onPress={async () => {
             await updateExercise({
               id: 'tJDgzvfzxYAmu6OjvCI4',
@@ -52,7 +51,7 @@ export function Home() {
         />
 
         <Button
-          title='Criar Treino'
+          title="Criar Treino"
           onPress={async () => {
             await WorkoutService.createWorkout({
               name: 'Treino AB',
@@ -62,7 +61,7 @@ export function Home() {
         />
 
         <Button
-          title='Atualizar Treino'
+          title="Atualizar Treino"
           onPress={async () => {
             await WorkoutService.updateWorkout({
               name: 'Treino A',
@@ -72,13 +71,13 @@ export function Home() {
           }}
         />
         <Button
-          title='Deletar Treino'
+          title="Deletar Treino"
           onPress={async () => {
             await WorkoutService.deleteWorkout('ndbqYR4kvtd041Eg9soc');
           }}
         />
         <Button
-          title='Concluir Treino'
+          title="Concluir Treino"
           onPress={async () => {
             await WorkoutService.completeWorkout({
               id: 'DSocaAM1FFylAqbfeovA',

@@ -3,7 +3,6 @@ import {NavigationContainer} from '@react-navigation/native';
 import {RootSiblingParent} from 'react-native-root-siblings';
 
 import {Platform, SafeAreaView} from 'react-native';
-import {AuthProvider} from './src/contexts/auth';
 import {Routes} from './src/routes';
 import {StatusBar} from 'expo-status-bar';
 
@@ -14,6 +13,7 @@ import {useStore} from './src/stores';
 
 import './src/configs/firebase';
 import 'react-native-gesture-handler';
+import {AuthContainer} from './src/components/AuthContainer';
 
 if (__DEV__) {
   require('./src/configs/ReactotronConfig');
@@ -26,7 +26,7 @@ export default function App() {
   return (
     <RootSiblingParent>
       <NavigationContainer>
-        <AuthProvider>
+        <AuthContainer>
           <SafeAreaView style={{flex: 1}}>
             <Routes />
             <StatusBar
@@ -37,7 +37,7 @@ export default function App() {
               })}
             />
           </SafeAreaView>
-        </AuthProvider>
+        </AuthContainer>
       </NavigationContainer>
       {isLoadingGlobal && <FullLoading />}
     </RootSiblingParent>

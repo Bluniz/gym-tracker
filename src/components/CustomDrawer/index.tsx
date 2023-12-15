@@ -3,11 +3,10 @@ import {
   DrawerItemList,
   DrawerItem,
 } from '@react-navigation/drawer';
-import {useAuth} from '../../contexts/auth';
 import {currentTheme} from '../../styles/theme';
 
 export function CustomDrawer(props) {
-  const {signOut} = useAuth();
+  //const {signOut} = useAuth();
 
   return (
     <DrawerContentScrollView
@@ -18,7 +17,7 @@ export function CustomDrawer(props) {
 
       <DrawerItem
         label="Sair"
-        onPress={() => signOut?.()}
+        onPress={() => console.log('ata')}
         labelStyle={{
           textAlign: 'center',
           color: currentTheme.colors.text,

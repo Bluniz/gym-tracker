@@ -5,13 +5,22 @@ import {useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 
 import {Button, Input, Modal, DismissKeyboard, Loading} from '../../components';
-import {useAuth} from '../../contexts/auth';
 
 import {styles} from './styles';
 import {LoginSchema, loginSchema} from './types';
+import {useStore} from '../../stores';
+import {useShallow} from 'zustand/react/shallow';
 
 export const Login = () => {
-  const {signIn, isLoading, error, clearError, user} = useAuth();
+  const {clearError, error, signIn, user, isLoading} = useStore(
+    useShallow(state => ({
+      signIn: state.signIn,
+      clearError: state.clearError,
+      user: state.user,
+      error: state.authError,
+      isLoading: state.authLoading,
+    }))
+  );
 
   const {
     formState: {errors},
@@ -31,7 +40,7 @@ export const Login = () => {
     }
   }, [user, navigation]);
 
-  const onSubmit = handleSubmit(data => signIn?.(data.email, data.password));
+  const onSubmit = handleSubmit(data => signIn?.(data));
 
   return (
     <DismissKeyboard style={{flex: 1}}>
