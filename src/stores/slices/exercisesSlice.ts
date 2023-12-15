@@ -1,6 +1,11 @@
 import {StateCreator} from 'zustand';
 import {CreateExercisesProps, Exercise} from '../../types/exercises';
-import {createExercises, deleteExercise, listExercises} from '../../services';
+import {
+  createExercises,
+  deleteExercise,
+  listExercises,
+  updateExercise,
+} from '../../services';
 import Toast from 'react-native-root-toast';
 import {GlobalLoadingSlice} from './globalLoadingSlice';
 
@@ -14,6 +19,10 @@ export interface ExercisesSlice {
   getExercises: (isUpdate?: boolean) => Promise<void>;
   deleteExercise: (id: string) => Promise<void>;
   createExercise: (
+    variables: CreateExercisesProps,
+    callback?: () => void
+  ) => Promise<void>;
+  updateExercise: (
     variables: CreateExercisesProps,
     callback?: () => void
   ) => Promise<void>;
@@ -69,6 +78,22 @@ export const createExercisesSlice: StateCreator<
       await createExercises(variables);
       callback?.();
       Toast.show('Exercise created!');
+    } catch (error) {
+      console.log(error);
+      Toast.show('Something is wrong!');
+      if (error instanceof Error) Toast.show(error.message);
+    } finally {
+      get().finishLoading();
+    }
+  },
+
+  updateExercise: async (variables, callback) => {
+    try {
+      get().startLoading();
+
+      await updateExercise(variables);
+      Toast.show('Exercise updated!');
+      callback?.();
     } catch (error) {
       console.log(error);
       Toast.show('Something is wrong!');

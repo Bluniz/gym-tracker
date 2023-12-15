@@ -8,7 +8,11 @@ import {currentTheme} from '../../styles/theme';
 
 const AnimatedIcon = Animated.createAnimatedComponent(Ionicons);
 
-export const ExerciseItem = ({data, handleDelete}: WorkoutItemProps) => {
+export const ExerciseItem = ({
+  data,
+  handleDelete,
+  handleEdit,
+}: WorkoutItemProps) => {
   const exercise = data.item;
 
   const confirmAlert = () =>
@@ -40,6 +44,18 @@ export const ExerciseItem = ({data, handleDelete}: WorkoutItemProps) => {
             />
           </RectButton>
         )}
+        {handleEdit && (
+          <RectButton
+            style={styles.editBtn}
+            onPress={() => handleEdit(exercise)}>
+            <AnimatedIcon
+              name="pencil"
+              size={22}
+              style={[styles.actionIcon, {transform: [{translateX: 0}]}]}
+              color={currentTheme.colors.white}
+            />
+          </RectButton>
+        )}
       </>
     );
   };
@@ -48,7 +64,7 @@ export const ExerciseItem = ({data, handleDelete}: WorkoutItemProps) => {
     <Swipeable
       renderRightActions={renderRightActions}
       friction={2}
-      rightThreshold={41}>
+      rightThreshold={0}>
       <View style={styles.container}>
         <View style={styles.exerciseContainer}>
           <Text style={styles.exerciseTitle}>{exercise?.name}</Text>

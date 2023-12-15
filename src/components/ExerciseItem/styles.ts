@@ -30,6 +30,11 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: currentTheme.colors.primary,
   },
+  editBtn: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: currentTheme.colors.primaryLight,
+  },
   actionIcon: {
     marginHorizontal: 10,
   },

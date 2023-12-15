@@ -6,9 +6,13 @@ import {memo} from 'react';
 
 interface ExerciseListProps {
   exercises: Exercise[];
+  handleEditExercise: (exercise: Exercise) => void;
 }
 
-const ExerciseListComponent = ({exercises}: ExerciseListProps) => {
+const ExerciseListComponent = ({
+  exercises,
+  handleEditExercise,
+}: ExerciseListProps) => {
   const deleteExercise = useStore(state => state.deleteExercise);
 
   return (
@@ -16,7 +20,11 @@ const ExerciseListComponent = ({exercises}: ExerciseListProps) => {
       data={exercises}
       keyExtractor={(item, index) => `${item.name}__${index}`}
       renderItem={item => (
-        <ExerciseItem data={item} handleDelete={deleteExercise} />
+        <ExerciseItem
+          data={item}
+          handleDelete={deleteExercise}
+          handleEdit={handleEditExercise}
+        />
       )}
     />
   );

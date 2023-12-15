@@ -1,3 +1,5 @@
+import {RouteProp} from '@react-navigation/native';
+
 export interface Exercise {
   name: string;
   series: string;
@@ -21,7 +23,12 @@ export interface WeightHistory {
   date: string;
 }
 
+export type CreateExerciseScreenRouteProp = RouteProp<
+  ExercisesParamslist,
+  'addExercises'
+>;
+
 export type ExercisesParamslist = {
   listExercises: undefined;
-  addExercises: undefined;
+  addExercises?: Exercise;
 };

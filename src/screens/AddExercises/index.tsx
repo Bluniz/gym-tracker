@@ -16,14 +16,19 @@ import {Schema, schema} from './types';
 import {styles} from './styles';
 import {useStore} from '../../stores';
 import {useShallow} from 'zustand/react/shallow';
+import {useRoute} from '@react-navigation/native';
+import {CreateExerciseScreenRouteProp} from '../../types/exercises';
 
 export const AddExercisesScreen = () => {
   const navigation = useExercisesStackNavigation();
 
-  const {isLoading, createExercises} = useStore(
+  const {params} = useRoute<CreateExerciseScreenRouteProp>();
+
+  const {isLoading, createExercises, updateExercise} = useStore(
     useShallow(state => ({
       createExercises: state.createExercise,
       isLoading: state.isLoading,
+      updateExercise: state.updateExercise,
     }))
   );
 
@@ -35,10 +40,19 @@ export const AddExercisesScreen = () => {
     resolver: zodResolver(schema),
     mode: 'onSubmit',
     reValidateMode: 'onChange',
+    defaultValues: {
+      ...params,
+    },
   });
 
+  const isUpdate = params && Object.keys(params).length > 0;
+
   const onSubmit = handleSubmit(async data => {
-    await createExercises(data, () => navigation.navigate('listExercises'));
+    isUpdate
+      ? await updateExercise({...data, id: params.id}, () =>
+          navigation.navigate('listExercises')
+        )
+      : await createExercises(data, () => navigation.navigate('listExercises'));
   });
 
   return (
@@ -110,7 +124,7 @@ export const AddExercisesScreen = () => {
             />
 
             <Button
-              title="Add"
+              title={isUpdate ? 'Update' : 'Add'}
               style={styles.button}
               onPress={onSubmit}
               isLoading={isLoading}
