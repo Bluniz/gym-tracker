@@ -31,7 +31,6 @@ export const ExercisesScreen = () => {
           setExercises(data || []);
         } catch (error) {
           console.log(error);
-          handleFinishLoading();
         } finally {
           handleFinishLoading();
         }

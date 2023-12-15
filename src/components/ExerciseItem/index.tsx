@@ -1,25 +1,30 @@
-import {View, Text, ScrollView, Animated} from 'react-native';
+import {View, Text, Animated} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 
 import {WorkoutItemProps} from './types';
 import {styles} from './styles';
-import reactotron from 'reactotron-react-native';
 import {RectButton, Swipeable} from 'react-native-gesture-handler';
 import {currentTheme} from '../../styles/theme';
 import Toast from 'react-native-root-toast';
 import {deleteExercise} from '../../services';
+import {useStore} from '../../stores';
 
 const AnimatedIcon = Animated.createAnimatedComponent(Ionicons);
 
 export const ExerciseItem = ({data}: WorkoutItemProps) => {
   const exercise = data.item;
-
+  const startLoading = useStore(state => state.startLoading);
+  const finishLoading = useStore(state => state.finishLoading);
   const handleDeleteExercise = async () => {
     try {
+      startLoading();
       await deleteExercise(exercise.id);
       Toast.show('Exercise deleted!');
     } catch (error) {
+      console.log(error);
       Toast.show('Something is wrong!');
+    } finally {
+      finishLoading();
     }
   };
 

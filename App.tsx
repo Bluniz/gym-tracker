@@ -9,6 +9,9 @@ import {StatusBar} from 'expo-status-bar';
 
 import {currentTheme} from './src/styles/theme';
 
+import {FullLoading} from './src/components';
+import {useStore} from './src/stores';
+
 import './src/configs/firebase';
 import 'react-native-gesture-handler';
 
@@ -18,6 +21,8 @@ if (__DEV__) {
 }
 
 export default function App() {
+  const isLoadingGlobal = useStore(state => state.isLoading);
+
   return (
     <RootSiblingParent>
       <NavigationContainer>
@@ -34,6 +39,7 @@ export default function App() {
           </SafeAreaView>
         </AuthProvider>
       </NavigationContainer>
+      {isLoadingGlobal && <FullLoading />}
     </RootSiblingParent>
   );
 }
