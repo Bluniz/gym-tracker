@@ -1,42 +1,40 @@
-import {FlatList, TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import {Container} from '../../components/Container';
 import {currentTheme} from '../../styles/theme';
 
 import {useIsFocused} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {Header} from '../../components/Header';
-import {Exercise} from '../../types/exercises';
-import {listExercises} from '../../services/exercises';
-import {useLoading} from '../../hooks/useLoading';
-import {ExerciseItem} from '../../components/ExerciseItem';
+
 import {Content} from '../../components/Content';
 import {Ionicons} from '@expo/vector-icons';
+import {useShallow} from 'zustand/react/shallow';
 
 import {useExercisesStackNavigation} from '../../hooks/useExercisesStackNavigation';
 import {Loading} from '../../components';
 import {styles} from './styles';
+import {useStore} from '../../stores';
+import {ExerciseList} from './ExerciseList';
 
 export const ExercisesScreen = () => {
-  const [exercises, setExercises] = useState<Exercise[]>([]);
-  const {isLoading, handleStartLoading, handleFinishLoading} = useLoading();
   const isFocused = useIsFocused();
   const navigation = useExercisesStackNavigation();
+
+  const {exercises, getExercises, isLoading} = useStore(
+    useShallow(state => ({
+      exercises: state.exercises,
+      isLoading: state.isExercisesLoading,
+      getExercises: state.getExercises,
+    }))
+  );
 
   useEffect(() => {
     if (isFocused) {
       (async () => {
-        try {
-          handleStartLoading();
-          const data = await listExercises();
-          setExercises(data || []);
-        } catch (error) {
-          console.log(error);
-        } finally {
-          handleFinishLoading();
-        }
+        await getExercises();
       })();
     }
-  }, [isFocused, handleFinishLoading, handleStartLoading]);
+  }, [isFocused, getExercises]);
 
   return (
     <Container>
@@ -49,11 +47,7 @@ export const ExercisesScreen = () => {
           </View>
         ) : (
           <>
-            <FlatList
-              data={exercises}
-              keyExtractor={(item, index) => `${item.name}__${index}`}
-              renderItem={item => <ExerciseItem data={item} />}
-            />
+            <ExerciseList exercises={exercises} />
 
             <TouchableOpacity
               onPress={() => navigation.navigate('addExercises')}>

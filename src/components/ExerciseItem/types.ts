@@ -1,6 +1,7 @@
-import { ListRenderItemInfo } from 'react-native';
-import { Exercise } from '../../types/exercises';
+import {ListRenderItemInfo} from 'react-native';
+import {Exercise} from '../../types/exercises';
 
 export interface WorkoutItemProps {
-  data:  ListRenderItemInfo<Exercise>
+  data: ListRenderItemInfo<Exercise>;
+  handleDelete?: (id: string) => void;
 }
