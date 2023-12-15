@@ -1,13 +1,10 @@
 import {FlatList, View} from 'react-native';
+import {useEffect} from 'react';
+import {useShallow} from 'zustand/react/shallow';
 
 import {useNavigation, useRoute} from '@react-navigation/native';
 
-import {
-  WorkoutWithExercises,
-  WorkoutScreenRouteProp,
-} from '../../types/workout';
-import {useEffect, useState} from 'react';
-import {getWorkout} from '../../services/workouts';
+import {WorkoutScreenRouteProp} from '../../types/workout';
 
 import {
   Loading,
@@ -16,29 +13,31 @@ import {
   Container,
   Header,
 } from '../../components';
+import {useStore} from '../../stores';
 
 export const WorkoutDetailsScreen = () => {
   const {params} = useRoute<WorkoutScreenRouteProp>();
   const navigation = useNavigation();
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [workoutData, setWorkoutData] = useState<WorkoutWithExercises>();
+  const {getWorkout, isLoading, workout} = useStore(
+    useShallow(state => ({
+      workout: state.workout,
+      isLoading: state.isWorkoutDetailsLoading,
+      getWorkout: state.getWorkout,
+    }))
+  );
 
   useEffect(() => {
     (async () => {
-      const data = await getWorkout(params!.id);
-      setWorkoutData(data);
-      setIsLoading(false);
+      await getWorkout(params!.id);
     })();
-  }, [params]);
+  }, [params, getWorkout]);
 
   return (
     <Container>
       <Header
-        title={isLoading ? '' : workoutData!.name}
-        subTitle={
-          isLoading ? '' : `Complete: ${workoutData!.complete_qtd} time`
-        }
+        title={isLoading ? '' : workout!.name}
+        subTitle={isLoading ? '' : `Complete: ${workout!.complete_qtd} time`}
         enableGoBack
         onGoBackPress={navigation.goBack}
       />
@@ -51,7 +50,7 @@ export const WorkoutDetailsScreen = () => {
           </View>
         ) : (
           <FlatList
-            data={workoutData?.exercices}
+            data={workout?.exercices}
             keyExtractor={(item, index) => `${item.name}__${index}`}
             renderItem={item => <ExerciseItem data={item} />}
           />
