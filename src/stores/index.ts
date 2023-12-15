@@ -6,12 +6,15 @@ import {
   createExercisesSlice,
   createWorkoutSlice,
   WorkoutSlice,
+  createAuthSlice,
+  AuthSlice,
 } from './slices';
 
 export const useStore = create<
-  GlobalLoadingSlice & ExercisesSlice & WorkoutSlice
+  GlobalLoadingSlice & ExercisesSlice & WorkoutSlice & AuthSlice
 >((...props) => ({
   ...createGlobalLoadingSlice(...props),
   ...createExercisesSlice(...props),
   ...createWorkoutSlice(...props),
+  ...createAuthSlice(...props),
 }));
