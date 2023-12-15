@@ -1,5 +1,6 @@
 import {View, Text, Animated} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
+import {useShallow} from 'zustand/react/shallow';
 
 import {WorkoutItemProps} from './types';
 import {styles} from './styles';
@@ -13,8 +14,12 @@ const AnimatedIcon = Animated.createAnimatedComponent(Ionicons);
 
 export const ExerciseItem = ({data}: WorkoutItemProps) => {
   const exercise = data.item;
-  const startLoading = useStore(state => state.startLoading);
-  const finishLoading = useStore(state => state.finishLoading);
+  const {startLoading, finishLoading} = useStore(
+    useShallow(state => ({
+      startLoading: state.startLoading,
+      finishLoading: state.finishLoading,
+    }))
+  );
   const handleDeleteExercise = async () => {
     try {
       startLoading();
