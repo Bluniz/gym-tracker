@@ -3,7 +3,6 @@ import {Ionicons} from '@expo/vector-icons';
 import {useEffect, useRef} from 'react';
 import {styles} from './styles';
 import {CustomModalProps} from './types';
-import reactotron from 'reactotron-react-native';
 
 export const Modal = ({
   visible,

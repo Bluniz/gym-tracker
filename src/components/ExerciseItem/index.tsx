@@ -1,4 +1,4 @@
-import {View, Text, Animated} from 'react-native';
+import {View, Text, Animated, Alert} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 
 import {WorkoutItemProps} from './types';
@@ -11,13 +11,27 @@ const AnimatedIcon = Animated.createAnimatedComponent(Ionicons);
 export const ExerciseItem = ({data, handleDelete}: WorkoutItemProps) => {
   const exercise = data.item;
 
+  const confirmAlert = () =>
+    Alert.alert(
+      'Are you sure you want to delete this exercise?',
+      'This item will be deleted',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          onPress: () => handleDelete?.(exercise.id),
+        },
+      ]
+    );
+
   const renderRightActions = () => {
     return (
       <>
         {handleDelete && (
-          <RectButton
-            style={styles.deleteBtn}
-            onPress={() => handleDelete(exercise.id)}>
+          <RectButton style={styles.deleteBtn} onPress={confirmAlert}>
             <AnimatedIcon
               name="trash"
               size={22}
