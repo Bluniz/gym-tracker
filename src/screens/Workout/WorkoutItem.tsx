@@ -8,7 +8,7 @@ export const WorkoutItem = ({workout}: WorkoutItemProps) => {
   const navigation = useWorkoutStackNavigation();
 
   const handleGoToWorkout = () => {
-    navigation.navigate('workout', {
+    navigation.navigate('workoutDetails', {
       id: workout.id,
     });
   };

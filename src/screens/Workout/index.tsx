@@ -1,60 +1,47 @@
-import {FlatList} from 'react-native';
+import {View} from 'react-native';
+import {useEffect} from 'react';
 
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {Container} from '../../components/Container';
+import {Header} from '../../components/Header';
 
-import {
-  WorkoutWithExercises,
-  WorkoutScreenRouteProp,
-} from '../../types/workout';
-import {currentTheme} from '../../styles/theme';
-import {useEffect, useState} from 'react';
-import {getWorkout} from '../../services/workouts';
+import {useIsFocused} from '@react-navigation/native';
+import {useStore} from '../../stores';
+import {useShallow} from 'zustand/react/shallow';
+import {styles} from './styles';
+import {Content, Loading} from '../../components';
+import {WorkoutList} from './WorkoutList';
 
-import {
-  Loading,
-  Content,
-  ExerciseItem,
-  Container,
-  Header,
-} from '../../components';
+export const WorkoutScreen = () => {
+  const {getWorkouts, isLoading, workouts} = useStore(
+    useShallow(state => ({
+      workouts: state.workouts,
+      isLoading: state.isWorkoutsLoading,
+      getWorkouts: state.getWorkouts,
+    }))
+  );
 
-export const Workout = () => {
-  const {params} = useRoute<WorkoutScreenRouteProp>();
-  const navigation = useNavigation();
-
-  const [isLoading, setIsLoading] = useState(true);
-  const [workoutData, setWorkoutData] = useState<WorkoutWithExercises>();
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    (async () => {
-      const data = await getWorkout(params!.id);
-      setWorkoutData(data);
-      setIsLoading(false);
-    })();
-  }, [params]);
+    if (isFocused) {
+      (async () => {
+        await getWorkouts();
+      })();
+    }
+  }, [isFocused, getWorkouts]);
 
   return (
     <Container>
-      <Header
-        title={isLoading ? '' : workoutData!.name}
-        subTitle={
-          isLoading ? '' : `Complete: ${workoutData!.complete_qtd} time`
-        }
-        enableGoBack
-        onGoBackPress={navigation.goBack}
-      />
-
+      <Header title="Time for Training" subTitle="Choose your today training" />
       <Content>
-        <FlatList
-          data={workoutData?.exercices}
-          keyExtractor={(item, index) => `${item.name}__${index}`}
-          renderItem={item => <ExerciseItem data={item} />}
-        />
+        {isLoading ? (
+          <View style={styles.loadingContainer}>
+            <Loading />
+          </View>
+        ) : (
+          <WorkoutList workouts={workouts} />
+        )}
       </Content>
-
-      {isLoading && (
-        <Loading size="large" color={currentTheme.colors.primary} />
-      )}
     </Container>
   );
 };

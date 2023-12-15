@@ -1,7 +1,7 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import {currentTheme} from '../styles/theme';
-import {TrainingScreen} from '../screens/Training';
-import {Workout} from '../screens/Workout';
+import {WorkoutScreen} from '../screens/Workout';
+import {WorkoutDetailsScreen} from '../screens/WorkoutDetails';
 
 const Stack = createStackNavigator();
 
@@ -16,10 +16,10 @@ export const WorkoutStackRoutes = () => {
           backgroundColor: currentTheme.colors.background,
         },
       }}>
-      <Stack.Screen name="workouts" component={TrainingScreen} />
+      <Stack.Screen name="workouts" component={WorkoutScreen} />
       <Stack.Screen
-        name="workout"
-        component={Workout}
+        name="workoutDetails"
+        component={WorkoutDetailsScreen}
         initialParams={{id: null}}
       />
     </Stack.Navigator>

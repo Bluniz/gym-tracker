@@ -2,10 +2,13 @@ import {RouteProp} from '@react-navigation/native';
 import {Exercise} from './exercises';
 
 export type WorkoutParamsList = {
-  workout: {id: string} | undefined;
+  workoutDetails: {id: string} | undefined;
 };
 
-export type WorkoutScreenRouteProp = RouteProp<WorkoutParamsList, 'workout'>;
+export type WorkoutScreenRouteProp = RouteProp<
+  WorkoutParamsList,
+  'workoutDetails'
+>;
 
 export interface CompleteHistory {
   time: number;
