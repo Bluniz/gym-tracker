@@ -2,8 +2,13 @@ import {create} from 'zustand';
 import {
   createGlobalLoadingSlice,
   GlobalLoadingSlice,
-} from './globalLoadingSlice';
+  ExercisesSlice,
+  createExercisesSlice,
+} from './slices';
 
-export const useStore = create<GlobalLoadingSlice>((...props) => ({
-  ...createGlobalLoadingSlice(...props),
-}));
+export const useStore = create<GlobalLoadingSlice & ExercisesSlice>(
+  (...props) => ({
+    ...createGlobalLoadingSlice(...props),
+    ...createExercisesSlice(...props),
+  })
+);

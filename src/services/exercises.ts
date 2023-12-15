@@ -59,7 +59,7 @@ export async function listExercises() {
 
     const parsedData: DocumentData[] = [];
     data.forEach(doc => {
-      parsedData.push(doc.data());
+      parsedData.push({...doc.data(), id: doc.id});
     });
 
     return parsedData as Exercise[];
@@ -73,6 +73,7 @@ export async function deleteExercise(id: string) {
     await deleteDoc(doc(database, collectionName, id));
   } catch (error) {
     console.log(error);
+    throw error;
   }
 }
 
