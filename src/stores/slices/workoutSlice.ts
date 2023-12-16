@@ -10,14 +10,17 @@ export interface WorkoutSlice {
 
   isWorkoutDetailsLoading: boolean;
   isWorkoutsLoading: boolean;
+  isWorkoutsRefreshing: boolean;
 
   startWorkoutsLoading: () => void;
   finishWorkoutsLoading: () => void;
 
   startWorkoutDetailsLoading: () => void;
   finishWorkoutDetailsLoading: () => void;
+  startWorkouRefeshingLoading: () => void;
+  finishWorkouRefeshingLoading: () => void;
 
-  getWorkouts: () => Promise<void>;
+  getWorkouts: (type?: 'refresh') => Promise<void>;
   getWorkout: (id: string) => Promise<void>;
 }
 
@@ -29,6 +32,7 @@ export const createWorkoutSlice: StateCreator<
 > = (set, get) => ({
   workouts: [],
   workout: null,
+  isWorkoutsRefreshing: false,
 
   isWorkoutsLoading: false,
   isWorkoutDetailsLoading: false,
@@ -40,11 +44,14 @@ export const createWorkoutSlice: StateCreator<
     set(() => ({isWorkoutDetailsLoading: true})),
   finishWorkoutDetailsLoading: () =>
     set(() => ({isWorkoutDetailsLoading: false})),
+  startWorkouRefeshingLoading: () => set(() => ({isWorkoutsRefreshing: true})),
+  finishWorkouRefeshingLoading: () =>
+    set(() => ({isWorkoutsRefreshing: false})),
 
-  getWorkouts: async () => {
+  getWorkouts: async type => {
     try {
-      //if (!isUpdate) get().startExercisesLoading();
-      get().startWorkoutsLoading();
+      if (!type) get().startWorkoutsLoading();
+      if (type === 'refresh') get().startWorkouRefeshingLoading();
       const workouts = await listWorkouts();
       set(() => ({workouts}));
     } catch (error) {
@@ -52,8 +59,8 @@ export const createWorkoutSlice: StateCreator<
       Toast.show('Something is wrong!');
       if (error instanceof Error) Toast.show(error.message);
     } finally {
-      //if (!isUpdate) get().finishExercisesLoading();
-      get().finishWorkoutsLoading();
+      if (!type) get().finishWorkoutsLoading();
+      if (type === 'refresh') get().finishWorkouRefeshingLoading();
     }
   },
 
