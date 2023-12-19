@@ -36,8 +36,10 @@ export const WorkoutDetailsScreen = () => {
   return (
     <Container>
       <Header
-        title={isLoading ? '' : workout!.name}
-        subTitle={isLoading ? '' : `Complete: ${workout!.complete_qtd} time`}
+        title={isLoading ? '' : workout?.name || ''}
+        subTitle={
+          isLoading ? '' : `Complete: ${workout?.complete_qtd || 0} time`
+        }
         enableGoBack
         onGoBackPress={navigation.goBack}
       />

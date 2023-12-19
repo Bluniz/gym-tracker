@@ -29,6 +29,7 @@ const ExerciseListComponent = ({exercises}: ExerciseListProps) => {
     <FlatList
       data={exercises}
       keyExtractor={(item, index) => `${item.name}__${index}`}
+      showsVerticalScrollIndicator={false}
       refreshControl={
         <RefreshControl
           refreshing={isRefreshing}
@@ -38,6 +39,8 @@ const ExerciseListComponent = ({exercises}: ExerciseListProps) => {
           title={isRefreshing ? 'Refreshing' : 'Pull to Refresh'}
           tintColor={currentTheme.colors.primary}
           titleColor={currentTheme.colors.primary}
+          //progressBackgroundColor={currentTheme.colors.primary}
+          colors={[currentTheme.colors.primary]}
         />
       }
       renderItem={item => (

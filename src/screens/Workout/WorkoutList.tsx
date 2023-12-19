@@ -2,7 +2,7 @@ import {WorkoutListProps} from './types';
 import {FlatList} from 'react-native-gesture-handler';
 import {WorkoutItem} from './WorkoutItem';
 import {memo} from 'react';
-import {RefreshControl} from 'react-native';
+import {Dimensions, RefreshControl} from 'react-native';
 import {useStore} from '../../stores';
 import {useShallow} from 'zustand/react/shallow';
 import {currentTheme} from '../../styles/theme';
@@ -19,6 +19,7 @@ const WorkoutListComponent = ({workouts}: WorkoutListProps) => {
     <FlatList
       data={workouts}
       keyExtractor={(item, index) => `${item.name}__${index}`}
+      showsVerticalScrollIndicator={false}
       renderItem={data => <WorkoutItem workout={data.item} />}
       refreshControl={
         <RefreshControl

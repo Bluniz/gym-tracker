@@ -1,4 +1,4 @@
-import { StyleSheet, StatusBar, SafeAreaView} from 'react-native';
+import {StyleSheet, StatusBar, SafeAreaView} from 'react-native';
 import {PropsWithChildren} from 'react';
 import {currentTheme} from '../../styles/theme';
 
