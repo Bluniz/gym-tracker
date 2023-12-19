@@ -10,8 +10,10 @@ import {useShallow} from 'zustand/react/shallow';
 import {styles} from './styles';
 import {Content, Loading} from '../../components';
 import {WorkoutList} from './WorkoutList';
+import {useBackHandler} from '../../hooks';
 
 export const WorkoutScreen = () => {
+  useBackHandler();
   const {getWorkouts, isLoading, workouts} = useStore(
     useShallow(state => ({
       workouts: state.workouts,
