@@ -33,13 +33,13 @@ const ExerciseListComponent = ({exercises}: ExerciseListProps) => {
       refreshControl={
         <RefreshControl
           refreshing={isRefreshing}
+          enabled
           onRefresh={async () => {
             await getExercises('refresh');
           }}
           title={isRefreshing ? 'Refreshing' : 'Pull to Refresh'}
           tintColor={currentTheme.colors.primary}
           titleColor={currentTheme.colors.primary}
-          //progressBackgroundColor={currentTheme.colors.primary}
           colors={[currentTheme.colors.primary]}
         />
       }
