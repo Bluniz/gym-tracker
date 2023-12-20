@@ -11,13 +11,18 @@ export const StackRoutes = () => {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        gestureEnabled: false,
         cardStyle: {
           backgroundColor: currentTheme.colors.background,
         },
       }}>
       <Stack.Screen name="signIn" component={Login} />
-      <Stack.Screen name="app" component={AppTabRoutes} />
+      <Stack.Screen
+        name="app"
+        component={AppTabRoutes}
+        options={{
+          gestureEnabled: false,
+        }}
+      />
     </Stack.Navigator>
   );
 };

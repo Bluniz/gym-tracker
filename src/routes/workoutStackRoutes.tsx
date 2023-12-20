@@ -11,12 +11,18 @@ export const WorkoutStackRoutes = () => {
       initialRouteName="workouts"
       screenOptions={{
         headerShown: false,
-        gestureEnabled: false,
+
         cardStyle: {
           backgroundColor: currentTheme.colors.background,
         },
       }}>
-      <Stack.Screen name="workouts" component={WorkoutScreen} />
+      <Stack.Screen
+        name="workouts"
+        component={WorkoutScreen}
+        options={{
+          gestureEnabled: false,
+        }}
+      />
       <Stack.Screen
         name="workoutDetails"
         component={WorkoutDetailsScreen}
