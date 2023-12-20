@@ -12,7 +12,7 @@ import {
   ExerciseItem,
   Container,
   Header,
-  Cronometer,
+  WorkoutCronometer,
 } from '../../components';
 import {useStore} from '../../stores';
 
@@ -65,7 +65,7 @@ export const WorkoutDetailsScreen = () => {
               keyExtractor={(item, index) => `${item.name}__${index}`}
               renderItem={item => <ExerciseItem data={item} />}
             />
-            <Cronometer workoutId={workout?.id} />
+            <WorkoutCronometer workoutId={workout?.id} />
           </>
         )}
       </Content>

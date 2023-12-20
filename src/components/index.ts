@@ -9,4 +9,4 @@ export * from './IconButton';
 export * from './Input';
 export * from './Modal';
 export * from './Loading';
-export * from './Cronometer';
+export * from './WorkoutCronometer';

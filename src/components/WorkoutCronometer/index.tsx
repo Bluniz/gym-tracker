@@ -6,9 +6,9 @@ import {IconButton} from '../IconButton';
 import {convertTime} from '../../utils';
 import {useStore} from '../../stores';
 import {useShallow} from 'zustand/react/shallow';
-import {CronometerProps} from './types';
+import {WorkoutCronometerProps} from './types';
 
-export const Cronometer = ({workoutId}: CronometerProps) => {
+export const WorkoutCronometer = ({workoutId}: WorkoutCronometerProps) => {
   const {
     time,
     onCompleteWorkout,
