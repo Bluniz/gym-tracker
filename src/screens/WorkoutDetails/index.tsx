@@ -20,11 +20,12 @@ export const WorkoutDetailsScreen = () => {
   const {params} = useRoute<WorkoutScreenRouteProp>();
   const navigation = useNavigation();
 
-  const {getWorkout, isLoading, workout} = useStore(
+  const {getWorkout, isLoading, workout, resetCronometer} = useStore(
     useShallow(state => ({
       workout: state.workout,
       isLoading: state.isWorkoutDetailsLoading,
       getWorkout: state.getWorkout,
+      resetCronometer: state.resetCount,
     }))
   );
 
@@ -33,6 +34,12 @@ export const WorkoutDetailsScreen = () => {
       await getWorkout(params!.id);
     })();
   }, [params, getWorkout]);
+
+  useEffect(() => {
+    return () => {
+      resetCronometer();
+    };
+  }, [resetCronometer]);
 
   return (
     <Container>
@@ -58,7 +65,7 @@ export const WorkoutDetailsScreen = () => {
               keyExtractor={(item, index) => `${item.name}__${index}`}
               renderItem={item => <ExerciseItem data={item} />}
             />
-            <Cronometer />
+            <Cronometer workoutId={workout?.id} />
           </>
         )}
       </Content>

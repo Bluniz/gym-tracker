@@ -1,4 +1,4 @@
-import {View, Text} from 'react-native';
+import {View, Text, Alert} from 'react-native';
 
 import {styles} from './styles';
 import {useEffect} from 'react';
@@ -6,19 +6,28 @@ import {IconButton} from '../IconButton';
 import {convertTime} from '../../utils';
 import {useStore} from '../../stores';
 import {useShallow} from 'zustand/react/shallow';
+import {CronometerProps} from './types';
 
-export const Cronometer = () => {
-  const {time, handleReset, handleStart, handleStop, isStarted, increaseCount} =
-    useStore(
-      useShallow(state => ({
-        isStarted: state.isCronometerStarted,
-        handleStart: state.startCount,
-        handleStop: state.stopCount,
-        handleReset: state.resetCount,
-        increaseCount: state.increaseCount,
-        time: state.time,
-      }))
-    );
+export const Cronometer = ({workoutId}: CronometerProps) => {
+  const {
+    time,
+    onCompleteWorkout,
+    handleReset,
+    handleStart,
+    handleStop,
+    isStarted,
+    increaseCount,
+  } = useStore(
+    useShallow(state => ({
+      isStarted: state.isCronometerStarted,
+      handleStart: state.startCount,
+      handleStop: state.stopCount,
+      handleReset: state.resetCount,
+      increaseCount: state.increaseCount,
+      time: state.time,
+      onCompleteWorkout: state.completeWorkout,
+    }))
+  );
 
   useEffect(() => {
     let interval: string | number | NodeJS.Timeout | undefined;
@@ -34,6 +43,26 @@ export const Cronometer = () => {
 
   const {minutes, hours, seconds} = convertTime(time);
 
+  const confirmAlert = () =>
+    Alert.alert('Do you want to complete this training?', '', [
+      {
+        text: 'Cancel Training!',
+        style: 'destructive',
+        onPress: handleReset,
+      },
+      {
+        text: "No, don't complete",
+        style: 'cancel',
+      },
+      {
+        text: 'Yes, complete!',
+        onPress: () => {
+          onCompleteWorkout(workoutId, time);
+          handleReset();
+        },
+      },
+    ]);
+
   return (
     <View style={styles.container}>
       <View style={styles.wrapper}>
@@ -47,7 +76,7 @@ export const Cronometer = () => {
             icon="stop"
             disabled={!isStarted && time <= 0}
             color="white"
-            onPress={handleReset}
+            onPress={confirmAlert}
             style={[
               styles.actionBtn,
               !isStarted && time <= 0 && styles.actionBtnDisabled,

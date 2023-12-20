@@ -19,6 +19,6 @@ export const createCronometerSlice: StateCreator<
   isCronometerStarted: false,
   startCount: () => set(() => ({isCronometerStarted: true})),
   stopCount: () => set(() => ({isCronometerStarted: false})),
-  resetCount: () => set(() => ({isCronometerStarted: true, time: 0})),
+  resetCount: () => set(() => ({isCronometerStarted: false, time: 0})),
   increaseCount: () => set(state => ({time: state.time + 1})),
 });

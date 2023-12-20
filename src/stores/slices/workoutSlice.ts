@@ -2,7 +2,7 @@ import {StateCreator} from 'zustand';
 import {Workout, WorkoutWithExercises} from '../../types/workout';
 import {GlobalLoadingSlice} from './globalLoadingSlice';
 import Toast from 'react-native-root-toast';
-import {getWorkout, listWorkouts} from '../../services';
+import {completeWorkout, getWorkout, listWorkouts} from '../../services';
 
 export interface WorkoutSlice {
   workouts: Workout[];
@@ -22,6 +22,10 @@ export interface WorkoutSlice {
 
   getWorkouts: (type?: 'refresh') => Promise<void>;
   getWorkout: (id: string) => Promise<void>;
+  completeWorkout: (
+    id: string | undefined,
+    complete_time: number
+  ) => Promise<void>;
 }
 
 export const createWorkoutSlice: StateCreator<
@@ -69,6 +73,20 @@ export const createWorkoutSlice: StateCreator<
       get().startWorkoutDetailsLoading();
       const workout = await getWorkout(id);
       set(() => ({workout}));
+    } catch (error) {
+      console.log(error);
+      Toast.show('Something is wrong!');
+      if (error instanceof Error) Toast.show(error.message);
+    } finally {
+      get().finishWorkoutDetailsLoading();
+    }
+  },
+
+  completeWorkout: async (id, complete_time) => {
+    try {
+      get().startWorkoutDetailsLoading();
+      await completeWorkout({complete_time, id: id!});
+      await get().getWorkout(id!);
     } catch (error) {
       console.log(error);
       Toast.show('Something is wrong!');
