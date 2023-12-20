@@ -12,6 +12,7 @@ import {
   ExerciseItem,
   Container,
   Header,
+  Cronometer,
 } from '../../components';
 import {useStore} from '../../stores';
 
@@ -57,6 +58,8 @@ export const WorkoutDetailsScreen = () => {
             renderItem={item => <ExerciseItem data={item} />}
           />
         )}
+
+        <Cronometer/>
       </Content>
     </Container>
   );
