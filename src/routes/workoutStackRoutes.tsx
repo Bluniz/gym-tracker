@@ -11,7 +11,6 @@ export const WorkoutStackRoutes = () => {
       initialRouteName="workouts"
       screenOptions={{
         headerShown: false,
-
         cardStyle: {
           backgroundColor: currentTheme.colors.background,
         },
