@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import { currentTheme } from '../../styles/theme';
+import {currentTheme} from '../../styles/theme';
 
 export const styles = StyleSheet.create({
   container: {
@@ -19,7 +19,6 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 16,
     position: 'relative',
-    
   },
 
   counterActionsContainer: {
@@ -34,16 +33,14 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     width: 50,
     height: 50,
-  
   },
 
   actionBtnDisabled: {
-    opacity: 0.5
+    opacity: 0.5,
   },
 
   whiteText: {
-    color: currentTheme.colors.white,  
+    color: currentTheme.colors.white,
+    fontSize: 18,
   },
-
-
 });

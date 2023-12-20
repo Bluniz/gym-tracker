@@ -52,14 +52,15 @@ export const WorkoutDetailsScreen = () => {
             <Loading />
           </View>
         ) : (
-          <FlatList
-            data={workout?.exercices}
-            keyExtractor={(item, index) => `${item.name}__${index}`}
-            renderItem={item => <ExerciseItem data={item} />}
-          />
+          <>
+            <FlatList
+              data={workout?.exercices}
+              keyExtractor={(item, index) => `${item.name}__${index}`}
+              renderItem={item => <ExerciseItem data={item} />}
+            />
+            <Cronometer />
+          </>
         )}
-
-        <Cronometer/>
       </Content>
     </Container>
   );
