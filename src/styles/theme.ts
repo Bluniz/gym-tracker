@@ -29,4 +29,5 @@ export const Theme = {
   },
 };
 
-export const currentTheme = Theme[systemColorScheme || 'dark'];
+export const currentTheme =
+  Theme[(systemColorScheme as keyof typeof Theme) || 'dark'];

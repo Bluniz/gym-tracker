@@ -5,31 +5,30 @@
     "scheme": "gym-tracker",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/logo.png",
-    "userInterfaceStyle": "light",
+    "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#202024"
     },
+    "userInterfaceStyle": "automatic",
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
       "supportsTablet": true,
       "googleServicesFile": "./GoogleService-Info.plist",
-      "bundleIdentifier": "com.bluniz.gymTracker"
+      "bundleIdentifier": "com.bluniz.gymTracker",
+      "userInterfaceStyle": "automatic"
     },
     "android": {
       "package": "com.bluniz.gymTracker",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/gym-tracker-logo.svg",
+        "foregroundImage": "./assets/adaptive-logo.png",
         "backgroundColor": "#202024"
       },
+      "userInterfaceStyle": "automatic",
       "googleServicesFile": "./google-services.json"
-    },
-    "web": {
-      "favicon": "./assets/gym-tracker-logo.svg"
     },
     "plugins": [],
     "extra": {

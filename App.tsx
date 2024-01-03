@@ -14,6 +14,7 @@ import {useStore} from './src/stores';
 import './src/configs/firebase';
 import 'react-native-gesture-handler';
 import {AuthContainer} from './src/components/AuthContainer';
+import { systemColorScheme } from './src/utils';
 
 if (__DEV__) {
   require('./src/configs/ReactotronConfig');
@@ -31,8 +32,9 @@ export default function App() {
             <Routes />
             <StatusBar
               backgroundColor={currentTheme.colors.background}
+              translucent
               style={Platform.select({
-                ios: 'dark',
+                ios: systemColorScheme === 'dark' ? 'light' : 'dark',
                 android: 'dark',
               })}
             />
