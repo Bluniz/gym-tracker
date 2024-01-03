@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({
   },
   exerciseTitle: {
     fontSize: 18,
+    color: currentTheme.colors.text
   },
   exerciseReps: {
     color: currentTheme.colors.primary,

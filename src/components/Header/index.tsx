@@ -16,6 +16,7 @@ export const Header = ({
         <IconButton
           icon="arrow-back"
           style={styles.iconBtn}
+          color="text"
           onPress={onGoBackPress}
         />
       )}

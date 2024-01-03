@@ -16,12 +16,14 @@ export const AppTabRoutes = () => {
         tabBarLabelStyle: {
           color: currentTheme.colors.text,
           fontSize: 14,
+          marginBottom: 4
         },
         tabBarStyle: {
           backgroundColor: currentTheme.colors.background,
           paddingVertical: 8,
           height: 60,
           borderColor: currentTheme.colors.primary,
+          
         },
       }}
       initialRouteName="Training">

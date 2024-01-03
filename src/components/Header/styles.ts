@@ -16,6 +16,7 @@ export const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     justifyContent: 'center',
+    color: currentTheme.colors.text
   },
   header: {
     alignItems: 'center',
