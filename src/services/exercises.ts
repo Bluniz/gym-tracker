@@ -46,7 +46,7 @@ export async function getExercise(id: string) {
     if (exercise.exists()) {
       return exercise.data() as Exercise;
     } else {
-      throw new Error('Exercise not found');
+      throw new Error('Exercise not found', {cause: id});
     }
   } catch (error) {
     console.log('error', error);

@@ -63,16 +63,26 @@ export async function getWorkout(id: string) {
     if (workout.exists()) {
       const exercices: Exercise[] = [];
       const workoutData = workout.data() as Workout;
-
+      const foundedExercisesIds = [];
+      let hasNotFoundExercise = false;
 
       for await (const exercise of workoutData.exercices) {
         const data = await getExercise(exercise);
-        if(data){
+        if (data) {
           exercices.push(data);
+          foundedExercisesIds.push(exercise);
+        } else {
+          hasNotFoundExercise = true;
         }
       }
 
-
+      if (hasNotFoundExercise) {
+        updateWorkout({
+          exercices: foundedExercisesIds,
+          name: workoutData.name,
+          id: workout.id,
+        });
+      }
       return {
         ...workout.data(),
         id: workout.id,
