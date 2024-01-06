@@ -1,5 +1,7 @@
 import {View, Text, Alert} from 'react-native';
 
+import notifee, {AndroidImportance, EventType} from '@notifee/react-native';
+
 import {styles} from './styles';
 import {useEffect} from 'react';
 import {IconButton} from '../IconButton';
@@ -7,6 +9,7 @@ import {convertTime} from '../../utils';
 import {useStore} from '../../stores';
 import {useShallow} from 'zustand/react/shallow';
 import {WorkoutCronometerProps} from './types';
+import reactotron from 'reactotron-react-native';
 
 export const WorkoutCronometer = ({workoutId}: WorkoutCronometerProps) => {
   const {
@@ -29,19 +32,31 @@ export const WorkoutCronometer = ({workoutId}: WorkoutCronometerProps) => {
     }))
   );
 
-  useEffect(() => {
-    let interval: string | number | NodeJS.Timeout | undefined;
-
-    if (isStarted) {
-      interval = setInterval(() => {
-        increaseCount();
-      }, 1000);
-    }
-
-    return () => clearTimeout(interval);
-  }, [isStarted, time, increaseCount]);
-
   const {minutes, hours, seconds} = convertTime(time);
+
+  async function displayNotification(title: string, body: string, id: string) {
+    //! Required for IOS
+    await notifee.requestPermission();
+
+    //! Required for Android
+    const channelId = await notifee.createChannel({
+      id,
+      name: title,
+      vibration: true,
+      importance: AndroidImportance.HIGH,
+    });
+
+    notifee.displayNotification({
+      title,
+      body,
+      android: {
+        channelId,
+      },
+      ios: {
+        interruptionLevel: 'passive',
+      },
+    });
+  }
 
   const confirmAlert = () =>
     Alert.alert('Do you want to complete this training?', '', [
@@ -58,10 +73,69 @@ export const WorkoutCronometer = ({workoutId}: WorkoutCronometerProps) => {
         text: 'Yes, complete!',
         onPress: () => {
           onCompleteWorkout(workoutId, time);
+          displayNotification(
+            'Workout Finished!',
+            'You have finished your workout, congrats!',
+            'cronometer-finish'
+          );
           handleReset();
         },
       },
     ]);
+
+  //! Estrutura para lidar em foreground
+  useEffect(() => {
+    return notifee.onForegroundEvent(({type, detail}) => {
+      reactotron.log('foreground', {type, detail});
+      switch (type) {
+        case EventType.DISMISSED:
+          reactotron.log('Foreground - Descartou');
+          console.log('Foreground - Descartou');
+          break;
+        case EventType.ACTION_PRESS:
+          reactotron.log(
+            'Foreground - Action Press on notification',
+            detail.notification
+          );
+          console.log(
+            'Foreground - Action Press on notification',
+            detail.notification
+          );
+          break;
+
+        case EventType.PRESS:
+          reactotron.log(
+            'Foreground - Press on notification',
+            detail.notification
+          );
+          break;
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    return notifee.onBackgroundEvent(async ({type, detail}) => {
+      reactotron.log('background', {type, detail});
+      console.log('background', {type, detail});
+
+      if (type === EventType.PRESS) {
+        reactotron.log('Press Background', detail.notification);
+        console.log('Press Background', detail.notification);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    let interval: string | number | NodeJS.Timeout | undefined;
+
+    if (isStarted) {
+      interval = setInterval(() => {
+        increaseCount();
+      }, 1000);
+    }
+
+    return () => clearTimeout(interval);
+  }, [isStarted, time, increaseCount]);
 
   return (
     <View style={styles.container}>
@@ -93,7 +167,14 @@ export const WorkoutCronometer = ({workoutId}: WorkoutCronometerProps) => {
           ) : (
             <IconButton
               icon="play"
-              onPress={handleStart}
+              onPress={() => {
+                handleStart();
+                displayNotification(
+                  'Workout Started!',
+                  'Your workout is starting now',
+                  'cronometer-start'
+                );
+              }}
               color="white"
               style={styles.actionBtn}
             />
