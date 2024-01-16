@@ -19,40 +19,50 @@
       "supportsTablet": true,
       "googleServicesFile": "./GoogleService-Info.plist",
       "bundleIdentifier": "com.bluniz.gymTracker",
-      "userInterfaceStyle": "automatic"
-    },
-    "android": {
-      "package": "com.bluniz.gymTracker",
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-logo.png",
-        "backgroundColor": "#202024"
-      },
       "userInterfaceStyle": "automatic",
-      "googleServicesFile": "./google-services.json"
-    },
-    "plugins": [
-      [
-        "expo-build-properties",
-        {
-          "android": {
-            "compileSdkVersion": 33,
-            "targetSdkVersion": 33,
-            "buildToolsVersion": "33.0.0",
-            "extraMavenRepos": [
-              "../../node_modules/@notifee/react-native/android/libs"
-            ]
-          },
-          "ios": {
-            "deploymentTarget": "13.0"
-          }
-        }
-      ]
-    ],
-    "extra": {
-      "eas": {
-        "projectId": "a48d17b8-5ac2-4cb4-b516-856f39b85c37"
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "location",
+          "fetch",
+          "remote-notification"
+        ]
       }
     },
-    "owner": "bluniz"
-  }
+    "android": {
+      "package": "com.bluniz.gymTracker"
+    }
+  },
+  "android": {
+    "package": "com.bluniz.gymTracker",
+    "adaptiveIcon": {
+      "foregroundImage": "./assets/adaptive-logo.png",
+      "backgroundColor": "#202024"
+    },
+    "userInterfaceStyle": "automatic",
+    "googleServicesFile": "./google-services.json"
+  },
+  "plugins": [
+    [
+      "expo-build-properties",
+      {
+        "android": {
+          "compileSdkVersion": 33,
+          "targetSdkVersion": 33,
+          "buildToolsVersion": "33.0.0",
+          "extraMavenRepos": [
+            "../../node_modules/@notifee/react-native/android/libs"
+          ]
+        },
+        "ios": {
+          "deploymentTarget": "13.0"
+        }
+      }
+    ]
+  ],
+  "extra": {
+    "eas": {
+      "projectId": "a48d17b8-5ac2-4cb4-b516-856f39b85c37"
+    }
+  },
+  "owner": "bluniz"
 }

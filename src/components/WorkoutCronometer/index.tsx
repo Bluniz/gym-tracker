@@ -1,15 +1,18 @@
-import {View, Text, Alert} from 'react-native';
+import {View, Text, Alert, AppState, AppStateStatus} from 'react-native';
 
 import notifee, {AndroidImportance, EventType} from '@notifee/react-native';
 
 import {styles} from './styles';
-import {useEffect} from 'react';
+import {useEffect, useRef} from 'react';
 import {IconButton} from '../IconButton';
 import {convertTime} from '../../utils';
 import {useStore} from '../../stores';
 import {useShallow} from 'zustand/react/shallow';
 import {WorkoutCronometerProps} from './types';
 import reactotron from 'reactotron-react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {differenceInSeconds} from 'date-fns';
+
 
 export const WorkoutCronometer = ({workoutId}: WorkoutCronometerProps) => {
   const {
@@ -20,6 +23,7 @@ export const WorkoutCronometer = ({workoutId}: WorkoutCronometerProps) => {
     handleStop,
     isStarted,
     increaseCount,
+    setCount
   } = useStore(
     useShallow(state => ({
       isStarted: state.isCronometerStarted,
@@ -29,10 +33,15 @@ export const WorkoutCronometer = ({workoutId}: WorkoutCronometerProps) => {
       increaseCount: state.increaseCount,
       time: state.time,
       onCompleteWorkout: state.completeWorkout,
+      setCount: state.setCount
     }))
   );
 
   const {minutes, hours, seconds} = convertTime(time);
+
+  const appState = useRef(AppState.currentState);
+
+
 
   async function displayNotification(title: string, body: string, id: string) {
     //! Required for IOS
@@ -58,16 +67,21 @@ export const WorkoutCronometer = ({workoutId}: WorkoutCronometerProps) => {
     });
   }
 
+
+
   const confirmAlert = () =>
     Alert.alert('Do you want to complete this training?', '', [
       {
         text: 'Cancel Training!',
         style: 'destructive',
-        onPress: handleReset,
+        onPress: () => {
+          handleReset()
+        },
       },
       {
         text: "No, don't complete",
         style: 'cancel',
+        
       },
       {
         text: 'Yes, complete!',
@@ -83,10 +97,60 @@ export const WorkoutCronometer = ({workoutId}: WorkoutCronometerProps) => {
       },
     ]);
 
+
+  const saveStartElapsedTime = async () => {
+      try {
+        const now = new Date()
+        await AsyncStorage.setItem("@cronometer_time", now.toISOString())
+      } catch(err) {
+        console.log(err)
+      }
+    }
+
+  const getElapsedTime = async () => {
+      try {
+        const startTime = await AsyncStorage.getItem('@cronometer_time');
+        const now = new Date()
+
+        return differenceInSeconds(now, Date.parse(startTime!))
+      } catch(error) {
+        console.log(error)
+      }
+    }
+
+  const handleAppStateChange = async (nextState: AppStateStatus) => {
+    reactotron.log(nextState);
+
+    if (nextState.match(/inactive|background/)) {
+      saveStartElapsedTime()
+    }
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextState === 'active' &&
+        isStarted
+      ) {
+        const elapsedTime = await getElapsedTime();
+        reactotron.log('elapsedTime', elapsedTime);
+
+        reactotron.log({time, elapsedTime})
+        setCount(time + elapsedTime!);
+      }
+
+     appState.current = nextState;
+  }
+  useEffect(() => {
+    const subscription = AppState.addEventListener(
+      'change',
+      handleAppStateChange
+    );
+
+    return () => subscription.remove()
+  }, [isStarted, time])
+
   //! Estrutura para lidar em foreground
   useEffect(() => {
     return notifee.onForegroundEvent(({type, detail}) => {
-      reactotron.log('foreground', {type, detail});
+      reactotron.log('foreground -- notification', {type, detail});
       switch (type) {
         case EventType.DISMISSED:
           reactotron.log('Foreground - Descartou');
@@ -129,6 +193,7 @@ export const WorkoutCronometer = ({workoutId}: WorkoutCronometerProps) => {
     let interval: string | number | NodeJS.Timeout | undefined;
 
     if (isStarted) {
+      
       interval = setInterval(() => {
         increaseCount();
       }, 1000);
