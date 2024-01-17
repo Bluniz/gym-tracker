@@ -1,4 +1,4 @@
-import {create} from 'zustand';
+import zustand, {create} from 'zustand';
 import {
   createGlobalLoadingSlice,
   GlobalLoadingSlice,
@@ -11,17 +11,28 @@ import {
   createCronometerSlice,
   CronometerSlice,
 } from './slices';
+import { persist, createJSONStorage, devtools } from 'zustand/middleware'
+import { zustandStorage } from '../services/storage';
 
-export const useStore = create<
-  GlobalLoadingSlice &
+
+type BoundedType = GlobalLoadingSlice &
     ExercisesSlice &
     WorkoutSlice &
     AuthSlice &
     CronometerSlice
->((...props) => ({
-  ...createGlobalLoadingSlice(...props),
+
+// export const useStore = create<BoundedType>((...props) => ({
+//   ...createGlobalLoadingSlice(...props),
+//   ...createExercisesSlice(...props),
+//   ...createWorkoutSlice(...props),
+//   ...createAuthSlice(...props),
+//   ...createCronometerSlice(...props),
+// }));
+
+// @ts-ignore
+ export const useStore = create<BoundedType>(persist((...props) => ({  ...createGlobalLoadingSlice(...props),
   ...createExercisesSlice(...props),
   ...createWorkoutSlice(...props),
   ...createAuthSlice(...props),
-  ...createCronometerSlice(...props),
-}));
+  ...createCronometerSlice(...props),}), {name: 'test', storage: createJSONStorage(() => zustandStorage ) }));
+

@@ -10,8 +10,8 @@ import {useStore} from '../../stores';
 import {useShallow} from 'zustand/react/shallow';
 import {WorkoutCronometerProps} from './types';
 import reactotron from 'reactotron-react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {differenceInSeconds} from 'date-fns';
+import {storage} from "../../services/storage"
 
 
 export const WorkoutCronometer = ({workoutId}: WorkoutCronometerProps) => {
@@ -98,18 +98,20 @@ export const WorkoutCronometer = ({workoutId}: WorkoutCronometerProps) => {
     ]);
 
 
-  const saveStartElapsedTime = async () => {
+  const saveStartElapsedTime = () => {
       try {
         const now = new Date()
-        await AsyncStorage.setItem("@cronometer_time", now.toISOString())
+        console.log(now.toISOString());
+        storage.set('@cronometer_time', now.toISOString());
       } catch(err) {
         console.log(err)
       }
     }
 
-  const getElapsedTime = async () => {
+  const getElapsedTime =  () => {
       try {
-        const startTime = await AsyncStorage.getItem('@cronometer_time');
+        const startTime =  storage.getString('@cronometer_time');
+        console.log('startTime', startTime);
         const now = new Date()
 
         return differenceInSeconds(now, Date.parse(startTime!))
@@ -129,7 +131,7 @@ export const WorkoutCronometer = ({workoutId}: WorkoutCronometerProps) => {
         nextState === 'active' &&
         isStarted
       ) {
-        const elapsedTime = await getElapsedTime();
+        const elapsedTime =  getElapsedTime();
         reactotron.log('elapsedTime', elapsedTime);
 
         reactotron.log({time, elapsedTime})

@@ -20,11 +20,12 @@ export const ExercisesScreen = () => {
   const isFocused = useIsFocused();
   const navigation = useExercisesStackNavigation();
 
-  const {exercises, getExercises, isLoading} = useStore(
+  const {exercises, getExercises, isLoading, signOut} = useStore(
     useShallow(state => ({
       exercises: state.exercises,
       isLoading: state.isExercisesLoading,
       getExercises: state.getExercises,
+      signOut: state.signOut
     }))
   );
 
