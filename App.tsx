@@ -14,14 +14,11 @@ import {useStore} from './src/stores';
 import './src/configs/firebase';
 import 'react-native-gesture-handler';
 import {AuthContainer} from './src/components/AuthContainer';
-import {requestUserPermission} from './src/configs/requestNotificationUserPermission';
 
 if (__DEV__) {
   require('./src/configs/ReactotronConfig');
   //import('./src/configs/ReactotronConfig').then(() => console.log('Reactotron Configured'));
 }
-
-requestUserPermission();
 
 export default function App() {
   const isLoadingGlobal = useStore(state => state.isLoading);

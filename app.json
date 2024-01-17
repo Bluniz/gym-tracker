@@ -19,14 +19,8 @@
       "supportsTablet": true,
       "googleServicesFile": "./GoogleService-Info.plist",
       "bundleIdentifier": "com.bluniz.gymTracker",
-      "userInterfaceStyle": "automatic",
-      "infoPlist": {
-        "UIBackgroundModes": [
-          "location",
-          "fetch",
-          "remote-notification"
-        ]
-      }
+      "userInterfaceStyle": "automatic"
+      
     },
     "android": {
       "package": "com.bluniz.gymTracker"
