@@ -20,6 +20,7 @@ if (__DEV__) {
   //import('./src/configs/ReactotronConfig').then(() => console.log('Reactotron Configured'));
 }
 
+
 export default function App() {
   const isLoadingGlobal = useStore(state => state.isLoading);
 

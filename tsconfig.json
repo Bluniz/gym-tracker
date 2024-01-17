@@ -2,7 +2,9 @@
   "compilerOptions": {
     "strictNullChecks": true,
     "strict": true,
-    "module": "esnext"
+    "module": "esnext",
+    
   },
   "extends": "expo/tsconfig.base",
+  
 }
