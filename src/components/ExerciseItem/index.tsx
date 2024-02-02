@@ -6,6 +6,8 @@ import {styles} from './styles';
 import {RectButton, Swipeable} from 'react-native-gesture-handler';
 import {currentTheme} from '../../styles/theme';
 
+import {Button} from '../Button';
+
 const AnimatedIcon = Animated.createAnimatedComponent(Ionicons);
 
 export const ExerciseItem = ({
@@ -35,14 +37,14 @@ export const ExerciseItem = ({
     return (
       <>
         {handleDelete && (
-          <RectButton style={styles.deleteBtn} onPress={confirmAlert}>
+          <Button style={styles.deleteBtn} onPress={confirmAlert}>
             <AnimatedIcon
               name="trash"
               size={22}
               style={[styles.actionIcon, {transform: [{translateX: 0}]}]}
               color={currentTheme.colors.white}
             />
-          </RectButton>
+          </Button>
         )}
         {handleEdit && (
           <RectButton

@@ -1,8 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { Platform } from 'react-native';
-import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
-import {storage} from "../services/storage"
+
 
 import * as firebaseAuth from 'firebase/auth';
 // Your secondary Firebase project credentials for Android...
@@ -46,6 +45,4 @@ export const database = getFirestore(app);
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const reactNativePersistence = (firebaseAuth as any).getReactNativePersistence;
 
-export const auth = firebaseAuth.initializeAuth(app, {
-  persistence: reactNativePersistence(ReactNativeAsyncStorage),
-});
+export const auth = firebaseAuth.initializeAuth(app);

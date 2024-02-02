@@ -3,7 +3,7 @@ import {currentTheme} from '../../styles/theme';
 import {Loading} from '../Loading';
 
 interface ButtonPrps extends PressableProps {
-  title: string;
+  title?: string;
   isLoading?: boolean;
 }
 
@@ -12,6 +12,8 @@ export function Button({
   onPress,
   isLoading,
   disabled,
+  children,
+  style,
   ...rest
 }: ButtonPrps) {
   return (
@@ -25,14 +27,17 @@ export function Button({
         rest.style,
         disabled
           ? {
-              opacity: 0.5,
-            }
+            opacity: 0.5,
+          }
           : {},
+        style,
       ]}>
       {isLoading ? (
         <Loading size="small" color={currentTheme.colors.white} />
       ) : (
-        <Text style={styles.buttonText}>{title}</Text>
+        <>
+          {children ? children : <Text style={styles.buttonText}>{title}</Text>}
+        </>
       )}
     </Pressable>
   );

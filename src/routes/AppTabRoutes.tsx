@@ -13,17 +13,11 @@ export const AppTabRoutes = () => {
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: currentTheme.colors.primary,
-        tabBarLabelStyle: {
-          color: currentTheme.colors.text,
-          fontSize: 14,
-          marginBottom: 4
-        },
+        tabBarShowLabel: false,
         tabBarStyle: {
-          backgroundColor: currentTheme.colors.background,
-          paddingVertical: 8,
-          height: 60,
-          borderColor: currentTheme.colors.primary,
-          
+          backgroundColor: currentTheme.colors.backgroundMedium,
+          elevation: 0,
+          borderTopWidth: 0
         },
       }}
       initialRouteName="Training">

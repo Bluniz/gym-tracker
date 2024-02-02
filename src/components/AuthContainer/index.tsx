@@ -19,6 +19,7 @@ export const AuthContainer = ({children}: PropsWithChildren) => {
 
   useLayoutEffect(() => {
     auth.onAuthStateChanged(user => {
+      console.log("user", user)
       if (user) {
         const currentUser = getCurrentUser();
 
@@ -30,6 +31,7 @@ export const AuthContainer = ({children}: PropsWithChildren) => {
           navigation.navigate('app' as never);
         }
       } else {
+        console.log("no user")
         finishLoading();
       }
     });
