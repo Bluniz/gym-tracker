@@ -20,10 +20,14 @@
       "googleServicesFile": "./GoogleService-Info.plist",
       "bundleIdentifier": "com.bluniz.gymTracker",
       "userInterfaceStyle": "automatic"
-      
     },
     "android": {
       "package": "com.bluniz.gymTracker"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a48d17b8-5ac2-4cb4-b516-856f39b85c37"
+      }
     }
   },
   "android": {

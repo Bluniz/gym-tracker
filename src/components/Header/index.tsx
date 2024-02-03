@@ -18,6 +18,7 @@ export const Header = ({
           style={styles.iconBtn}
           color="text"
           onPress={onGoBackPress}
+          
         />
       )}
 

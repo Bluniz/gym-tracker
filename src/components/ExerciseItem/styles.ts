@@ -8,7 +8,9 @@ export const styles = StyleSheet.create({
     overflow: 'hidden',
     backgroundColor: currentTheme.colors.backgroundMedium,
     borderRadius: 8,
-    padding: 12
+    padding: 12,
+    borderColor: currentTheme.colors.primary,
+    borderWidth: 0.5,
   },
   exerciseContainer: {
     padding: 8,

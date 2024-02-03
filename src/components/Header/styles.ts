@@ -5,23 +5,26 @@ export const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     paddingHorizontal: 36,
     position: 'relative',
-    marginTop: 16,
+    paddingTop: 12,
+    marginBottom: 16
   },
   iconBtn: {
     position: 'absolute',
-    top: 0,
+    top: 18,
     left: 24,
     right: 0,
     bottom: 0,
     justifyContent: 'center',
-    color: currentTheme.colors.text
+    color: currentTheme.colors.text,
+
   },
   header: {
-    alignItems: 'center',
     justifyContent: 'center',
-    flex: 1,
+    alignItems: 'center',
+    
   },
   headerTitle: {
     color: currentTheme.colors.text,

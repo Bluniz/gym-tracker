@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {currentTheme} from '../../styles/theme';
+import { currentTheme } from '../../styles/theme';
 
 export const styles = StyleSheet.create({
   loadingContainer: {
@@ -13,11 +13,12 @@ export const workoutItemStyles = StyleSheet.create({
   listItem: {
     width: '100%',
     height: 148,
+    backgroundColor: currentTheme.colors.backgroundMedium,
+    borderRadius: 8,
     borderColor: currentTheme.colors.primary,
-    borderWidth: 1,
+    borderWidth: 0.5,
     padding: 8,
     position: 'relative',
-    borderRadius: 4,
 
     marginVertical: 8,
   },
