@@ -20,11 +20,14 @@ interface UpdateWorkoutProps
 
 interface CompleteWorkoutProps extends Pick<Workout, 'id'> {
   complete_time: number;
+  done_photo?: string
 }
 
 const collectionName = 'workouts';
 
 const db = collection(database, collectionName);
+const historyDb = collection(database, 'history');
+
 
 export async function createWorkout({exercices, name}: CreateWorkoutProps) {
   try {
@@ -125,6 +128,7 @@ export async function deleteWorkout(id: string) {
 export async function completeWorkout({
   complete_time,
   id,
+  done_photo
 }: CompleteWorkoutProps) {
   try {
     const docRef = doc(database, collectionName, id);
@@ -134,16 +138,14 @@ export async function completeWorkout({
       const data = oldData.data();
       const qtd = data?.complete_qtd || 0;
 
-      const completeHistory = [
-        ...data?.complete_history,
-        {
-          time: complete_time,
-          date: new Date().toISOString(),
-        },
-      ];
-
+      await addDoc(historyDb, {
+        complete_time,
+        completed_at: new Date().toISOString(),
+        workout_id: id,
+        done_photo: done_photo || null,
+        workoutName: data?.name
+      });
       await updateDoc(docRef, {
-        complete_history: completeHistory,
         complete_qtd: qtd + 1,
       });
     } else {

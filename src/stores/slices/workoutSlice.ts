@@ -24,7 +24,8 @@ export interface WorkoutSlice {
   getWorkout: (id: string) => Promise<void>;
   completeWorkout: (
     id: string | undefined,
-    complete_time: number
+    complete_time: number,
+    done_photo?: string
   ) => Promise<void>;
 }
 
@@ -82,7 +83,7 @@ export const createWorkoutSlice: StateCreator<
     }
   },
 
-  completeWorkout: async (id, complete_time) => {
+  completeWorkout: async (id, complete_time, done_photo) => {
     try {
       get().startWorkoutDetailsLoading();
       await completeWorkout({complete_time, id: id!});
