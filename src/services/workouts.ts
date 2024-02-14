@@ -12,6 +12,7 @@ import {
 import {Workout, WorkoutWithExercises} from '../types/workout';
 import {Exercise} from '../types/exercises';
 import {getExercise} from './exercises';
+import { saveHistoryLog } from './history';
 
 interface CreateWorkoutProps extends Pick<Workout, 'name' | 'exercices'> {}
 
@@ -138,12 +139,12 @@ export async function completeWorkout({
       const data = oldData.data();
       const qtd = data?.complete_qtd || 0;
 
-      await addDoc(historyDb, {
+      await saveHistoryLog({
         complete_time,
         completed_at: new Date().toISOString(),
         workout_id: id,
-        done_photo: done_photo || null,
-        workoutName: data?.name
+        done_photo,
+        workout_name: data?.name
       });
       await updateDoc(docRef, {
         complete_qtd: qtd + 1,

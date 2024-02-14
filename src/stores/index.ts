@@ -1,4 +1,4 @@
-import zustand, {create} from 'zustand';
+import  {create} from 'zustand';
 import {
   createGlobalLoadingSlice,
   GlobalLoadingSlice,
@@ -10,29 +10,30 @@ import {
   AuthSlice,
   createCronometerSlice,
   CronometerSlice,
+  HistorySlice,
 } from './slices';
-import { persist, createJSONStorage, devtools } from 'zustand/middleware'
+import { persist, createJSONStorage, devtools } from 'zustand/middleware';
 import { zustandStorage } from '../services/storage';
+import { createHistorySlice } from './slices/historySlice';
 
 
 type BoundedType = GlobalLoadingSlice &
     ExercisesSlice &
     WorkoutSlice &
     AuthSlice &
-    CronometerSlice
+    CronometerSlice & HistorySlice
 
-// export const useStore = create<BoundedType>((...props) => ({
-//   ...createGlobalLoadingSlice(...props),
-//   ...createExercisesSlice(...props),
-//   ...createWorkoutSlice(...props),
-//   ...createAuthSlice(...props),
-//   ...createCronometerSlice(...props),
-// }));
 
-// @ts-ignore
- export const useStore = create<BoundedType>(persist((...props) => ({  ...createGlobalLoadingSlice(...props),
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
+export const useStore = create<BoundedType>(persist((...props) => ({
+  ...createGlobalLoadingSlice(...props),
   ...createExercisesSlice(...props),
   ...createWorkoutSlice(...props),
   ...createAuthSlice(...props),
-  ...createCronometerSlice(...props),}), {name: 'test', storage: createJSONStorage(() => zustandStorage ) }));
+  ...createCronometerSlice(...props),
+  ...createHistorySlice(...props)
+
+}), {name: 'test', storage: createJSONStorage(() => zustandStorage ) }));
 

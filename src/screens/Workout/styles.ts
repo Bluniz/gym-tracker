@@ -15,9 +15,9 @@ export const workoutItemStyles = StyleSheet.create({
     height: 148,
     backgroundColor: currentTheme.colors.backgroundMedium,
     borderRadius: 8,
-    borderColor: currentTheme.colors.primary,
-    borderWidth: 0.5,
+
     padding: 8,
+    paddingHorizontal: 16,
     position: 'relative',
 
     marginVertical: 8,
