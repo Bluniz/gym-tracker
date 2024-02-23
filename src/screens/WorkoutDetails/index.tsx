@@ -20,14 +20,16 @@ export const WorkoutDetailsScreen = () => {
   const {params} = useRoute<WorkoutScreenRouteProp>();
   const navigation = useNavigation();
 
-  const {getWorkout, isLoading, workout, resetCronometer} = useStore(
-    useShallow(state => ({
-      workout: state.workout,
-      isLoading: state.isWorkoutDetailsLoading,
-      getWorkout: state.getWorkout,
-      resetCronometer: state.resetCount,
-    }))
-  );
+  const {getWorkout, isLoading, workout, resetCronometer, isCronometerStarted} =
+    useStore(
+      useShallow(state => ({
+        workout: state.workout,
+        isLoading: state.isWorkoutDetailsLoading,
+        getWorkout: state.getWorkout,
+        resetCronometer: state.resetCount,
+        isCronometerStarted: state.isCronometerStarted,
+      }))
+    );
 
   useEffect(() => {
     (async () => {
@@ -50,6 +52,7 @@ export const WorkoutDetailsScreen = () => {
         }
         enableGoBack
         onGoBackPress={navigation.goBack}
+        onBackAreDisabled={isCronometerStarted}
       />
 
       <Content>

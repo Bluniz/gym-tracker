@@ -19,8 +19,9 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     color: currentTheme.colors.text,
-    
-
+  },
+  disabledIconBtn: {
+    opacity: 0.5
   },
   header: {
     justifyContent: 'center',

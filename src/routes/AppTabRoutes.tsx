@@ -15,6 +15,7 @@ export const AppTabRoutes = () => {
         headerShown: false,
         tabBarActiveTintColor: currentTheme.colors.primary,
         tabBarShowLabel: false,
+
         tabBarStyle: {
           backgroundColor: currentTheme.colors.backgroundMedium,
           elevation: 0,
