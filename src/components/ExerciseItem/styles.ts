@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
     backgroundColor: currentTheme.colors.backgroundMedium,
     borderRadius: 8,
     padding: 12,
- 
+
   },
   exerciseContainer: {
     padding: 8,

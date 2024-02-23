@@ -4,29 +4,40 @@ import { listHistories } from '../../services/history';
 
 
 export interface HistorySlice {
-  data: IHistory[]
+  histories: IHistory[]
   isHistoryLoading: boolean
+  isHistoryRefreshing: boolean
   historyError?: boolean
-  loadHistory: () => void
+  loadHistory: (type?: string) => Promise<void>
   handleStartHistoryLoading: () => void 
   handleFinishHistoryLoading: () => void
+   startRefreshHistory: () => void;
+  finishRefreshHistory: () => void;
 }
 
 
 export const createHistorySlice: StateCreator<HistorySlice> = (set, get) => ({
-  data: [],
+  histories: [],
   isHistoryLoading: false,
+  isHistoryRefreshing: false,
   historyError: undefined,
-  loadHistory: async () => {
+  loadHistory: async (type) => {
     try {
-      get().handleStartHistoryLoading();
+
+      if(type === 'refresh') get().startRefreshHistory();
+
+      if(!type) get().handleStartHistoryLoading();
       set({historyError: false});
       const data = await listHistories();
-      set({data});
+      set({histories: data});
     } catch(error){
       set({historyError: true});
     } finally {
-      get().handleFinishHistoryLoading();
+     
+
+      if(type === 'refresh') get().finishRefreshHistory();
+
+      if(!type)  get().handleFinishHistoryLoading();
     }
   },
   handleStartHistoryLoading: () => {
@@ -34,6 +45,7 @@ export const createHistorySlice: StateCreator<HistorySlice> = (set, get) => ({
   },
   handleFinishHistoryLoading: () => {
     set({isHistoryLoading: false});
-
-  }
+  },
+  startRefreshHistory: () => set({isHistoryRefreshing: true}),
+  finishRefreshHistory: () => set({isHistoryRefreshing: false}),
 });

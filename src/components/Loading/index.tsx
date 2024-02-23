@@ -3,13 +3,19 @@ import {currentTheme} from '../../styles/theme';
 import {LoadingProps} from './types';
 import {styles} from './styles';
 
-export const Loading = ({size = 'large', ...rest}: LoadingProps) => {
+export const Loading = ({
+  size = 'large',
+  containerFull,
+  ...rest
+}: LoadingProps) => {
   return (
-    <ActivityIndicator
-      {...rest}
-      size={size}
-      color={currentTheme.colors.primary}
-    />
+    <View style={containerFull && styles.containerFull}>
+      <ActivityIndicator
+        {...rest}
+        size={size}
+        color={currentTheme.colors.primary}
+      />
+    </View>
   );
 };
 

@@ -4,4 +4,5 @@ export interface IHistory {
   done_photo?: string 
   workout_id: string 
   workout_name: string
+  id: string
 }
