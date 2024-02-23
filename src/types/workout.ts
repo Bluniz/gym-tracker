@@ -3,6 +3,7 @@ import {Exercise} from './exercises';
 
 export type WorkoutParamsList = {
   workoutDetails: {id: string} | undefined;
+  addWorkout: undefined
 };
 
 export type WorkoutScreenRouteProp = RouteProp<

@@ -1,16 +1,13 @@
 import {View} from 'react-native';
 import {useEffect} from 'react';
-
-import {Container} from '../../components/Container';
-import {Header} from '../../components/Header';
-
 import {useIsFocused} from '@react-navigation/native';
-import {useStore} from '../../stores';
 import {useShallow} from 'zustand/react/shallow';
+
+import {useStore} from '../../stores';
 import {styles} from './styles';
-import {Content, Loading} from '../../components';
+import {AddButton, Content, Loading, Header, Container} from '../../components';
 import {WorkoutList} from './WorkoutList';
-import {useBackHandler} from '../../hooks';
+import {useBackHandler, useWorkoutStackNavigation} from '../../hooks';
 
 export const WorkoutScreen = () => {
   useBackHandler();
@@ -21,6 +18,8 @@ export const WorkoutScreen = () => {
       getWorkouts: state.getWorkouts,
     }))
   );
+
+  const navigation = useWorkoutStackNavigation();
 
   const isFocused = useIsFocused();
 
@@ -43,6 +42,7 @@ export const WorkoutScreen = () => {
         ) : (
           <WorkoutList workouts={workouts} />
         )}
+        <AddButton onPress={() => navigation.navigate('addWorkout')} />
       </Content>
     </Container>
   );

@@ -11,7 +11,7 @@ import {Ionicons} from '@expo/vector-icons';
 import {useShallow} from 'zustand/react/shallow';
 
 import {useExercisesStackNavigation} from '../../hooks/useExercisesStackNavigation';
-import {Loading} from '../../components';
+import {AddButton, Loading} from '../../components';
 import {styles} from './styles';
 import {useStore} from '../../stores';
 import {ExerciseList} from './ExerciseList';
@@ -50,16 +50,7 @@ export const ExercisesScreen = () => {
           <>
             <ExerciseList exercises={exercises} />
 
-            <TouchableOpacity
-              onPress={() => navigation.navigate('addExercises')}>
-              <View style={styles.buttonContainer}>
-                <Ionicons
-                  name="add"
-                  color={currentTheme.colors.white}
-                  size={20}
-                />
-              </View>
-            </TouchableOpacity>
+            <AddButton onPress={() => navigation.navigate('addExercises')} />
           </>
         )}
       </Content>
