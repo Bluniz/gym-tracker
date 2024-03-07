@@ -7,6 +7,7 @@ import {RectButton, Swipeable} from 'react-native-gesture-handler';
 import {currentTheme} from '../../styles/theme';
 
 import {Button} from '../Button';
+import {useState} from 'react';
 
 const AnimatedIcon = Animated.createAnimatedComponent(Ionicons);
 
@@ -16,6 +17,7 @@ export const ExerciseItem = ({
   handleEdit,
 }: WorkoutItemProps) => {
   const exercise = data.item;
+  const [isOpen, setIsOpen] = useState(false);
 
   const confirmAlert = () =>
     Alert.alert(
@@ -66,8 +68,10 @@ export const ExerciseItem = ({
     <Swipeable
       renderRightActions={renderRightActions}
       friction={2}
+      onSwipeableWillOpen={() => setIsOpen(true)}
+      onSwipeableWillClose={() => setIsOpen(false)}
       rightThreshold={0}>
-      <View style={styles.container}>
+      <View style={[styles.container, isOpen && styles.open]}>
         <View style={styles.exerciseContainer}>
           <Text style={styles.exerciseTitle}>{exercise?.name}</Text>
           <View style={styles.weightContainer}>

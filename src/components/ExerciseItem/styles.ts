@@ -4,12 +4,17 @@ import {currentTheme} from '../../styles/theme';
 export const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    borderBottomWidth: 0.5,
     overflow: 'hidden',
     backgroundColor: currentTheme.colors.backgroundMedium,
     borderRadius: 8,
     padding: 12,
 
+  },
+  open: {
+    borderTopLeftRadius: 8,
+    borderBottomLeftRadius: 8,
+    borderTopRightRadius: 0,
+    borderBottomRightRadius: 0
   },
   exerciseContainer: {
     padding: 8,
@@ -38,13 +43,14 @@ export const styles = StyleSheet.create({
     paddingVertical: 0,
     borderRadius: 0,
     borderTopRightRadius: 8,
-    borderBottomRightRadius: 8
+    borderBottomRightRadius: 8,
 
   },
   editBtn: {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: currentTheme.colors.primaryLight,
+
   },
   actionIcon: {
     marginHorizontal: 10,
