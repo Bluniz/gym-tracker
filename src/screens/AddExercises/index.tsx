@@ -124,7 +124,7 @@ export const AddExercisesScreen = () => {
             />
 
             <Button
-              title={isUpdate ? 'Update' : 'Add'}
+              title={isUpdate ? 'Atualizar' : 'Criar'}
               style={styles.button}
               onPress={onSubmit}
               isLoading={isLoading}

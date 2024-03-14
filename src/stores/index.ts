@@ -5,7 +5,6 @@ import {
   ExercisesSlice,
   createExercisesSlice,
   createWorkoutSlice,
-  WorkoutSlice,
   createAuthSlice,
   AuthSlice,
   createCronometerSlice,
@@ -15,6 +14,7 @@ import {
 import { persist, createJSONStorage, devtools } from 'zustand/middleware';
 import { zustandStorage } from '../services/storage';
 import { createHistorySlice } from './slices/historySlice';
+import { WorkoutSlice } from './types/workoutTypes';
 
 
 type BoundedType = GlobalLoadingSlice &
