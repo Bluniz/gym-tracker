@@ -9,6 +9,9 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 12,
 
+    alignItems: 'center',
+    gap: 8
+
   },
   open: {
     borderTopLeftRadius: 8,

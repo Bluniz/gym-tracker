@@ -8,6 +8,7 @@ import {currentTheme} from '../../styles/theme';
 
 import {Button} from '../Button';
 import {useState} from 'react';
+import {Checkbox} from '../Checkbox';
 
 const AnimatedIcon = Animated.createAnimatedComponent(Ionicons);
 
@@ -15,6 +16,8 @@ export const ExerciseItem = ({
   data,
   handleDelete,
   handleEdit,
+  onSelect,
+  isSelected,
 }: WorkoutItemProps) => {
   const exercise = data.item;
   const [isOpen, setIsOpen] = useState(false);
@@ -72,6 +75,7 @@ export const ExerciseItem = ({
       onSwipeableWillClose={() => setIsOpen(false)}
       rightThreshold={0}>
       <View style={[styles.container, isOpen && styles.open]}>
+        {onSelect && <Checkbox onChange={onSelect} check={isSelected} />}
         <View style={styles.exerciseContainer}>
           <Text style={styles.exerciseTitle}>{exercise?.name}</Text>
           <View style={styles.weightContainer}>
