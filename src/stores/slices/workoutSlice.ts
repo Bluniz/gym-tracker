@@ -1,33 +1,10 @@
 import {StateCreator} from 'zustand';
-import {Workout, WorkoutWithExercises} from '../../types/workout';
 import {GlobalLoadingSlice} from './globalLoadingSlice';
 import Toast from 'react-native-root-toast';
 import {completeWorkout, getWorkout, listWorkouts} from '../../services';
+import { WorkoutSlice } from '../types/workoutTypes';
+import * as WorkoutHelper from '../helpers/workoutHelper';
 
-export interface WorkoutSlice {
-  workouts: Workout[];
-  workout: WorkoutWithExercises | null;
-
-  isWorkoutDetailsLoading: boolean;
-  isWorkoutsLoading: boolean;
-  isWorkoutsRefreshing: boolean;
-
-  startWorkoutsLoading: () => void;
-  finishWorkoutsLoading: () => void;
-
-  startWorkoutDetailsLoading: () => void;
-  finishWorkoutDetailsLoading: () => void;
-  startWorkouRefeshingLoading: () => void;
-  finishWorkouRefeshingLoading: () => void;
-
-  getWorkouts: (type?: 'refresh') => Promise<void>;
-  getWorkout: (id: string) => Promise<void>;
-  completeWorkout: (
-    id: string | undefined,
-    complete_time: number,
-    done_photo?: string
-  ) => Promise<void>;
-}
 
 export const createWorkoutSlice: StateCreator<
   WorkoutSlice & GlobalLoadingSlice,
@@ -42,58 +19,18 @@ export const createWorkoutSlice: StateCreator<
   isWorkoutsLoading: false,
   isWorkoutDetailsLoading: false,
 
-  startWorkoutsLoading: () => set(() => ({isWorkoutsLoading: true})),
-  finishWorkoutsLoading: () => set(() => ({isWorkoutsLoading: false})),
+  startWorkoutsLoading: () => WorkoutHelper.startWorkoutsLoading(set),
+  finishWorkoutsLoading: () => WorkoutHelper.finishWorkoutsLoading(set),
+  startWorkoutDetailsLoading: () => WorkoutHelper.startWorkoutDetailsLoading(set),
+  finishWorkoutDetailsLoading: () => WorkoutHelper. finishWorkoutDetailsLoading(set),
+  startWorkouRefeshingLoading: () => WorkoutHelper.startWorkouRefeshingLoading(set),
+  finishWorkouRefeshingLoading: () =>WorkoutHelper.finishWorkouRefeshingLoading(set),
 
-  startWorkoutDetailsLoading: () =>
-    set(() => ({isWorkoutDetailsLoading: true})),
-  finishWorkoutDetailsLoading: () =>
-    set(() => ({isWorkoutDetailsLoading: false})),
-  startWorkouRefeshingLoading: () => set(() => ({isWorkoutsRefreshing: true})),
-  finishWorkouRefeshingLoading: () =>
-    set(() => ({isWorkoutsRefreshing: false})),
+  getWorkouts: async type => WorkoutHelper.getWorkouts(set, get, type),
 
-  getWorkouts: async type => {
-    try {
-      if (!type) get().startWorkoutsLoading();
-      if (type === 'refresh') get().startWorkouRefeshingLoading();
-      const workouts = await listWorkouts();
-      set(() => ({workouts}));
-    } catch (error) {
-      console.log(error);
-      Toast.show('Something is wrong!');
-      if (error instanceof Error) Toast.show(error.message);
-    } finally {
-      if (!type) get().finishWorkoutsLoading();
-      if (type === 'refresh') get().finishWorkouRefeshingLoading();
-    }
-  },
+  getWorkout: async id => WorkoutHelper.getWorkoutHelper(set, get, id),
 
-  getWorkout: async id => {
-    try {
-      get().startWorkoutDetailsLoading();
-      const workout = await getWorkout(id);
-      set(() => ({workout}));
-    } catch (error) {
-      console.log(error);
-      Toast.show('Something is wrong!');
-      if (error instanceof Error) Toast.show(error.message);
-    } finally {
-      get().finishWorkoutDetailsLoading();
-    }
-  },
+  completeWorkout: async (id, complete_time, done_photo) => WorkoutHelper.completeWorkoutHelper(set, get, {id, complete_time, done_photo}),
 
-  completeWorkout: async (id, complete_time, done_photo) => {
-    try {
-      get().startWorkoutDetailsLoading();
-      await completeWorkout({complete_time, id: id!});
-      await get().getWorkout(id!);
-    } catch (error) {
-      console.log(error);
-      Toast.show('Something is wrong!');
-      if (error instanceof Error) Toast.show(error.message);
-    } finally {
-      get().finishWorkoutDetailsLoading();
-    }
-  },
+  
 });
