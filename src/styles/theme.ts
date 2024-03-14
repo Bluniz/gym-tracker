@@ -6,6 +6,7 @@ const commonColors = {
   white: '#FFFF',
   primary: '#B80C09',
   primaryLight: 'rgba(184, 12, 9, 0.70)',
+  green: '#0BC163'
 };
 
 export const Theme = {
