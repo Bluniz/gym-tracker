@@ -1,6 +1,6 @@
 import Toast from "react-native-root-toast"
-import { listWorkouts, getWorkout, completeWorkout } from "../../services"
-import { CompleteWorkoutParams } from "../types/workoutTypes"
+import { listWorkouts, getWorkout, completeWorkout, createWorkout } from "../../services"
+import { CompleteWorkoutParams, CreateWorkoutParams } from "../types/workoutTypes"
 
 
   export const startWorkoutsLoading = (set: any) => set(() => ({isWorkoutsLoading: true}))
@@ -53,5 +53,25 @@ import { CompleteWorkoutParams } from "../types/workoutTypes"
       if (error instanceof Error) Toast.show(error.message);
     } finally {
       get().finishWorkoutDetailsLoading();
+    }
+  }
+
+  export const createWorkoutHelper = async (set: any, get: any, props: CreateWorkoutParams)=> {
+    try {
+      get().startLoading()
+      await createWorkout({
+        name: props.title,
+        exercices: props.exercises
+      })
+
+      Toast.show("Treino criado com sucesso")
+    
+
+    } catch(error) {
+      if (error instanceof Error) Toast.show(error.message);
+
+    } finally {
+            get().finishLoading();
+
     }
   }

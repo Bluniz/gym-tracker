@@ -31,6 +31,8 @@ export const WorkoutDetailsScreen = () => {
       }))
     );
 
+  console.log('workout', workout);
+
   useEffect(() => {
     (async () => {
       await getWorkout(params!.id);
@@ -66,6 +68,7 @@ export const WorkoutDetailsScreen = () => {
             <FlatList
               data={workout?.exercices}
               keyExtractor={(item, index) => `${item.name}__${index}`}
+              contentContainerStyle={{gap: 8}}
               renderItem={item => <ExerciseItem data={item} />}
             />
             <WorkoutCronometer workoutId={workout?.id} />

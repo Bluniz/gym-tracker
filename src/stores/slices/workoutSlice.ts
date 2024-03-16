@@ -1,8 +1,6 @@
 import {StateCreator} from 'zustand';
 import {GlobalLoadingSlice} from './globalLoadingSlice';
-import Toast from 'react-native-root-toast';
-import {completeWorkout, getWorkout, listWorkouts} from '../../services';
-import { WorkoutSlice } from '../types/workoutTypes';
+import { CreateWorkoutParams, WorkoutSlice } from '../types/workoutTypes';
 import * as WorkoutHelper from '../helpers/workoutHelper';
 
 
@@ -32,5 +30,5 @@ export const createWorkoutSlice: StateCreator<
 
   completeWorkout: async (id, complete_time, done_photo) => WorkoutHelper.completeWorkoutHelper(set, get, {id, complete_time, done_photo}),
 
-  
+  createWorkout: async (props: CreateWorkoutParams) => WorkoutHelper.createWorkoutHelper(set, get, props)
 });

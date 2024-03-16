@@ -23,7 +23,7 @@ export const Header = ({
         />
       )}
 
-      <View style={styles.header}>
+      <View style={[styles.header, enableGoBack && styles.negativeMargin]}>
         <Text style={styles.headerTitle}>{title}</Text>
         <Text style={styles.headerSubtitle}>{subTitle}</Text>
       </View>

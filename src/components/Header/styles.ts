@@ -4,9 +4,8 @@ import {currentTheme} from '../../styles/theme';
 export const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    position: 'relative',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     paddingTop: 24,
     paddingBottom: 12,
     marginBottom: 12,
@@ -16,8 +15,7 @@ export const styles = StyleSheet.create({
 
   },
   iconBtn: {
-    position: 'absolute',
-    left: 0,
+   alignSelf: "flex-start",
     color: currentTheme.colors.text,
   },
   disabledIconBtn: {
@@ -26,17 +24,20 @@ export const styles = StyleSheet.create({
   header: {
     justifyContent: 'center',
     alignItems: 'center',
-   
-    
-    
+    flex: 1
   },
   headerTitle: {
     color: currentTheme.colors.text,
     fontSize: 24,
     fontWeight: 'bold',
+    textAlign: 'center'
+   
   },
   headerSubtitle: {
     color: currentTheme.colors.primary,
     fontSize: 12,
   },
+  negativeMargin: {
+    marginRight: 36
+  }
 });

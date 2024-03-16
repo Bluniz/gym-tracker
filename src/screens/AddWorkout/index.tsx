@@ -25,8 +25,7 @@ export const AddWorkout = () => {
   const getExercises = useStore(state => state.getExercises);
   const exercises = useStore(state => state.exercises);
   const isLoadingExercises = useStore(state => state.isExercisesLoading);
-
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const createWorkout = useStore(state => state.createWorkout);
 
   const navigation = useNavigation();
 
@@ -34,17 +33,19 @@ export const AddWorkout = () => {
     formState: {errors},
     handleSubmit,
     control,
+    setValue,
+    getValues,
   } = useForm<Schema>({
     resolver: zodResolver(schema),
     mode: 'onSubmit',
     reValidateMode: 'onChange',
-    // defaultValues: {
-    //   ...params,
-    // },
+    defaultValues: {
+      exercises: [],
+    },
   });
 
   const handleSelect = (id: string) => {
-    let data = [...selectedItems];
+    let data = [...(getValues('exercises') || [])];
     const alreadyAdded = data.includes(id);
 
     if (alreadyAdded) {
@@ -53,11 +54,17 @@ export const AddWorkout = () => {
     } else {
       data.push(id);
     }
-    setSelectedItems(data);
+    setValue('exercises', data);
   };
 
   const onSubmit = handleSubmit(async data => {
-    console.log('data', data);
+    try {
+      await createWorkout({
+        title: data.title!,
+        exercises: data.exercises || [],
+      });
+      navigation.navigate('workouts' as never);
+    } catch (error) {}
   });
 
   useEffect(() => {
@@ -103,7 +110,7 @@ export const AddWorkout = () => {
                   <ExerciseItem
                     data={item}
                     onSelect={() => handleSelect(item.item.id)}
-                    isSelected={selectedItems.includes(item.item.id)}
+                    isSelected={getValues('exercises')!.includes(item.item.id)}
                   />
                 )}
               />

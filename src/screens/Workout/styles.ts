@@ -33,6 +33,8 @@ export const workoutItemStyles = StyleSheet.create({
     color: currentTheme.colors.text,
     fontSize: 24,
     fontWeight: 'bold',
+    textAlign: 'center'
+
   },
   itemDoneText: {
     position: 'absolute',

@@ -23,6 +23,8 @@ export interface WorkoutSlice {
     complete_time: number,
     done_photo?: string
   ) => Promise<void>;
+
+  createWorkout: (params: CreateWorkoutParams) => Promise<void>
    
 }
 
@@ -30,4 +32,9 @@ export interface CompleteWorkoutParams {
   id?: string 
   complete_time: number 
   done_photo?: string
+}
+
+export interface CreateWorkoutParams {
+  title: string 
+  exercises: string[]
 }
