@@ -51,10 +51,7 @@ export const Login = () => {
           <Loading />
         ) : (
           <>
-            <View style={styles.logo}>
-              <Image source={Logo} width={250} height={250} />
-              <Text style={styles.title}>Entre com seus dados</Text>
-            </View>
+            <Text style={styles.title}>Entrar </Text>
             <Input<LoginSchema>
               placeholder="Write your e-mail"
               keyboardType="email-address"
@@ -75,6 +72,13 @@ export const Login = () => {
             <Button
               title="Entrar"
               onPress={onSubmit}
+              disabled={isLoading || Object.keys(errors).length > 0}
+            />
+            <Button
+              title="Voltar"
+              variant="outlined"
+              size="md"
+              onPress={() => navigation.goBack()}
               disabled={isLoading || Object.keys(errors).length > 0}
             />
           </>

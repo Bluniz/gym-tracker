@@ -40,7 +40,7 @@ export const AuthContainer = ({children}: PropsWithChildren) => {
   }, [navigation, finishLoading, setUser]);
 
   useEffect(() => {
-    if (!userState) navigation.navigate('signIn' as never);
+    if (!userState) navigation.navigate('initial' as never);
   }, [userState, navigation]);
 
   return <>{children}</>;
