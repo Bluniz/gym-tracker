@@ -11,11 +11,12 @@ import {useBackHandler, useWorkoutStackNavigation} from '../../hooks';
 
 export const WorkoutScreen = () => {
   useBackHandler();
-  const {getWorkouts, isLoading, workouts} = useStore(
+  const {getWorkouts, isLoading, workouts, isWorkoutsLoading} = useStore(
     useShallow(state => ({
       workouts: state.workouts,
       isLoading: state.isWorkoutsLoading,
       getWorkouts: state.getWorkouts,
+      isWorkoutsLoading: state.isWorkoutsLoading,
     }))
   );
 
@@ -31,9 +32,15 @@ export const WorkoutScreen = () => {
     }
   }, [isFocused, getWorkouts]);
 
+  console.log({isLoading, isWorkoutsLoading});
+
   return (
     <Container>
-      <Header title="Time for Training" subTitle="Choose your today training" />
+      <Header
+        title="Time for Training"
+        subTitle="Choose your today training"
+        isLoading={isWorkoutsLoading || isLoading}
+      />
       <Content>
         {isLoading ? (
           <View style={styles.loadingContainer}>
