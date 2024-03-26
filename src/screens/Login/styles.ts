@@ -7,8 +7,16 @@ export const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'center',
   },
+  logo: {
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 36,
+    marginBottom: 36
+  },
+  
   container: {
     paddingHorizontal: 16,
+    
     alignContent: 'center',
     justifyContent: 'center',
     flex: 1,

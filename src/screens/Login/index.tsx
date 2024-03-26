@@ -1,4 +1,4 @@
-import {Text, View} from 'react-native';
+import {Text, View, Image} from 'react-native';
 import {useLayoutEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {useForm} from 'react-hook-form';
@@ -10,6 +10,8 @@ import {styles} from './styles';
 import {LoginSchema, loginSchema} from './types';
 import {useStore} from '../../stores';
 import {useShallow} from 'zustand/react/shallow';
+
+import Logo from '../../../assets/logo.png';
 
 export const Login = () => {
   const {clearError, error, signIn, user, isLoading} = useStore(
@@ -49,8 +51,10 @@ export const Login = () => {
           <Loading />
         ) : (
           <>
-            <Text style={styles.title}>Entre com seus dados</Text>
-
+            <View style={styles.logo}>
+              <Image source={Logo} width={250} height={250} />
+              <Text style={styles.title}>Entre com seus dados</Text>
+            </View>
             <Input<LoginSchema>
               placeholder="Write your e-mail"
               keyboardType="email-address"
