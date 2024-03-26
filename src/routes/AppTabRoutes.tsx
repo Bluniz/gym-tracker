@@ -5,6 +5,7 @@ import {MaterialCommunityIcons} from '@expo/vector-icons';
 import {WorkoutStackRoutes} from './workoutStackRoutes';
 import {ExercisesStackRoutes} from './exercisesStackRoutes';
 import {HistoryScreen} from '../screens/History';
+import {Home} from '../screens/Home';
 
 const Tab = createBottomTabNavigator();
 
@@ -47,6 +48,15 @@ export const AppTabRoutes = () => {
         options={{
           tabBarIcon: props => {
             return <MaterialCommunityIcons name="bike" {...props} />;
+          },
+        }}
+      />
+      <Tab.Screen
+        name="User"
+        component={Home}
+        options={{
+          tabBarIcon: props => {
+            return <MaterialCommunityIcons name="account" {...props} />;
           },
         }}
       />
