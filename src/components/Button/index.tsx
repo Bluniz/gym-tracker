@@ -1,11 +1,24 @@
 import {Text, StyleSheet, Pressable, PressableProps} from 'react-native';
-import {currentTheme} from '../../styles/theme';
 import {Loading} from '../Loading';
+import {styles} from './styles';
+import {currentTheme} from '../../styles/theme';
 
 interface ButtonPrps extends PressableProps {
   title?: string;
   isLoading?: boolean;
+  variant?: 'default' | 'outlined';
+  size?: 'md' | 'lg';
 }
+
+const sizes = {
+  md: styles.md,
+  lg: styles.lg,
+};
+
+const variants = {
+  default: styles.button,
+  outlined: styles.outlined,
+};
 
 export function Button({
   title,
@@ -14,6 +27,8 @@ export function Button({
   disabled,
   children,
   style,
+  variant = 'default',
+  size = 'lg',
   ...rest
 }: ButtonPrps) {
   return (
@@ -22,13 +37,14 @@ export function Button({
       onPress={onPress}
       disabled={disabled}
       style={({pressed}) => [
-        styles.button,
+        variants[variant],
+        sizes[size],
         pressed ? {opacity: 0.9} : {},
-        rest.style,
+        style,
         disabled
           ? {
-            opacity: 0.5,
-          }
+              opacity: 0.5,
+            }
           : {},
         style,
       ]}>
@@ -42,22 +58,3 @@ export function Button({
     </Pressable>
   );
 }
-
-const styles = StyleSheet.create({
-  button: {
-    textAlign: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: currentTheme.colors.primary,
-
-    paddingHorizontal: 12,
-    paddingVertical: 20,
-    borderRadius: 6,
-  },
-
-  buttonText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: currentTheme.colors.white,
-  },
-});
