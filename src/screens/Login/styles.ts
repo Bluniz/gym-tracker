@@ -15,15 +15,12 @@ export const styles = StyleSheet.create({
   },
   
   container: {
-    paddingHorizontal: 16,
-    
-    alignContent: 'center',
-    justifyContent: 'center',
     flex: 1,
-    gap: 8,
-    backgroundColor: currentTheme.colors.background,
+    width: '100%',
+    justifyContent: 'center'
   },
   title: {
+    marginTop: 'auto',
     textAlign: 'center',
     color: currentTheme.colors.text,
     fontSize: 28,
@@ -35,4 +32,10 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
+  buttonsContainer: {
+    gap: 12,
+    marginTop: 'auto',
+        paddingBottom: 24
+
+  }
 });
