@@ -17,17 +17,23 @@ import {
 } from '../../components';
 import {useStore} from '../../stores';
 import {styles} from './style';
-import {currentTheme} from '../../styles/theme';
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import {useEffect, useState} from 'react';
+import {useRoute} from '@react-navigation/native';
+import {useEffect} from 'react';
+import {useWorkoutStackNavigation} from '../../hooks';
+import {WorkoutWithExercises} from '../../types/workout';
 
 export const AddWorkout = () => {
   const getExercises = useStore(state => state.getExercises);
   const exercises = useStore(state => state.exercises);
   const isLoadingExercises = useStore(state => state.isExercisesLoading);
   const createWorkout = useStore(state => state.createWorkout);
+  const updateWorkout = useStore(state => state.updateWorkout);
+  const isGlobalLoading = useStore(state => state.isLoading);
 
-  const navigation = useNavigation();
+  const navigation = useWorkoutStackNavigation();
+  const {params} = useRoute();
+
+  const paramsData = params as WorkoutWithExercises;
 
   const {
     formState: {errors},
@@ -40,13 +46,16 @@ export const AddWorkout = () => {
     mode: 'onSubmit',
     reValidateMode: 'onChange',
     defaultValues: {
-      exercises: [],
+      title: paramsData?.name,
+      exercises: paramsData?.exercices.map(item => item.id) || [],
     },
   });
 
+  const isUpdate = Object.keys(paramsData).length > 0;
+
   const handleSelect = (id: string) => {
     let data = [...(getValues('exercises') || [])];
-    const alreadyAdded = data.includes(id);
+    const alreadyAdded = data?.includes(id);
 
     if (alreadyAdded) {
       const index = data.findIndex(item => item === id);
@@ -59,10 +68,19 @@ export const AddWorkout = () => {
 
   const onSubmit = handleSubmit(async data => {
     try {
-      await createWorkout({
-        title: data.title!,
-        exercises: data.exercises || [],
-      });
+      if (isUpdate) {
+        await updateWorkout({
+          name: data.title,
+          exercises: data.exercises || [],
+          id: paramsData.id,
+        });
+      } else {
+        await createWorkout({
+          title: data.title!,
+          exercises: data.exercises || [],
+        });
+      }
+
       navigation.navigate('workouts' as never);
     } catch (error) {}
   });
@@ -117,10 +135,15 @@ export const AddWorkout = () => {
             )}
 
             <Button
-              title="Criar"
-              isLoading={isLoadingExercises}
-              disabled={isLoadingExercises || Object.keys(errors).length > 0}
+              title={isUpdate ? 'Atualizar' : 'Criar'}
+              isLoading={isLoadingExercises || isGlobalLoading}
+              disabled={
+                isLoadingExercises ||
+                Object.keys(errors).length > 0 ||
+                isGlobalLoading
+              }
               onPress={onSubmit}
+              android_disableSound
             />
           </>
         </DismissKeyboard>

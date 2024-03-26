@@ -14,10 +14,7 @@ export const styles = StyleSheet.create({
     borderBottomColor: currentTheme.colors.primaryLight,
 
   },
-  iconBtn: {
-   alignSelf: "flex-start",
-    color: currentTheme.colors.text,
-  },
+  
   disabledIconBtn: {
     opacity: 0.5
   },
@@ -37,7 +34,5 @@ export const styles = StyleSheet.create({
     color: currentTheme.colors.primary,
     fontSize: 12,
   },
-  negativeMargin: {
-    marginRight: 36
-  }
+ 
 });

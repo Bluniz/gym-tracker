@@ -44,7 +44,7 @@ export async function getExercise(id: string) {
     const exercise = await getDoc(docRef);
 
     if (exercise.exists()) {
-      return exercise.data() as Exercise;
+      return {...exercise.data(), id: exercise.id} as Exercise;
     } else {
       throw new Error('Exercise not found', {cause: id});
     }

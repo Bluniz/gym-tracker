@@ -14,29 +14,32 @@ import {useStore} from './src/stores';
 import './src/configs/firebase';
 import 'react-native-gesture-handler';
 import {AuthContainer} from './src/components/AuthContainer';
+import {SheetProvider} from 'react-native-actions-sheet';
+import './src/configs/sheets';
 
 if (__DEV__) {
   require('./src/configs/ReactotronConfig');
   //import('./src/configs/ReactotronConfig').then(() => console.log('Reactotron Configured'));
 }
 
-
 export default function App() {
   const isLoadingGlobal = useStore(state => state.isLoading);
 
   return (
     <RootSiblingParent>
-      <NavigationContainer>
-        <AuthContainer>
-          <SafeAreaView style={{flex: 1}}>
-            <Routes />
-            <StatusBar
-              backgroundColor={currentTheme.colors.background}
-              translucent
-            />
-          </SafeAreaView>
-        </AuthContainer>
-      </NavigationContainer>
+      <SheetProvider>
+        <NavigationContainer>
+          <AuthContainer>
+            <SafeAreaView style={{flex: 1}}>
+              <Routes />
+              <StatusBar
+                backgroundColor={currentTheme.colors.background}
+                translucent
+              />
+            </SafeAreaView>
+          </AuthContainer>
+        </NavigationContainer>
+      </SheetProvider>
       {isLoadingGlobal && <FullLoading />}
     </RootSiblingParent>
   );

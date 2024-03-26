@@ -8,6 +8,7 @@ export interface WorkoutSlice {
   isWorkoutsLoading: boolean;
   isWorkoutsRefreshing: boolean;
 
+
   startWorkoutsLoading: () => void;
   finishWorkoutsLoading: () => void;
 
@@ -25,6 +26,8 @@ export interface WorkoutSlice {
   ) => Promise<void>;
 
   createWorkout: (params: CreateWorkoutParams) => Promise<void>
+  updateWorkout: (params: UpdateWorkoutParams) => Promise<void>
+  deleteWorkout: (id: string) => Promise<void>
    
 }
 
@@ -37,4 +40,10 @@ export interface CompleteWorkoutParams {
 export interface CreateWorkoutParams {
   title: string 
   exercises: string[]
+}
+
+export interface UpdateWorkoutParams {
+  name: string 
+  exercises: string[]
+  id: string
 }

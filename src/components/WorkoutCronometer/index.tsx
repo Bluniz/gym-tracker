@@ -11,8 +11,8 @@ import {useShallow} from 'zustand/react/shallow';
 import {WorkoutCronometerProps} from './types';
 import reactotron from 'reactotron-react-native';
 import {differenceInSeconds} from 'date-fns';
-import {storage} from "../../services/storage"
-
+import {storage} from '../../services/storage';
+import {SheetManager} from 'react-native-actions-sheet';
 
 export const WorkoutCronometer = ({workoutId}: WorkoutCronometerProps) => {
   const {
@@ -23,7 +23,7 @@ export const WorkoutCronometer = ({workoutId}: WorkoutCronometerProps) => {
     handleStop,
     isStarted,
     increaseCount,
-    setCount
+    setCount,
   } = useStore(
     useShallow(state => ({
       isStarted: state.isCronometerStarted,
@@ -33,15 +33,13 @@ export const WorkoutCronometer = ({workoutId}: WorkoutCronometerProps) => {
       increaseCount: state.increaseCount,
       time: state.time,
       onCompleteWorkout: state.completeWorkout,
-      setCount: state.setCount
+      setCount: state.setCount,
     }))
   );
 
   const {minutes, hours, seconds} = convertTime(time);
 
   const appState = useRef(AppState.currentState);
-
-
 
   async function displayNotification(title: string, body: string, id: string) {
     //! Required for IOS
@@ -66,88 +64,85 @@ export const WorkoutCronometer = ({workoutId}: WorkoutCronometerProps) => {
       },
     });
   }
-
-
-
-  const confirmAlert = () =>
-    Alert.alert('Do you want to complete this training?', '', [
-      {
-        text: 'Cancel Training!',
-        style: 'destructive',
-        onPress: () => {
-          handleReset()
-        },
+  const confirmAlert = () => {
+    SheetManager.show('options-sheet', {
+      payload: {
+        options: [
+          {
+            title: 'Cancelar Treino',
+            onPress: handleReset,
+            variant: 'destructive',
+          },
+          {
+            title: 'Não, não completar',
+            onPress: () => null,
+          },
+          {
+            title: 'Sim, completar',
+            onPress: () => {
+              onCompleteWorkout(workoutId, time);
+              displayNotification(
+                'Workout Finished!',
+                'You have finished your workout, congrats!',
+                'cronometer-finish'
+              );
+              handleReset();
+            },
+          },
+        ],
+        title: 'Do you want to complete this training?',
       },
-      {
-        text: "No, don't complete",
-        style: 'cancel',
-        
-      },
-      {
-        text: 'Yes, complete!',
-        onPress: () => {
-          onCompleteWorkout(workoutId, time);
-          displayNotification(
-            'Workout Finished!',
-            'You have finished your workout, congrats!',
-            'cronometer-finish'
-          );
-          handleReset();
-        },
-      },
-    ]);
-
+    });
+  };
 
   const saveStartElapsedTime = () => {
-      try {
-        const now = new Date()
-        console.log(now.toISOString());
-        storage.set('@cronometer_time', now.toISOString());
-      } catch(err) {
-        console.log(err)
-      }
+    try {
+      const now = new Date();
+      storage.set('@cronometer_time', now.toISOString());
+    } catch (err) {
+      console.log(err);
     }
+  };
 
-  const getElapsedTime =  () => {
-      try {
-        const startTime =  storage.getString('@cronometer_time');
-        console.log('startTime', startTime);
-        const now = new Date()
+  const getElapsedTime = () => {
+    try {
+      const startTime = storage.getString('@cronometer_time');
+      const now = new Date();
 
-        return differenceInSeconds(now, Date.parse(startTime!))
-      } catch(error) {
-        console.log(error)
-      }
+      return differenceInSeconds(now, Date.parse(startTime!));
+    } catch (error) {
+      console.log(error);
     }
+  };
 
   const handleAppStateChange = async (nextState: AppStateStatus) => {
     reactotron.log(nextState);
 
     if (nextState.match(/inactive|background/)) {
-      saveStartElapsedTime()
+      saveStartElapsedTime();
     }
-      if (
-        appState.current.match(/inactive|background/) &&
-        nextState === 'active' &&
-        isStarted
-      ) {
-        const elapsedTime =  getElapsedTime();
-        reactotron.log('elapsedTime', elapsedTime);
+    if (
+      appState.current.match(/inactive|background/) &&
+      nextState === 'active' &&
+      isStarted
+    ) {
+      const elapsedTime = getElapsedTime();
+      reactotron.log('elapsedTime', elapsedTime);
 
-        reactotron.log({time, elapsedTime})
-        setCount(time + elapsedTime!);
-      }
+      reactotron.log({time, elapsedTime});
+      setCount(time + elapsedTime!);
+    }
 
-     appState.current = nextState;
-  }
+    appState.current = nextState;
+  };
   useEffect(() => {
     const subscription = AppState.addEventListener(
       'change',
       handleAppStateChange
     );
 
-    return () => subscription.remove()
-  }, [isStarted, time])
+    return () => subscription.remove();
+  }, [isStarted, time]);
 
   //! Estrutura para lidar em foreground
   useEffect(() => {
@@ -195,7 +190,6 @@ export const WorkoutCronometer = ({workoutId}: WorkoutCronometerProps) => {
     let interval: string | number | NodeJS.Timeout | undefined;
 
     if (isStarted) {
-      
       interval = setInterval(() => {
         increaseCount();
       }, 1000);

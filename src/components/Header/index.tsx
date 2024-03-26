@@ -10,23 +10,27 @@ export const Header = ({
   enableGoBack,
   onGoBackPress,
   onBackAreDisabled,
+  rightComponent,
+  isLoading,
 }: HeaderProps) => {
   return (
     <View style={styles.container}>
-      {enableGoBack && (
+      {enableGoBack && !isLoading && (
         <IconButton
           icon="arrow-back"
-          style={[styles.iconBtn, onBackAreDisabled && styles.disabledIconBtn]}
+          style={[onBackAreDisabled && styles.disabledIconBtn]}
           color="text"
           onPress={onGoBackPress}
           disabled={onBackAreDisabled}
         />
       )}
 
-      <View style={[styles.header, enableGoBack && styles.negativeMargin]}>
+      <View style={[styles.header]}>
         <Text style={styles.headerTitle}>{title}</Text>
         <Text style={styles.headerSubtitle}>{subTitle}</Text>
       </View>
+
+      {rightComponent && !isLoading && rightComponent}
     </View>
   );
 };

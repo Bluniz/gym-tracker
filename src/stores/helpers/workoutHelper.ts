@@ -1,10 +1,11 @@
 import Toast from "react-native-root-toast"
-import { listWorkouts, getWorkout, completeWorkout, createWorkout } from "../../services"
-import { CompleteWorkoutParams, CreateWorkoutParams } from "../types/workoutTypes"
+import { listWorkouts, getWorkout, completeWorkout, createWorkout, updateWorkout, deleteWorkout } from "../../services"
+import { CompleteWorkoutParams, CreateWorkoutParams, UpdateWorkoutParams } from "../types/workoutTypes"
 
 
   export const startWorkoutsLoading = (set: any) => set(() => ({isWorkoutsLoading: true}))
   export const finishWorkoutsLoading = (set: any) => set(() => ({isWorkoutsLoading: false}))
+
   export const startWorkoutDetailsLoading = (set: any) => set(() => ({isWorkoutDetailsLoading: true}))
   export const finishWorkoutDetailsLoading = (set: any) => set(() => ({isWorkoutDetailsLoading: false}))
   export const startWorkouRefeshingLoading = (set: any) => set(() => ({isWorkoutsRefreshing: true}))
@@ -65,6 +66,45 @@ import { CompleteWorkoutParams, CreateWorkoutParams } from "../types/workoutType
       })
 
       Toast.show("Treino criado com sucesso")
+    
+
+    } catch(error) {
+      if (error instanceof Error) Toast.show(error.message);
+
+    } finally {
+            get().finishLoading();
+
+    }
+  }
+
+    export const updateWorkoutHelper = async (set: any, get: any, props: UpdateWorkoutParams)=> {
+    try {
+      get().startLoading()
+      await updateWorkout({
+        id: props.id,
+        exercices: props.exercises,
+        name: props.name
+      })
+
+      Toast.show("Treino atualizado com sucesso")
+    
+
+    } catch(error) {
+      if (error instanceof Error) Toast.show(error.message);
+
+    } finally {
+            get().finishLoading();
+
+    }
+  }
+
+  
+    export const deleteWorkoutHelper = async (set: any, get: any, id: string)=> {
+    try {
+      get().startLoading()
+      await deleteWorkout(id)
+
+      Toast.show("Treino deletado com sucesso")
     
 
     } catch(error) {

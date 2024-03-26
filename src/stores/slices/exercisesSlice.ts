@@ -13,6 +13,7 @@ export interface ExercisesSlice {
   exercises: Exercise[];
   isExercisesLoading: boolean;
   isExercisesRefreshing: boolean;
+  
 
   startExercisesLoading: () => void;
   finishExercisesLoading: () => void;

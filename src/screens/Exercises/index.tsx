@@ -7,7 +7,6 @@ import React, {useEffect} from 'react';
 import {Header} from '../../components/Header';
 
 import {Content} from '../../components/Content';
-import {Ionicons} from '@expo/vector-icons';
 import {useShallow} from 'zustand/react/shallow';
 
 import {useExercisesStackNavigation} from '../../hooks/useExercisesStackNavigation';
