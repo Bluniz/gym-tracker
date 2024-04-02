@@ -1,7 +1,6 @@
 export * from './Button';
 export * from './Container';
 export * from './Content';
-export * from './CustomDrawer';
 export * from './DismissKeyboard';
 export * from './ExerciseItem';
 export * from './Header';
