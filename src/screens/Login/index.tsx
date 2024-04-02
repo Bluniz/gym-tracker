@@ -1,5 +1,4 @@
-import {Text, View, Image} from 'react-native';
-import {useLayoutEffect} from 'react';
+import {Text, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
@@ -41,12 +40,6 @@ export const Login = () => {
   });
 
   const navigation = useNavigation();
-
-  useLayoutEffect(() => {
-    if (user) {
-      navigation.navigate('app' as never);
-    }
-  }, [user, navigation]);
 
   const onSubmit = handleSubmit(data => signIn?.(data));
 

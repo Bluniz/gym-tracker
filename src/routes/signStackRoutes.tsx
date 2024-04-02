@@ -2,6 +2,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {Login} from '../screens/Login';
 import {currentTheme} from '../styles/theme';
 import {SignHome} from '../screens/SignHome';
+import {SignUpScreen} from '../screens/SignUp';
 
 const Stack = createStackNavigator();
 
@@ -17,8 +18,7 @@ export const SignStackRoutes = () => {
       }}>
       <Stack.Screen name="signHome" component={SignHome} />
       <Stack.Screen name="signIn" component={Login} />
-      <Stack.Screen name="signUp" component={Login} />
-      <Stack.Screen name="register" component={Login} />
+      <Stack.Screen name="signUp" component={SignUpScreen} />
     </Stack.Navigator>
   );
 };

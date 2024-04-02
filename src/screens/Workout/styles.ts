@@ -32,8 +32,8 @@ export const workoutItemStyles = StyleSheet.create({
   itemTitle: {
     color: currentTheme.colors.text,
     fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center'
+    textAlign: 'center',
+    ...currentTheme.typography.bold
 
   },
   itemDoneText: {
@@ -41,5 +41,7 @@ export const workoutItemStyles = StyleSheet.create({
     fontSize: 12,
     color: currentTheme.colors.text,
     bottom: 0,
+    ...currentTheme.typography.regular
+
   },
 });

@@ -15,8 +15,8 @@ export const styles = StyleSheet.create({
 
   buttonText: {
     fontSize: 16,
-    fontWeight: 'bold',
     color: currentTheme.colors.white,
+    ...currentTheme.typography.bold
   },
 
   outlined: {

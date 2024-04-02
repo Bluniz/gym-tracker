@@ -46,12 +46,12 @@ export const AddWorkout = () => {
     mode: 'onSubmit',
     reValidateMode: 'onChange',
     defaultValues: {
-      title: paramsData?.name,
+      title: paramsData?.name || '',
       exercises: paramsData?.exercices.map(item => item.id) || [],
     },
   });
 
-  const isUpdate = Object.keys(paramsData).length > 0;
+  const isUpdate = Object.keys(paramsData || {}).length > 0;
 
   const handleSelect = (id: string) => {
     let data = [...(getValues('exercises') || [])];

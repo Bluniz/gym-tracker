@@ -11,6 +11,7 @@ export const styles = StyleSheet.create({
     gap: 4
   },
   list: {
-    flex: 1, gap: 8
+    flex: 1, gap: 8,
+     paddingBottom: 20
   }
 });

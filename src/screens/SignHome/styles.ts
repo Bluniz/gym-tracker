@@ -20,6 +20,7 @@ export const styles = StyleSheet.create({
   text: {
     color: currentTheme.colors.text,
     fontSize: 36,
-    fontWeight: 'bold'
+    ...currentTheme.typography.bold,
+
   }
 })

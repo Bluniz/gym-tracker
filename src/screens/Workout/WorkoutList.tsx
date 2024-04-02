@@ -21,6 +21,7 @@ const WorkoutListComponent = ({workouts}: WorkoutListProps) => {
       keyExtractor={(item, index) => `${item.name}__${index}`}
       showsVerticalScrollIndicator={false}
       renderItem={data => <WorkoutItem workout={data.item} />}
+      contentContainerStyle={{paddingBottom: 20}}
       ListHeaderComponentStyle={{
         borderWidth: 1,
       }}

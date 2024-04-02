@@ -24,13 +24,15 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     color: currentTheme.colors.text,
     fontSize: 28,
-    fontWeight: 'bold',
+    ...currentTheme.typography.bold,
+
     paddingBottom: 8,
   },
   errorMessage: {
     textAlign: 'center',
     fontSize: 18,
-    fontWeight: 'bold',
+    ...currentTheme.typography.bold,
+
   },
   buttonsContainer: {
     gap: 12,

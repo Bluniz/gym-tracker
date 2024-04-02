@@ -1,3 +1,4 @@
+import {TextStyle} from 'react-native'
 import {systemColorScheme} from '../utils';
 
 const commonColors = {
@@ -9,6 +10,23 @@ const commonColors = {
   green: '#0BC163'
 };
 
+const typography = {
+  regular: {
+    fontFamily: 'Roboto',
+    fontWeight: "500" as TextStyle['fontWeight']
+  },
+  bold: {
+    fontFamily: 'Roboto-Bold',
+    fontWeight: "700" as TextStyle['fontWeight']
+  },
+  black: {
+    fontFamily: 'Roboto-Black',
+    fontWeight: "900" as TextStyle['fontWeight']
+  }
+}
+
+
+
 export const Theme = {
   dark: {
     colors: {
@@ -18,6 +36,8 @@ export const Theme = {
       text: '#f2f2f2',
       ...commonColors,
     },
+    typography,
+
   },
   light: {
     colors: {
@@ -27,6 +47,8 @@ export const Theme = {
       backgroundLight: '#7C7C8A',
       ...commonColors,
     },
+    typography,
+
   },
 };
 

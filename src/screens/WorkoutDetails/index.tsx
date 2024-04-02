@@ -136,7 +136,7 @@ export const WorkoutDetailsScreen = () => {
             <FlatList
               data={workout?.exercices}
               keyExtractor={(item, index) => `${item.name}__${index}`}
-              contentContainerStyle={{gap: 8}}
+              contentContainerStyle={{gap: 8, paddingBottom: 20}}
               renderItem={item => <ExerciseItem data={item} />}
             />
             <WorkoutCronometer workoutId={workout?.id} />

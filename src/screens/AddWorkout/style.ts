@@ -1,10 +1,11 @@
 import {StyleSheet} from "react-native"
-import { currentTheme } from "../../styles/theme"
+import { currentTheme } from '../../styles/theme';
 
 export const styles = StyleSheet.create({
   listTitle: {
-     fontSize: 18,
-    color: currentTheme.colors.text
+    fontSize: 18,
+    color: currentTheme.colors.text,
+    ...currentTheme.typography.regular,
   },
   container: {
     flex: 1,
@@ -14,7 +15,8 @@ export const styles = StyleSheet.create({
   },
   listContent: {
     gap: 8,
-    paddingVertical: 8
+    paddingVertical: 8,
+    paddingBottom: 20
   },
   listTitleContainer: {
     paddingVertical: 8,

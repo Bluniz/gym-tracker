@@ -3,9 +3,18 @@ import {Button, Container, Content} from '../../components';
 import {styles} from './styles';
 import Logo from '../../../assets/logo.png';
 import {useNavigation} from '@react-navigation/native';
+import {useLayoutEffect} from 'react';
+import {useStore} from '../../stores';
 
 export const SignHome = () => {
   const navigation = useNavigation();
+  const user = useStore(state => state.user);
+
+  useLayoutEffect(() => {
+    if (user) {
+      navigation.navigate('app' as never);
+    }
+  }, [user, navigation]);
 
   return (
     <Container>

@@ -30,7 +30,7 @@ const ExerciseListComponent = ({exercises}: ExerciseListProps) => {
       data={exercises}
       keyExtractor={(item, index) => `${item.name}__${index}`}
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={{gap: 8}}
+      contentContainerStyle={{gap: 8, paddingBottom: 20}}
       refreshControl={
         <RefreshControl
           refreshing={isRefreshing}
