@@ -6,26 +6,24 @@ import { Platform } from 'react-native';
 import * as firebaseAuth from 'firebase/auth';
 // Your secondary Firebase project credentials for Android...
 const androidCredentials = {
-  clientId:
-    '175722923818-518j5jehh35e688b205r37r3e87q3ir0.apps.googleusercontent.com',
-  appId: '1:175722923818:android:6f9072d8e82f3c28458053',
-  apiKey: 'AIzaSyCPbeEJsFBSASXqwQ5kMrV_cL3wFooORuA',
-  databaseURL: 'gs://gym-tracker-e6904.appspot.com',
-  storageBucket: 'gym-tracker-e6904.appspot.com',
-  messagingSenderId: '',
-  projectId: 'gym-tracker-e6904',
+  clientId: process.env.EXPO_PUBLIC_CLIENT_ID_ANDROID,
+  appId: process.env.EXPO_PUBLIC_APP_ID_ANDROID,
+  apiKey: process.env.EXPO_PUBLIC_API_KEY_ANDROID,
+  databaseURL: process.env.EXPO_PUBLIC_DATABASE_URL,
+  storageBucket: process.env.EXPO_PUBLIC_STORAGE_BUCKET,
+  messagingSenderId: process.env.EXPO_PUBLIC_MESSAGING_SEND_ID || '',
+  projectId: process.env.EXPO_PUBLIC_PROJECT_ID,
 };
 
 // Your secondary Firebase project credentials for iOS...
 const iosCredentials = {
-  clientId:
-    '175722923818-fl6fm9tn815n95g94hi05kh22fr6nn8d.apps.googleusercontent.com',
-  appId: '1:175722923818:ios:71fe71b1f716eda3458053',
-  apiKey: 'AIzaSyBecK4vFamcl51gppq8qLIev62GVjRKylc',
-  databaseURL: 'gs://gym-tracker-e6904.appspot.com',
-  storageBucket: 'gym-tracker-e6904.appspot.com',
-  messagingSenderId: '',
-  projectId: 'gym-tracker-e6904',
+  clientId: process.env.EXPO_PUBLIC_CLIENT_ID_IOS,
+  appId: process.env.EXPO_PUBLIC_APP_ID_IOS,
+  apiKey: process.env.EXPO_PUBLIC_API_KEY_IOS,
+  databaseURL: process.env.EXPO_PUBLIC_DATABASE_URL,
+  storageBucket: process.env.EXPO_PUBLIC_STORAGE_BUCKET,
+  messagingSenderId: process.env.EXPO_PUBLIC_MESSAGING_SEND_ID || '',
+  projectId: process.env.EXPO_PUBLIC_PROJECT_ID,
 };
 
 // Select the relevant credentials
