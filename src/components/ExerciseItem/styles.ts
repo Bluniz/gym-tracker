@@ -15,6 +15,8 @@ export const styles = StyleSheet.create({
     overflow: 'hidden',
     backgroundColor: currentTheme.colors.backgroundMedium,
     borderRadius: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
     
     gap: 8,
 

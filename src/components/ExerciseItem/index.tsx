@@ -74,7 +74,12 @@ export const ExerciseItem = ({
       onSwipeableWillOpen={() => setIsOpen(true)}
       onSwipeableWillClose={() => setIsOpen(false)}
       rightThreshold={0}>
-      <View style={[styles.container2, isOpen && styles.open]}>
+      <View
+        style={[
+          styles.container2,
+          isOpen && styles.open,
+          onSelect && {paddingHorizontal: 18},
+        ]}>
         {onSelect && <Checkbox onChange={onSelect} check={isSelected} />}
         <View
           style={[
