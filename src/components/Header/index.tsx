@@ -27,7 +27,7 @@ export const Header = ({
 
       <View style={[styles.header]}>
         <Text style={styles.headerTitle}>{title}</Text>
-        <Text style={styles.headerSubtitle}>{subTitle}</Text>
+        {!!subTitle && <Text style={styles.headerSubtitle}>{subTitle}</Text>}
       </View>
 
       {rightComponent && !isLoading && rightComponent}
