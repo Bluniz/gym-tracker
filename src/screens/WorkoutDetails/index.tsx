@@ -22,6 +22,7 @@ import {
 import {useStore} from '../../stores';
 import {styles} from './styles';
 import {useWorkoutStackNavigation} from '../../hooks';
+import {NewExerciseItem} from '../../components/ExerciseItem/NewExerciseItem';
 
 export const WorkoutDetailsScreen = () => {
   const {params} = useRoute<WorkoutScreenRouteProp>();
@@ -136,8 +137,9 @@ export const WorkoutDetailsScreen = () => {
             <FlatList
               data={workout?.exercices}
               keyExtractor={(item, index) => `${item.name}__${index}`}
-              contentContainerStyle={{gap: 8, paddingBottom: 20}}
-              renderItem={item => <ExerciseItem data={item} />}
+              contentContainerStyle={{paddingTop: 16, gap: 8}}
+              horizontal
+              renderItem={item => <NewExerciseItem data={item} />}
             />
             <WorkoutCronometer workoutId={workout?.id} />
           </>

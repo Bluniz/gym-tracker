@@ -74,10 +74,16 @@ export const ExerciseItem = ({
       onSwipeableWillOpen={() => setIsOpen(true)}
       onSwipeableWillClose={() => setIsOpen(false)}
       rightThreshold={0}>
-      <View style={[styles.container, isOpen && styles.open]}>
+      <View style={[styles.container2, isOpen && styles.open]}>
         {onSelect && <Checkbox onChange={onSelect} check={isSelected} />}
-        <View style={styles.exerciseContainer}>
-          <Text style={styles.exerciseTitle}>{exercise?.name}</Text>
+        <View
+          style={[
+            styles.exerciseContainer,
+            {alignItems: 'flex-start', paddingHorizontal: 16},
+          ]}>
+          <Text style={[styles.exerciseTitle, {fontSize: 18}]}>
+            {exercise?.name}
+          </Text>
           <View style={styles.weightContainer}>
             <Text style={styles.exerciseReps}>
               Reps: {exercise.reps || 0} x {exercise.series || 0}

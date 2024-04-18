@@ -3,15 +3,27 @@ import {currentTheme} from '../../styles/theme';
 
 export const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
     overflow: 'hidden',
     backgroundColor: currentTheme.colors.backgroundMedium,
     borderRadius: 8,
-    padding: 12,
+    
+    gap: 8,
+    height: 300
 
-    alignItems: 'center',
-    gap: 8
+  },
+  container2: {
+    overflow: 'hidden',
+    backgroundColor: currentTheme.colors.backgroundMedium,
+    borderRadius: 8,
+    
+    gap: 8,
 
+  },
+  exerciseImage: {
+    height: 200,
+    resizeMode: 'cover',
+    aspectRatio: 1.6
+    
   },
   open: {
     borderTopLeftRadius: 8,
@@ -20,15 +32,23 @@ export const styles = StyleSheet.create({
     borderBottomRightRadius: 0
   },
   exerciseContainer: {
-    padding: 8,
+    padding: 12,
+    paddingBottom: 18,
     gap: 4,
+    alignItems: 'center'
   },
+  
+  
   exerciseTitle: {
-    fontSize: 18,
-    color: currentTheme.colors.text
+    fontSize: 24,
+    color: currentTheme.colors.text,
+    fontFamily: currentTheme.typography.bold.fontFamily,
+    fontWeight: currentTheme.typography.bold.fontWeight
   },
   exerciseReps: {
     color: currentTheme.colors.text,
+    fontFamily: currentTheme.typography.regular.fontFamily,
+
   },
   exercisesWeight: {
     color: currentTheme.colors.text,
@@ -38,25 +58,5 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
-  deleteBtn: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: currentTheme.colors.primary,
-    paddingHorizontal: 0,
-    paddingVertical: 0,
-    borderRadius: 0,
-    borderTopRightRadius: 8,
-    borderBottomRightRadius: 8,
-
-  },
-  editBtn: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: currentTheme.colors.primaryLight,
-
-  },
-  actionIcon: {
-    marginHorizontal: 10,
-    
-  },
+ 
 });
