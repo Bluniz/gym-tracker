@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "175722923818-pebnp2s10qa6tl38df0o8p1b24bcci9l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bluniz.gymTracker",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
           "client_id": "175722923818-518j5jehh35e688b205r37r3e87q3ir0.apps.googleusercontent.com",
           "client_type": 3
         }

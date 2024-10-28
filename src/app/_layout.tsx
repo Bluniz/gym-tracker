@@ -4,10 +4,11 @@ import '@/global.css';
 import { GluestackUIProvider } from '@/src/components/ui/gluestack-ui-provider';
 
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { Slot, Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
+import { AuthProvider } from '../contexts/authContext';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -16,6 +17,10 @@ export {
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+
+if (__DEV__) {
+  require('../configs/reactotron.config.js');
+}
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -40,7 +45,9 @@ export default function RootLayout() {
 
   return (
     <GluestackUIProvider mode="light">
-      <RootLayoutComponent />
+      <AuthProvider>
+        <RootLayoutComponent />
+      </AuthProvider>
     </GluestackUIProvider>
   );
 }
@@ -48,9 +55,7 @@ export default function RootLayout() {
 function RootLayoutComponent() {
   return (
     <GluestackUIProvider mode="light">
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="index" />
-      </Stack>
+      <Slot />
     </GluestackUIProvider>
   );
 }
