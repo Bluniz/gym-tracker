@@ -6,11 +6,11 @@ export const onSignIn = async () => {
   try {
     await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
 
-    const data = await GoogleSignin.hasPreviousSignIn();
+    const hasPreviousLogin = await GoogleSignin.hasPreviousSignIn();
 
-    console.log('data', data);
-
-    const response = await GoogleSignin.signInSilently();
+    const response = hasPreviousLogin
+      ? await GoogleSignin.signInSilently()
+      : await GoogleSignin.signIn();
 
     console.log('response', response);
 
