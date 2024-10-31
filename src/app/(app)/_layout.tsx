@@ -4,7 +4,7 @@ import { useAuth } from '@/src/contexts/authContext';
 import { Redirect, Stack } from 'expo-router';
 
 export default function AppLayout() {
-  const { user, isLoading } = useAuth();
+  const { session, isLoading } = useAuth();
 
   if (isLoading)
     return (
@@ -13,7 +13,7 @@ export default function AppLayout() {
       </Center>
     );
 
-  if (!user) {
+  if (!session) {
     return <Redirect href="/signIn" />;
   }
 

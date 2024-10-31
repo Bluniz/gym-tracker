@@ -1,56 +1,68 @@
-import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react';
 import * as GoogleService from '@/src/services/googleSignIn';
-import auth from '@react-native-firebase/auth';
-import { router } from 'expo-router';
+
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { supabaseClient } from '../services/supabase';
+import { Session } from '@supabase/supabase-js';
+import { router } from 'expo-router';
 
 GoogleSignin.configure({
   webClientId: '175722923818-518j5jehh35e688b205r37r3e87q3ir0.apps.googleusercontent.com',
-  offlineAccess: true,
+  scopes: ['https://www.googleapis.com/auth/drive.readonly'],
 });
+
 interface IAuthContext {
   signIn: () => void;
   signOut: () => void;
-  user: FirebaseAuthTypes.User | null;
+  session: Session | null;
   isLoading: boolean;
 }
 
 const AuthContext = createContext<IAuthContext>({
   signIn: () => null,
   signOut: () => null,
-  user: null,
+  session: null,
   isLoading: false,
 } as IAuthContext);
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
-  const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [session, setSession] = useState<Session | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const signIn = () => {
+  const signIn = async () => {
     setIsLoading(true);
-    GoogleService.onSignIn();
+    const data = await GoogleService.onSignIn();
+    setSession(data.session);
+    router.replace('/');
+    setIsLoading(false);
   };
-  const signOut = () => {
+  const signOut = async () => {
     setIsLoading(true);
-    GoogleService.onSignOut();
+    await supabaseClient.auth.signOut();
+    setIsLoading(false);
   };
 
   useEffect(() => {
-    const subscriber = auth().onAuthStateChanged((userState) => {
-      console.log('hello', userState);
-      setUser(userState);
-
-      if (userState) router.replace('/');
-
+    supabaseClient.auth.getSession().then(({ data: { session } }) => {
+      console.log('session', session);
+      if (session) {
+        setSession(session);
+        router.replace('/');
+      }
       setIsLoading(false);
     });
 
-    return subscriber;
+    supabaseClient.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+
+      if (!session) {
+        router.replace('/');
+      }
+    });
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, signIn, signOut, isLoading }}>
+    <AuthContext.Provider value={{ session, signIn, signOut, isLoading }}>
       {children}
     </AuthContext.Provider>
   );

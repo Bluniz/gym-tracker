@@ -14,7 +14,6 @@
     },
     "ios": {
       "supportsTablet": false,
-      "googleServicesFile": "./GoogleService-Info.plist",
       "bundleIdentifier": "com.bluniz.gymTracker"
     },
     "android": {
@@ -22,7 +21,6 @@
         "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "googleServicesFile": "./google-services.json",
       "package": "com.bluniz.gymTracker"
     },
     "web": {
@@ -33,8 +31,6 @@
     "plugins": [
       "expo-router",
       "@react-native-google-signin/google-signin",
-      "@react-native-firebase/app",
-      "@react-native-firebase/auth",
       [
         "expo-build-properties",
         {

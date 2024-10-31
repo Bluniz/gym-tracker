@@ -1,6 +1,7 @@
 import auth from '@react-native-firebase/auth';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import { Alert } from 'react-native';
+import { supabaseClient } from './supabase';
 
 export const onSignIn = async () => {
   try {
@@ -12,19 +13,29 @@ export const onSignIn = async () => {
       ? await GoogleSignin.signInSilently()
       : await GoogleSignin.signIn();
 
-    console.log('response', response);
+    if (response.data?.idToken) {
+      const { data } = await supabaseClient.auth.signInWithIdToken({
+        provider: 'google',
+        token: response.data?.idToken,
+      });
 
-    if (!response.data) throw new Error(JSON.stringify(response, null, 2));
-
-    const googleCredential = auth.GoogleAuthProvider.credential(response!.data!.idToken);
-
-    return auth().signInWithCredential(googleCredential);
-  } catch (error) {
+      return data;
+    } else {
+      throw new Error('no ID token present!');
+    }
+  } catch (error: any) {
     console.log('error', error);
-    Alert.alert('Google Login Error', error.message);
-  }
-};
+    if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+      // user cancelled the login flow
+    } else if (error.code === statusCodes.IN_PROGRESS) {
+      // operation (e.g. sign in) is in progress already
+    } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+      // play services not available or outdated
+    } else {
+      // some other error happened
+    }
 
-export const onSignOut = async () => {
-  return await auth().signOut();
+    Alert.alert('Google Login Error', error.message);
+    throw new Error('no ID token present!');
+  }
 };
