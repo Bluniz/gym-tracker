@@ -7,7 +7,8 @@ import { Session } from '@supabase/supabase-js';
 import { router } from 'expo-router';
 
 GoogleSignin.configure({
-  webClientId: '175722923818-518j5jehh35e688b205r37r3e87q3ir0.apps.googleusercontent.com',
+  webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_ID,
+  iosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_ID,
   scopes: ['https://www.googleapis.com/auth/drive.readonly'],
 });
 

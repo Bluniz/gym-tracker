@@ -9,6 +9,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 import { AuthProvider } from '../contexts/authContext';
+import { StatusBar } from 'expo-status-bar';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -45,6 +46,7 @@ export default function RootLayout() {
 
   return (
     <GluestackUIProvider mode="light">
+      <StatusBar style="light" />
       <AuthProvider>
         <RootLayoutComponent />
       </AuthProvider>

@@ -6,7 +6,7 @@ import { useAuth } from '@/src/contexts/authContext';
 export default function Home() {
   const { signOut } = useAuth();
   return (
-    <Center className="h-full w-full flex-1">
+    <Center className="h-full w-full flex-1 bg-slate-800">
       <Heading>Logado</Heading>
       <Button onPress={signOut}>
         <ButtonText>Sair</ButtonText>

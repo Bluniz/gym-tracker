@@ -1,4 +1,3 @@
-import auth from '@react-native-firebase/auth';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import { Alert } from 'react-native';
 import { supabaseClient } from './supabase';
