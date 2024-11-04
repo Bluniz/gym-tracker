@@ -31,7 +31,7 @@ export const TabBarButton = ({
   });
   const animatedIconStyle = useAnimatedStyle(() => {
     const scaleValue = interpolate(scale.value, [0, 1], [1, 1.2]);
-    const top = interpolate(scale.value, [0, 1], [0, 9]);
+    const top = interpolate(scale.value, [0, 1], [0, 10]);
 
     return {
       transform: [{ scale: scaleValue }],
@@ -56,7 +56,7 @@ export const TabBarButton = ({
       variant="link"
     >
       <Animated.View style={animatedIconStyle}>
-        <ButtonIcon as={icon} className={clsx('h-[24] w-[24] color-white')} />
+        <ButtonIcon as={icon} className={clsx('h-[18] w-[18] color-white')} />
       </Animated.View>
       <Animated.Text className={clsx('text-[12] color-white')} style={animatedTextStyle}>
         {label}

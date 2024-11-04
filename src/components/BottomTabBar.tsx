@@ -7,9 +7,10 @@ import { TabBarButton } from './TabBarButton';
 import { useState } from 'react';
 import { LayoutChangeEvent } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import colors from 'tailwindcss/colors';
 
 export const BottomTabBar = ({ navigation, state, descriptors }: BottomTabBarProps) => {
-  const [dimensions, setDimensions] = useState({ height: 20, width: 100 });
+  const [dimensions, setDimensions] = useState({ height: 20, width: 100 }); // Initial Values
 
   const buttonWidth = dimensions.width / state.routes.length;
 
@@ -37,7 +38,7 @@ export const BottomTabBar = ({ navigation, state, descriptors }: BottomTabBarPro
           animatedStyle,
           {
             position: 'absolute',
-            backgroundColor: '#b91c1c',
+            backgroundColor: colors.red[700],
             borderRadius: 30,
             marginHorizontal: 12,
             height: dimensions.height - 15,

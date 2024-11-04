@@ -45,7 +45,7 @@ export default function RootLayout() {
   }
 
   return (
-    <GluestackUIProvider mode="light">
+    <GluestackUIProvider mode="dark">
       <StatusBar style="light" />
       <AuthProvider>
         <RootLayoutComponent />
@@ -56,7 +56,7 @@ export default function RootLayout() {
 
 function RootLayoutComponent() {
   return (
-    <GluestackUIProvider mode="light">
+    <GluestackUIProvider mode="dark">
       <Slot />
     </GluestackUIProvider>
   );

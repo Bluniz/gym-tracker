@@ -15,11 +15,8 @@ import { supabaseClient } from '../services/supabase';
 
 AppState.addEventListener('change', (state) => {
   if (state === 'active') {
-    console.log('active');
     supabaseClient.auth.startAutoRefresh();
   } else {
-    console.log('not active');
-
     supabaseClient.auth.stopAutoRefresh();
   }
 });

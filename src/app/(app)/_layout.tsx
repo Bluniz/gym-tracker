@@ -4,6 +4,8 @@ import { useAuth } from '@/src/contexts/authContext';
 import { Redirect, Tabs } from 'expo-router';
 import { BottomTabBar } from '@/src/components/BottomTabBar';
 import { Dumbbell, Home } from 'lucide-react-native';
+import { StatusBar } from 'expo-status-bar';
+import React from 'react';
 
 export default function AppLayout() {
   const { session, isLoading } = useAuth();
@@ -20,26 +22,29 @@ export default function AppLayout() {
   }
 
   return (
-    <Tabs
-      tabBar={(props) => <BottomTabBar {...props} />}
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <Tabs.Screen
-        name="index"
-        options={{
-          tabBarIcon: Home,
-          tabBarLabel: 'Home',
+    <>
+      <StatusBar style="light" />
+      <Tabs
+        tabBar={(props) => <BottomTabBar {...props} />}
+        screenOptions={{
+          headerShown: false,
         }}
-      />
-      <Tabs.Screen
-        name="exercises"
-        options={{
-          tabBarLabel: 'Exercises',
-          tabBarIcon: Dumbbell,
-        }}
-      />
-    </Tabs>
+      >
+        <Tabs.Screen
+          name="index"
+          options={{
+            tabBarIcon: Home,
+            tabBarLabel: 'Home',
+          }}
+        />
+        <Tabs.Screen
+          name="exercises"
+          options={{
+            tabBarLabel: 'Exercises',
+            tabBarIcon: Dumbbell,
+          }}
+        />
+      </Tabs>
+    </>
   );
 }
