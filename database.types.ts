@@ -13,6 +13,7 @@ export type Database = {
         Row: {
           created_at: string
           description: string | null
+          exercise_type: string[] | null
           id: number
           name: string
           photo_url: string | null
@@ -21,6 +22,7 @@ export type Database = {
         Insert: {
           created_at?: string
           description?: string | null
+          exercise_type?: string[] | null
           id?: number
           name: string
           photo_url?: string | null
@@ -29,10 +31,98 @@ export type Database = {
         Update: {
           created_at?: string
           description?: string | null
+          exercise_type?: string[] | null
           id?: number
           name?: string
           photo_url?: string | null
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      exercises_training: {
+        Row: {
+          annotation: string | null
+          created_at: string
+          exercise_id: number
+          id: number
+          reps: string | null
+          series: number | null
+          training_id: number
+        }
+        Insert: {
+          annotation?: string | null
+          created_at?: string
+          exercise_id: number
+          id?: number
+          reps?: string | null
+          series?: number | null
+          training_id: number
+        }
+        Update: {
+          annotation?: string | null
+          created_at?: string
+          exercise_id?: number
+          id?: number
+          reps?: string | null
+          series?: number | null
+          training_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "exercises_training_exercise_id_fkey"
+            columns: ["exercise_id"]
+            isOneToOne: false
+            referencedRelation: "exercises"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "exercises_training_training_id_fkey"
+            columns: ["training_id"]
+            isOneToOne: false
+            referencedRelation: "training"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      exercises_types: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      training: {
+        Row: {
+          created_at: string
+          id: number
+          name: string
+          observation: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          name: string
+          observation?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          name?: string
+          observation?: string | null
+          user_id?: string
         }
         Relationships: []
       }
