@@ -1,25 +1,41 @@
 import clsx from 'clsx';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 
-import { Box } from './ui/box';
 import { Hourglass, LucideIcon } from 'lucide-react-native';
 import { TabBarButton } from './TabBarButton';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { LayoutChangeEvent } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+  FadeOut,
+  FadeIn,
+  Easing,
+  FadingTransition,
+  withTiming,
+  interpolate,
+  withDelay,
+} from 'react-native-reanimated';
 import colors from 'tailwindcss/colors';
+import { usePathname } from 'expo-router';
+
+const hideRoutes = ['/exercises/createExercises'];
 
 export const BottomTabBar = ({ navigation, state, descriptors }: BottomTabBarProps) => {
+  const pathname = usePathname();
+
   const [dimensions, setDimensions] = useState({ height: 20, width: 100 }); // Initial Values
 
   const buttonWidth = dimensions.width / state.routes.length;
 
-  const onTabBarLayout = (e: LayoutChangeEvent) => {
-    setDimensions({
-      height: e.nativeEvent.layout.height,
-      width: e.nativeEvent.layout.width,
-    });
-  };
+  const tabOpacity = useSharedValue(1);
+  const animatedtabOpacityStyle = useAnimatedStyle(() => {
+    const opacity = interpolate(tabOpacity.value, [0, 1], [1, 0]);
+    return {
+      opacity,
+    };
+  });
 
   const tabPositionX = useSharedValue(0);
   const animatedStyle = useAnimatedStyle(() => {
@@ -28,10 +44,28 @@ export const BottomTabBar = ({ navigation, state, descriptors }: BottomTabBarPro
     };
   });
 
+  const onTabBarLayout = (e: LayoutChangeEvent) => {
+    setDimensions({
+      height: e.nativeEvent.layout.height,
+      width: e.nativeEvent.layout.width,
+    });
+  };
+
+  useEffect(() => {
+    if (hideRoutes.includes(pathname)) {
+      tabOpacity.value = tabOpacity.value = withDelay(300, withTiming(1));
+    } else {
+      tabOpacity.value = tabOpacity.value = withDelay(300, withTiming(0));
+    }
+  }, [pathname]);
+
   return (
-    <Box
+    <Animated.View
+      style={[animatedtabOpacityStyle]}
       onLayout={onTabBarLayout}
-      className="absolute bottom-[50] mx-[80] flex-row items-center justify-between rounded-[35] bg-slate-700 py-[15] shadow-sm"
+      className={clsx(
+        'absolute bottom-[50] mx-[80] flex-row items-center justify-between rounded-[35] bg-slate-700 py-[15] shadow-sm',
+      )}
     >
       <Animated.View
         style={[
@@ -90,6 +124,6 @@ export const BottomTabBar = ({ navigation, state, descriptors }: BottomTabBarPro
           />
         );
       })}
-    </Box>
+    </Animated.View>
   );
 };

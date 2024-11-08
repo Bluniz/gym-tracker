@@ -11,7 +11,7 @@ import { ExerciseLoading } from './exerciseLoading';
 import { VStack } from '@/src/components/ui/vstack';
 import { Card } from '@/src/components/ui/card';
 import { ExerciseList } from './exerciseList';
-import { useFocusEffect } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { Fab, FabIcon, FabLabel } from '@/src/components/ui/fab';
 import { Plus } from 'lucide-react-native';
 
@@ -51,7 +51,12 @@ export default function ExercisesTemplate() {
       ) : (
         <Box>{hasError ? <ExerciseError /> : <ExerciseList data={exercises} />}</Box>
       )}
-      <Fab size="lg" placement="bottom right" className="bg-red-700 active:bg-red-500">
+      <Fab
+        size="lg"
+        placement="bottom right"
+        className="bg-red-700 active:bg-red-500"
+        onPress={() => router.navigate('/(app)/exercises/createExercises')}
+      >
         <FabIcon as={Plus} className="text-white" />
       </Fab>
     </Box>

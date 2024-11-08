@@ -12,6 +12,8 @@ import { router } from 'expo-router';
 import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
 import { AppState } from 'react-native';
 import { supabaseClient } from '../services/supabase';
+import { Spinner } from '../components/ui/spinner';
+import colors from 'tailwindcss/colors';
 
 AppState.addEventListener('change', (state) => {
   if (state === 'active') {
@@ -26,8 +28,8 @@ export default function Index() {
 
   if (isLoading)
     return (
-      <Center className="h-full w-full flex-1">
-        <Text>Carregando...</Text>
+      <Center className="h-full w-full flex-1 bg-slate-800">
+        <Spinner size="large" color={colors.red[700]} />
       </Center>
     );
 
