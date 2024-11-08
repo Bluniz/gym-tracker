@@ -6,6 +6,8 @@ import { BottomTabBar } from '@/src/components/BottomTabBar';
 import { Dumbbell, Home } from 'lucide-react-native';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
+import { Box } from '@/src/components/ui/box';
+import colors from 'tailwindcss/colors';
 
 export default function AppLayout() {
   const { session, isLoading } = useAuth();
@@ -28,6 +30,9 @@ export default function AppLayout() {
         tabBar={(props) => <BottomTabBar {...props} />}
         screenOptions={{
           headerShown: false,
+        }}
+        sceneContainerStyle={{
+          backgroundColor: colors.slate['800'],
         }}
       >
         <Tabs.Screen
