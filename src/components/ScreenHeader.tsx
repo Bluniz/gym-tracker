@@ -14,7 +14,7 @@ interface ScreenHeaderProps {
 
 export function ScreenHeader({ title, canGoBack = true }: ScreenHeaderProps) {
   return (
-    <HStack className="items-center justify-between px-4">
+    <HStack className="items-center justify-between px-5">
       <Show when={canGoBack}>
         <Button variant="link" onPress={() => router.back()} size="xl">
           <ButtonIcon as={MoveLeft} size="xl" />
