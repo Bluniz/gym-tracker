@@ -54,7 +54,7 @@ export function TypesField({
   }
 
   return (
-    <Accordion type="single" variant="unfilled">
+    <Accordion type="single" variant="unfilled" defaultValue={['types']}>
       <AccordionItem value="types">
         <AccordionHeader>
           <AccordionTrigger>

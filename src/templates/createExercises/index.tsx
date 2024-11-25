@@ -15,9 +15,7 @@ import { useCallback, useState } from 'react';
 import { TypesField } from './typesField';
 import { ConfirmAlert } from '@/src/components/ConfirmAlert';
 import { useAuth } from '@/src/contexts/authContext';
-
-//! ADD FEEDBACK WHEN EXERCISE IS CREATED
-//! ADD ERROR FEEDBACK WHEN THERE ARE SOME ERROR
+import { useCustomToast } from '@/src/hooks/toast';
 
 export function CreateExerciseTemplate() {
   const [types, setTypes] = useState<Tables<'exercises_types'>[] | null>([]);
@@ -33,6 +31,7 @@ export function CreateExerciseTemplate() {
   const [showConfirmAlert, setShowConfirmAlert] = useState(false);
 
   const { session } = useAuth();
+  const { showNewToast } = useCustomToast();
 
   useFocusEffect(
     useCallback(() => {
@@ -70,10 +69,13 @@ export function CreateExerciseTemplate() {
         photo_url: exercisePhotoUrl,
         description: exerciseDescription,
       });
+      showNewToast('Exercicio criado com sucesso!');
 
       router.navigate('/(app)/exercises');
-    } catch (error) {
+    } catch (error: any) {
       console.log('deu erro tio', error);
+      setShowConfirmAlert(false);
+      showNewToast(error?.message || 'Ocorreu um erro inesperado!');
     }
   };
 
