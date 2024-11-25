@@ -9,6 +9,7 @@ export default function Layout() {
         contentStyle: {
           backgroundColor: colors.slate['800'],
         },
+        animation: 'fade',
       }}
     />
   );
