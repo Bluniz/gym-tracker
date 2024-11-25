@@ -49,9 +49,9 @@ export const BottomTabBar = ({ navigation, state, descriptors }: BottomTabBarPro
 
   useEffect(() => {
     if (hideRoutes.includes(pathname)) {
-      tabOpacity.value = tabOpacity.value = withDelay(300, withTiming(1));
+      tabOpacity.value = tabOpacity.value = withDelay(100, withTiming(1));
     } else {
-      tabOpacity.value = tabOpacity.value = withDelay(300, withTiming(0));
+      tabOpacity.value = tabOpacity.value = withDelay(100, withTiming(0));
     }
   }, [pathname]);
 
