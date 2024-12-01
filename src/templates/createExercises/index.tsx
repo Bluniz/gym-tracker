@@ -4,18 +4,16 @@ import { ScreenHeader } from '@/src/components/ScreenHeader';
 
 import { Button, ButtonText } from '@/src/components/ui/button';
 
-import { Input, InputField } from '@/src/components/ui/input';
-import { Text } from '@/src/components/ui/text';
-import { Textarea, TextareaInput } from '@/src/components/ui/textarea';
 import { VStack } from '@/src/components/ui/vstack';
 import { createExercise, getExerciseTypes } from '@/src/services/exercises';
 import { router, useFocusEffect } from 'expo-router';
-import React from 'react';
+import React, { useRef } from 'react';
 import { useCallback, useState } from 'react';
 import { TypesField } from './typesField';
 import { ConfirmAlert } from '@/src/components/ConfirmAlert';
 import { useAuth } from '@/src/contexts/authContext';
 import { useCustomToast } from '@/src/hooks/toast';
+import { CustomInput } from '@/src/components/CustomInput';
 
 export function CreateExerciseTemplate() {
   const [types, setTypes] = useState<Tables<'exercises_types'>[] | null>([]);
@@ -32,6 +30,9 @@ export function CreateExerciseTemplate() {
 
   const { session } = useAuth();
   const { showNewToast } = useCustomToast();
+
+  const descriptionRef = useRef(null);
+  const urlPhotoRef = useRef(null);
 
   useFocusEffect(
     useCallback(() => {
@@ -85,36 +86,33 @@ export function CreateExerciseTemplate() {
 
       <VStack className="flex-1 justify-between px-5 pt-6">
         <VStack space="xl">
-          <VStack className="gap-2">
-            <Text className="text-bold text-lg text-white">Nome*</Text>
-            <Input variant="outline" size="xl" className="rounded-xl">
-              <InputField
-                placeholder="Digite o nome do exercicio"
-                value={exerciseName}
-                onChangeText={setExerciseName}
-              />
-            </Input>
-          </VStack>
-          <VStack className="gap-2">
-            <Text className="text-bold text-lg text-white">Descrição</Text>
-            <Textarea size="xl" className="rounded-xl">
-              <TextareaInput
-                placeholder="Digite o nome do exercicio"
-                value={exerciseDescription}
-                onChangeText={setExerciseDescription}
-              />
-            </Textarea>
-          </VStack>
-          <VStack className="gap-2">
-            <Text className="text-bold text-lg text-white">URL Foto</Text>
-            <Input variant="outline" size="xl" className="rounded-xl">
-              <InputField
-                placeholder="Adicione a URL da foto do exercicio"
-                value={exercisePhotoUrl}
-                onChangeText={setExercisePhotoUrl}
-              />
-            </Input>
-          </VStack>
+          <CustomInput
+            label="Nome*"
+            placeholder="Digite o nome do exercicio"
+            value={exerciseName}
+            onChangeText={setExerciseName}
+            returnKeyType="next"
+            onSubmitEditing={() => descriptionRef?.current?.focus()}
+          />
+          <CustomInput
+            label="Descrição"
+            ref={descriptionRef}
+            placeholder="Digite a descrição do seu exercicio"
+            value={exerciseDescription}
+            onChangeText={setExerciseDescription}
+            returnKeyType="next"
+            onSubmitEditing={() => urlPhotoRef?.current?.focus()}
+            maxLength={30}
+            className="max-h-5 overflow-hidden"
+          />
+          <CustomInput
+            label="Foto"
+            placeholder="Adicione a URL da foto do exercicio"
+            value={exercisePhotoUrl}
+            onChangeText={setExercisePhotoUrl}
+            returnKeyType="next"
+          />
+
           <TypesField
             types={types}
             setSelectedTypes={setSelectedTypes}
