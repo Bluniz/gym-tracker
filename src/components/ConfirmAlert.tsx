@@ -6,7 +6,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
 } from '@/src/components/ui/alert-dialog';
-import { Button, ButtonText } from '@/src/components/ui/button';
+import { Button, ButtonSpinner, ButtonText } from '@/src/components/ui/button';
 import { Heading } from '@/src/components/ui/heading';
 import { Text } from '@/src/components/ui/text';
 
@@ -18,6 +18,7 @@ interface ConfirmAlertProps {
   description?: string;
   confirmText?: string;
   cancelText?: string;
+  isLoading?: boolean;
 }
 
 export function ConfirmAlert({
@@ -28,9 +29,11 @@ export function ConfirmAlert({
   description,
   confirmText = 'Sim',
   cancelText = 'Não',
+  isLoading,
 }: ConfirmAlertProps) {
+  const handleClose = () => (isLoading ? null : onClose());
   return (
-    <AlertDialog isOpen={isOpen} onClose={onClose} size="lg">
+    <AlertDialog isOpen={isOpen} onClose={handleClose} size="lg">
       <AlertDialogBackdrop />
       <AlertDialogContent className="bg-gray-800">
         <AlertDialogHeader>
@@ -42,11 +45,27 @@ export function ConfirmAlert({
           <Text size="sm">{description}</Text>
         </AlertDialogBody>
         <AlertDialogFooter className="">
-          <Button variant="outline" action="secondary" onPress={onClose} size="sm">
+          <Button
+            variant="outline"
+            action="secondary"
+            onPress={handleClose}
+            size="sm"
+            disabled={isLoading}
+            className="disabled:opacity-75"
+          >
             <ButtonText>{cancelText}</ButtonText>
           </Button>
-          <Button size="sm" onPress={onConfirm} className="bg-red-700">
-            <ButtonText className="text-white">{confirmText}</ButtonText>
+          <Button
+            size="sm"
+            onPress={onConfirm}
+            className="bg-red-700 disabled:opacity-75"
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <ButtonSpinner />
+            ) : (
+              <ButtonText className="text-white">{confirmText}</ButtonText>
+            )}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

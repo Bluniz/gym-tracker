@@ -21,22 +21,28 @@ export default function ExercisesTemplate() {
   const [hasError, setHasError] = useState(false);
 
   const { session } = useAuth();
+
+  const fetchExercises = useCallback(async () => {
+    try {
+      setHasError(false);
+      setIsLoading(true);
+      const { data } = await getExercises(session?.user.id!);
+      setExercises(data || []);
+    } catch (error) {
+      setHasError(true);
+      console.log('error', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [session?.user?.id]);
+
   useFocusEffect(
     useCallback(() => {
-      (async () => {
-        try {
-          setHasError(false);
-          setIsLoading(true);
-          const { data } = await getExercises(session?.user.id!);
-          setExercises(data || []);
-        } catch (error) {
-          setHasError(true);
-          console.log('error', error);
-        } finally {
-          setIsLoading(false);
-        }
-      })();
-    }, []),
+      const fetchExercisess = async () => {
+        await fetchExercises();
+      };
+      fetchExercisess();
+    }, [fetchExercises]),
   );
 
   return (
@@ -49,7 +55,13 @@ export default function ExercisesTemplate() {
       {isLoading ? (
         <ExerciseLoading />
       ) : (
-        <Box>{hasError ? <ExerciseError /> : <ExerciseList data={exercises} />}</Box>
+        <Box>
+          {hasError ? (
+            <ExerciseError />
+          ) : (
+            <ExerciseList data={exercises} refetchList={fetchExercises} />
+          )}
+        </Box>
       )}
       <Fab
         size="lg"

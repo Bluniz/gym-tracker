@@ -45,3 +45,7 @@ export const createExercise = ({
     .single()
     .throwOnError();
 };
+
+export const deleteExercise = (exerciseId: string) => {
+  return supabaseClient.from('exercises').delete().match({ id: exerciseId }).throwOnError();
+};
