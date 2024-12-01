@@ -55,16 +55,8 @@ export function CreateExerciseTemplate() {
 
   const onConfirm = async () => {
     try {
-      const exercise_type = types
-        ?.map((type) => {
-          if (selectedTypes.includes(type.name)) {
-            return type.id;
-          }
-        })
-        .filter((item) => !!item);
-
       await createExercise({
-        exercise_type: exercise_type as string[],
+        exercise_type: selectedTypes,
         name: exerciseName,
         user_id: session?.user.id!,
         photo_url: exercisePhotoUrl,
@@ -111,6 +103,7 @@ export function CreateExerciseTemplate() {
             value={exercisePhotoUrl}
             onChangeText={setExercisePhotoUrl}
             returnKeyType="next"
+            className="max-h-5"
           />
 
           <TypesField

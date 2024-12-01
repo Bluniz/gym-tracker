@@ -72,14 +72,16 @@ export function TypesField({
             }}
           </AccordionTrigger>
         </AccordionHeader>
-        <AccordionContent className="max-h-[26rem]">
+        <AccordionContent className="max-h-[33rem]">
           <CheckboxGroup value={selectedTypes} onChange={setSelectedTypes}>
             <FlatList
               data={types}
               keyExtractor={(item) => item.id}
               contentContainerClassName="gap-2 "
+              removeClippedSubviews={true}
+              getItemLayout={(data, index) => ({ length: 40, offset: 40 * index, index })}
               renderItem={({ item }) => (
-                <Checkbox value={item.name}>
+                <Checkbox value={item.id}>
                   <Card variant="elevated" className="w-full rounded-xl bg-gray-700">
                     <HStack className="items-center gap-2">
                       <CheckboxIndicator>
