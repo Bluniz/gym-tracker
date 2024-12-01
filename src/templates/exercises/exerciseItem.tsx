@@ -8,6 +8,7 @@ import { Menu, MenuItem, MenuItemLabel } from '@/src/components/ui/menu';
 import { Button, ButtonIcon } from '@/src/components/ui/button';
 import { EllipsisVertical, PencilLine, Trash2 } from 'lucide-react-native';
 import { Icon } from '@/src/components/ui/icon';
+import { router } from 'expo-router';
 
 interface ExerciseItemProps {
   exercise: Tables<'exercises'>;
@@ -33,7 +34,18 @@ export const ExerciseItem = ({ exercise, onDelete }: ExerciseItemProps) => {
             );
           }}
         >
-          <MenuItem key="Editar" textValue="Editar">
+          <MenuItem
+            key="Editar"
+            textValue="Editar"
+            onPress={() =>
+              router.navigate({
+                pathname: '/exercises/editExercise',
+                params: {
+                  id: exercise.id,
+                },
+              })
+            }
+          >
             <Icon as={PencilLine} size="sm" className="mr-2" />
             <MenuItemLabel size="sm">Editar</MenuItemLabel>
           </MenuItem>

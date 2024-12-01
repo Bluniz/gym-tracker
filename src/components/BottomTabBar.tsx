@@ -16,7 +16,7 @@ import Animated, {
 import colors from 'tailwindcss/colors';
 import { usePathname } from 'expo-router';
 
-const hideRoutes = ['/exercises/createExercises'];
+const hideRoutes = ['/exercises/createExercises', '/exercises/editExercise'];
 
 export const BottomTabBar = ({ navigation, state, descriptors }: BottomTabBarProps) => {
   const pathname = usePathname();
