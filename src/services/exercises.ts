@@ -1,13 +1,6 @@
 import { Tables } from '@/database.types';
 import { supabaseClient } from './supabase';
-
-type CreateExerciseInput = {
-  name: string;
-  description?: string;
-  photo_url?: string;
-  exercise_type: string[];
-  user_id: string;
-};
+import { CreateExerciseInput, EditExerciseInput } from './types';
 
 export const getExercises = async (userId: string) => {
   return supabaseClient
@@ -15,6 +8,15 @@ export const getExercises = async (userId: string) => {
     .select()
     .eq('user_id', userId)
     .returns<Tables<'exercises'>[]>()
+    .throwOnError();
+};
+
+export const getExerciseById = (exerciseId: string, userId: string) => {
+  return supabaseClient
+    .from('exercises')
+    .select()
+    .match({ id: exerciseId, user_id: userId })
+    .single()
     .throwOnError();
 };
 
@@ -43,6 +45,19 @@ export const createExercise = ({
       exercise_type,
     })
     .single()
+    .throwOnError();
+};
+
+export const updateExercise = (input: EditExerciseInput) => {
+  return supabaseClient
+    .from('exercises')
+    .update({
+      name: input.name,
+      description: input.description,
+      photo_url: input.photo_url,
+      exercise_type: input.exercise_type,
+    })
+    .match({ id: input.id, user_id: input.user_id })
     .throwOnError();
 };
 
