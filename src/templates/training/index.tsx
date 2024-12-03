@@ -8,9 +8,9 @@ import { Spinner } from '@/src/components/ui/spinner';
 import { Text } from '@/src/components/ui/text';
 import { useAuth } from '@/src/contexts/authContext';
 import { getTrainings } from '@/src/services/training';
-import { useFocusEffect } from 'expo-router';
+import { Link, router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { FlatList, RefreshControl } from 'react-native';
+import { FlatList, RefreshControl, TouchableWithoutFeedback } from 'react-native';
 import colors from 'tailwindcss/colors';
 
 type ListState = 'loading' | 'loaded' | 'refreshing' | 'error';
@@ -79,9 +79,14 @@ export default function TrainingTemplate() {
           }
           renderItem={({ item }) => {
             return (
-              <Card className="bg-slate-700">
-                <Heading>{item.name}</Heading>
-              </Card>
+              <TouchableWithoutFeedback
+                className="border"
+                onPress={() => router.navigate(`/(app)/training/${item.id}` as never)}
+              >
+                <Card className="bg-slate-700">
+                  <Heading>{item.name}</Heading>
+                </Card>
+              </TouchableWithoutFeedback>
             );
           }}
         />
