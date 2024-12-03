@@ -1,21 +1,22 @@
 import { Tables } from '@/database.types';
 import { Heading } from '@/src/components/ui/heading';
-import { VStack } from '@/src/components/ui/vstack';
 import { Center } from '@/src/components/ui/center';
-import { ScrollView } from 'react-native';
+import { FlatList, RefreshControl } from 'react-native';
 import { ExerciseItem } from './exerciseItem';
 import { useState } from 'react';
 import { ConfirmAlert } from '@/src/components/ConfirmAlert';
 import { deleteExercise } from '@/src/services/exercises';
 import { useCustomToast } from '@/src/hooks/toast';
+import colors from 'tailwindcss/colors';
 
 interface ExerciseListProps {
   data: Tables<'exercises'>[];
-  refetchList: () => void;
+  refetchList: () => Promise<void>;
 }
 
 export const ExerciseList = ({ data, refetchList }: ExerciseListProps) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [deleteConfirmModalData, setDeleteConfirmModalData] = useState({
     isOpen: false,
     id: '',
@@ -55,19 +56,43 @@ export const ExerciseList = ({ data, refetchList }: ExerciseListProps) => {
     }
   };
 
+  const onRefresh = async () => {
+    try {
+      setIsRefreshing(true);
+      await refetchList();
+    } catch (error) {
+      console.log(error);
+      showNewToast('Erro ao atualizar lista');
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
   return (
-    <ScrollView>
-      <VStack className="px-4 py-6" space="md">
-        {data.map((exercise) => {
+    <>
+      <FlatList
+        data={data}
+        contentContainerClassName="px-4 py-6 gap-4"
+        keyExtractor={(item) => `${item.id}`}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={onRefresh}
+            colors={[colors.red['700']]}
+            tintColor={colors.red['700']}
+            title="Carregando..."
+          />
+        }
+        renderItem={({ item }) => {
           return (
             <ExerciseItem
-              exercise={exercise}
-              key={exercise.id}
-              onDelete={() => onOpenDeleteConfirmModal(String(exercise.id), exercise.name)}
+              exercise={item}
+              key={item.id}
+              onDelete={() => onOpenDeleteConfirmModal(String(item.id), item.name)}
             />
           );
-        })}
-      </VStack>
+        }}
+      />
 
       <ConfirmAlert
         isOpen={deleteConfirmModalData.isOpen}
@@ -76,6 +101,6 @@ export const ExerciseList = ({ data, refetchList }: ExerciseListProps) => {
         onClose={onCloseDeleteConfirmModal}
         isLoading={isLoading}
       />
-    </ScrollView>
+    </>
   );
 };
