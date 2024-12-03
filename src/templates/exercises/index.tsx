@@ -14,6 +14,7 @@ import { ExerciseList } from './exerciseList';
 import { router, useFocusEffect } from 'expo-router';
 import { Fab, FabIcon, FabLabel } from '@/src/components/ui/fab';
 import { Plus } from 'lucide-react-native';
+import { Container } from '@/src/components/Container';
 
 export default function ExercisesTemplate() {
   const [exercises, setExercises] = useState<Tables<'exercises'>[]>([]);
@@ -46,10 +47,7 @@ export default function ExercisesTemplate() {
   );
 
   return (
-    <Box
-      className="h-full max-h-[88%] w-full flex-1"
-      style={{ paddingTop: Constants.statusBarHeight }}
-    >
+    <Container animate className="h-full max-h-[88%] w-full flex-1">
       <Heading className="pt-8 text-center text-white">Exercises</Heading>
 
       {isLoading ? (
@@ -71,6 +69,6 @@ export default function ExercisesTemplate() {
       >
         <FabIcon as={Plus} className="text-white" />
       </Fab>
-    </Box>
+    </Container>
   );
 }

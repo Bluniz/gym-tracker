@@ -3,12 +3,14 @@ import { Container } from '@/src/components/Container';
 import { ScreenHeader } from '@/src/components/ScreenHeader';
 import { Card } from '@/src/components/ui/card';
 import { Center } from '@/src/components/ui/center';
+import { Fab, FabIcon } from '@/src/components/ui/fab';
 import { Heading } from '@/src/components/ui/heading';
 import { Spinner } from '@/src/components/ui/spinner';
 import { Text } from '@/src/components/ui/text';
 import { useAuth } from '@/src/contexts/authContext';
 import { getTrainings } from '@/src/services/training';
-import { Link, router, useFocusEffect } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
+import { Plus } from 'lucide-react-native';
 import { useCallback, useState } from 'react';
 import { FlatList, RefreshControl, TouchableWithoutFeedback } from 'react-native';
 import colors from 'tailwindcss/colors';
@@ -42,7 +44,7 @@ export default function TrainingTemplate() {
   );
 
   return (
-    <Container animate className="h-full">
+    <Container animate className="h-full max-h-[88%]">
       {listState === 'loading' && (
         <Center className="h-full w-full">
           <Spinner size="large" color={colors.red[700]} />
@@ -56,40 +58,50 @@ export default function TrainingTemplate() {
         </Center>
       )}
       {(listState === 'loaded' || listState === 'refreshing') && (
-        <FlatList
-          data={data}
-          keyExtractor={(item) => item.id.toString()}
-          contentContainerClassName="px-4 gap-4"
-          refreshControl={
-            <RefreshControl
-              refreshing={listState === 'refreshing'}
-              onRefresh={() => fetchWorkouts('refreshing')}
-              colors={[colors.red['700']]}
-              tintColor={colors.red['700']}
-              title="Carregando..."
-            />
-          }
-          ListHeaderComponent={
-            <ScreenHeader
-              title="Treinos"
-              description="O que vamos treinar hoje?"
-              canGoBack={false}
-              containerClassname="pt-2"
-            />
-          }
-          renderItem={({ item }) => {
-            return (
-              <TouchableWithoutFeedback
-                className="border"
-                onPress={() => router.navigate(`/(app)/training/${item.id}` as never)}
-              >
-                <Card className="bg-slate-700">
-                  <Heading>{item.name}</Heading>
-                </Card>
-              </TouchableWithoutFeedback>
-            );
-          }}
-        />
+        <>
+          <FlatList
+            data={data}
+            keyExtractor={(item) => item.id.toString()}
+            contentContainerClassName="px-4 gap-4"
+            refreshControl={
+              <RefreshControl
+                refreshing={listState === 'refreshing'}
+                onRefresh={() => fetchWorkouts('refreshing')}
+                colors={[colors.red['700']]}
+                tintColor={colors.red['700']}
+                title="Carregando..."
+              />
+            }
+            ListHeaderComponent={
+              <ScreenHeader
+                title="Treinos"
+                description="O que vamos treinar hoje?"
+                canGoBack={false}
+                containerClassname="pt-2"
+              />
+            }
+            renderItem={({ item }) => {
+              return (
+                <TouchableWithoutFeedback
+                  className="border"
+                  onPress={() => router.navigate(`/(app)/training/${item.id}` as never)}
+                >
+                  <Card className="bg-slate-700">
+                    <Heading>{item.name}</Heading>
+                  </Card>
+                </TouchableWithoutFeedback>
+              );
+            }}
+          />
+          <Fab
+            size="lg"
+            placement="bottom right"
+            className="bg-red-700 active:bg-red-500"
+            onPress={() => router.navigate('/(app)/training/create')}
+          >
+            <FabIcon as={Plus} className="text-white" />
+          </Fab>
+        </>
       )}
     </Container>
   );
