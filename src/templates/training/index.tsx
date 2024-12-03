@@ -13,6 +13,7 @@ import { router, useFocusEffect } from 'expo-router';
 import { Plus } from 'lucide-react-native';
 import { useCallback, useState } from 'react';
 import { FlatList, RefreshControl, TouchableWithoutFeedback } from 'react-native';
+import Animated, { Easing, FadeIn, FadeOut } from 'react-native-reanimated';
 import colors from 'tailwindcss/colors';
 
 type ListState = 'loading' | 'loaded' | 'refreshing' | 'error';
@@ -58,7 +59,11 @@ export default function TrainingTemplate() {
         </Center>
       )}
       {(listState === 'loaded' || listState === 'refreshing') && (
-        <>
+        <Animated.View
+          className="h-full"
+          entering={FadeIn.duration(300).easing(Easing.inOut(Easing.quad))}
+          exiting={FadeOut.duration(300).easing(Easing.inOut(Easing.quad))}
+        >
           <FlatList
             data={data}
             keyExtractor={(item) => item.id.toString()}
@@ -101,7 +106,7 @@ export default function TrainingTemplate() {
           >
             <FabIcon as={Plus} className="text-white" />
           </Fab>
-        </>
+        </Animated.View>
       )}
     </Container>
   );
