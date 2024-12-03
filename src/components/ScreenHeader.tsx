@@ -7,6 +7,7 @@ import { MoveLeft } from 'lucide-react-native';
 import { Show } from './Show';
 import { VStack } from './ui/vstack';
 import clsx from 'clsx';
+import { Box } from './ui/box';
 
 interface ScreenHeaderProps {
   title: string;
@@ -29,8 +30,8 @@ export function ScreenHeader({
         </Button>
       </Show>
 
-      <VStack className="w-full items-center">
-        <Heading className="mx-auto">{title}</Heading>
+      <VStack className="mx-auto w-full items-center">
+        <Heading>{title}</Heading>
         {description && <Text>{description}</Text>}
       </VStack>
     </HStack>
