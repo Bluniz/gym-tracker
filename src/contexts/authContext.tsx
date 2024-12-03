@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     setIsLoading(true);
     const data = await GoogleService.onSignIn();
     setSession(data.session);
-    router.replace('/');
+    router.replace('/(app)/training');
     setIsLoading(false);
   };
   const signOut = async () => {
@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     supabaseClient.auth.getSession().then(({ data: { session } }) => {
       if (session) {
         setSession(session);
-        router.replace('/');
+        router.replace('/(app)/training');
       }
       setIsLoading(false);
     });

@@ -36,7 +36,7 @@ export default function AppLayout() {
         }}
       >
         <Tabs.Screen
-          name="index"
+          name="training"
           options={{
             tabBarIcon: Home,
             tabBarLabel: 'Home',
