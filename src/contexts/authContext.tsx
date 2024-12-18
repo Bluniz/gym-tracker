@@ -54,10 +54,6 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
     supabaseClient.auth.onAuthStateChange((_event, session) => {
       setSession(session);
-
-      if (!session) {
-        router.replace('/');
-      }
     });
   }, []);
 
