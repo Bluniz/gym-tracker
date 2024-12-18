@@ -9,7 +9,7 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 
-interface TabBarButton extends IButtonProps {
+interface TabBarButtonProps extends IButtonProps {
   isFocused: boolean;
   icon: LucideIcon;
   label: string;
@@ -22,7 +22,7 @@ export const TabBarButton = ({
   testID,
   onPress,
   onLongPress,
-}: TabBarButton) => {
+}: TabBarButtonProps) => {
   const scale = useSharedValue(0);
   const animatedTextStyle = useAnimatedStyle(() => {
     const opacity = interpolate(scale.value, [0, 1], [1, 0]);
@@ -52,13 +52,13 @@ export const TabBarButton = ({
       testID={testID}
       onPress={onPress}
       onLongPress={onLongPress}
-      className={clsx('flex-1 flex-col items-center justify-center bg-transparent')}
+      className={clsx('max-h-6 flex-1 flex-col items-center justify-center bg-transparent')}
       variant="link"
     >
       <Animated.View style={animatedIconStyle}>
-        <ButtonIcon as={icon} className={clsx('h-[18] w-[18] color-white')} />
+        <ButtonIcon as={icon} className={clsx('color-white')} />
       </Animated.View>
-      <Animated.Text className={clsx('text-[12] color-white')} style={animatedTextStyle}>
+      <Animated.Text className={clsx('text-[12px] color-white')} style={animatedTextStyle}>
         {label}
       </Animated.Text>
     </Button>
