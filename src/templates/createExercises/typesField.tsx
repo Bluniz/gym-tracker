@@ -19,7 +19,7 @@ import {
 } from '@/src/components/ui/checkbox';
 import { HStack } from '@/src/components/ui/hstack';
 import { ChevronUpIcon, ChevronDownIcon, CheckIcon } from 'lucide-react-native';
-import { FlatList } from 'react-native';
+import { FlatList, Keyboard } from 'react-native';
 import { Tables } from '@/database.types';
 import { Spinner } from '@/src/components/ui/spinner';
 import colors from 'tailwindcss/colors';
@@ -57,7 +57,7 @@ export function TypesField({
     <Accordion type="single" variant="unfilled" defaultValue={['types']}>
       <AccordionItem value="types">
         <AccordionHeader>
-          <AccordionTrigger>
+          <AccordionTrigger onPress={Keyboard.dismiss}>
             {({ isExpanded }) => {
               return (
                 <>
