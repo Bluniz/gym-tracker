@@ -18,6 +18,7 @@ import { Center } from '@/src/components/ui/center';
 import { Heading } from '@/src/components/ui/heading';
 import colors from 'tailwindcss/colors';
 import { Spinner } from '@/src/components/ui/spinner';
+import { useBottomTab } from '@/src/contexts/bottomTabContext';
 
 interface EditExerciseTemplateProps {
   id: string;
@@ -38,12 +39,16 @@ export function EditExerciseTemplate({ id }: EditExerciseTemplateProps) {
 
   const { session } = useAuth();
   const { showNewToast } = useCustomToast();
+  const { isOpen, openBottomTab, closeBottomTab } = useBottomTab();
 
   const descriptionRef = useRef(null);
   const urlPhotoRef = useRef(null);
 
   useFocusEffect(
     useCallback(() => {
+      if (isOpen) {
+        closeBottomTab();
+      }
       (async () => {
         try {
           const response = await getExerciseTypes();
@@ -62,6 +67,10 @@ export function EditExerciseTemplate({ id }: EditExerciseTemplateProps) {
           setIsLoadingScreen(false);
         }
       })();
+      return () => {
+        openBottomTab();
+      };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id, session?.user?.id]),
   );
 
