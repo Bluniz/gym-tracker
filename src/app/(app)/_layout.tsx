@@ -29,6 +29,7 @@ export default function AppLayout() {
         tabBar={(props) => <BottomTabBar {...props} />}
         screenOptions={{
           headerShown: false,
+          unmountOnBlur: true,
         }}
         sceneContainerStyle={{
           backgroundColor: colors.slate['800'],
