@@ -16,6 +16,7 @@ import { useCustomToast } from '@/src/hooks/toast';
 import { CustomInput } from '@/src/components/CustomInput';
 import { KeyboardView } from '@/src/components/KeyboardView';
 import { Keyboard } from 'react-native';
+import { useBottomTab } from '@/src/contexts/bottomTabContext';
 
 export function CreateExerciseTemplate() {
   const [types, setTypes] = useState<Tables<'exercises_types'>[] | null>([]);
@@ -31,6 +32,7 @@ export function CreateExerciseTemplate() {
   const [showConfirmAlert, setShowConfirmAlert] = useState(false);
 
   const { session } = useAuth();
+  const { isOpen, openBottomTab, closeBottomTab } = useBottomTab();
   const { showNewToast } = useCustomToast();
 
   const descriptionRef = useRef(null);
@@ -38,6 +40,9 @@ export function CreateExerciseTemplate() {
 
   useFocusEffect(
     useCallback(() => {
+      if (isOpen) {
+        closeBottomTab();
+      }
       (async () => {
         try {
           setHasErrorOnTypes(false);
@@ -52,6 +57,11 @@ export function CreateExerciseTemplate() {
           setIsLoadingTypes(false);
         }
       })();
+
+      return () => {
+        openBottomTab();
+      };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
 
