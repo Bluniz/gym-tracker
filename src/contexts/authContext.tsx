@@ -45,6 +45,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     supabaseClient.auth.getSession().then(({ data: { session } }) => {
+      console.log('session', session);
       if (session) {
         setSession(session);
         router.replace('/(app)/training');

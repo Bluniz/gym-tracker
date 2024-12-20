@@ -9,9 +9,12 @@
     "web": "DARK_MODE=media DARK_MODE=media expo start --web",
     "test": "jest --watchAll",
     "postinstall": "patch-package",
-    "prebuild": "expo prebuild",
+    "prebuild": "prebuild",
     "prebuild-clean": "prebuild --clean",
     "lint": "eslint .",
+    "build-android": "eas build --platform android",
+    "build-ios": "eas build --platform ios",
+    "build": "eas build --platform all",
     "generate-types": "npx supabase gen types --lang=typescript --project-id 'fkmqzmzmiybvwmepobfz' --schema public > database.types.ts"
   },
   "jest": {
