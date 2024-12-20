@@ -52,7 +52,7 @@ export const TabBarButton = ({
       testID={testID}
       onPress={onPress}
       onLongPress={onLongPress}
-      className={clsx('max-h-6 flex-1 flex-col items-center justify-center bg-transparent')}
+      className={clsx('max-h-8 flex-1 flex-col items-center justify-center bg-transparent')}
       variant="link"
     >
       <Animated.View style={animatedIconStyle}>
