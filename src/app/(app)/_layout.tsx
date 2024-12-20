@@ -1,4 +1,3 @@
-import { Text } from '@/src/components/ui/text';
 import { Center } from '@/src/components/ui/center';
 import { useAuth } from '@/src/contexts/authContext';
 import { Redirect, Tabs } from 'expo-router';
