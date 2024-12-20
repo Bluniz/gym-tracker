@@ -2,14 +2,16 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 import '@/global.css';
 import { GluestackUIProvider } from '@/src/components/ui/gluestack-ui-provider';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { useFonts } from 'expo-font';
-import { Slot, Stack } from 'expo-router';
+import { Slot } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import 'react-native-reanimated';
 import { AuthProvider } from '../contexts/authContext';
 import { StatusBar } from 'expo-status-bar';
+import { BottomTabContextProvider } from '../contexts/bottomTabContext';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -45,12 +47,17 @@ export default function RootLayout() {
   }
 
   return (
-    <GluestackUIProvider mode="dark">
-      <StatusBar style="light" />
-      <AuthProvider>
-        <RootLayoutComponent />
-      </AuthProvider>
-    </GluestackUIProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <GluestackUIProvider mode="dark">
+        <StatusBar style="light" />
+
+        <AuthProvider>
+          <BottomTabContextProvider>
+            <RootLayoutComponent />
+          </BottomTabContextProvider>
+        </AuthProvider>
+      </GluestackUIProvider>
+    </GestureHandlerRootView>
   );
 }
 

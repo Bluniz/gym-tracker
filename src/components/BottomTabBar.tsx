@@ -14,12 +14,10 @@ import Animated, {
   withDelay,
 } from 'react-native-reanimated';
 import colors from 'tailwindcss/colors';
-import { usePathname } from 'expo-router';
-
-const hideRoutes = ['/exercises/createExercises', '/exercises/editExercise'];
+import { useBottomTab } from '../contexts/bottomTabContext';
 
 export const BottomTabBar = ({ navigation, state, descriptors }: BottomTabBarProps) => {
-  const pathname = usePathname();
+  const { isOpen } = useBottomTab();
 
   const [dimensions, setDimensions] = useState({ height: 20, width: 100 }); // Initial Values
 
@@ -48,12 +46,12 @@ export const BottomTabBar = ({ navigation, state, descriptors }: BottomTabBarPro
   };
 
   useEffect(() => {
-    if (hideRoutes.includes(pathname)) {
+    if (!isOpen) {
       tabOpacity.value = tabOpacity.value = withDelay(100, withTiming(1));
     } else {
       tabOpacity.value = tabOpacity.value = withDelay(100, withTiming(0));
     }
-  }, [pathname]);
+  }, [isOpen, tabOpacity]);
 
   return (
     <Animated.View
