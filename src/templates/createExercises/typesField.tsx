@@ -72,7 +72,7 @@ export function TypesField({
             }}
           </AccordionTrigger>
         </AccordionHeader>
-        <AccordionContent className="max-h-[33rem]">
+        <AccordionContent className="max-h-[30rem]">
           <CheckboxGroup value={selectedTypes} onChange={setSelectedTypes}>
             <FlatList
               data={types}
