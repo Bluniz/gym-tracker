@@ -58,7 +58,7 @@ export const BottomTabBar = ({ navigation, state, descriptors }: BottomTabBarPro
       style={[animatedtabOpacityStyle]}
       onLayout={onTabBarLayout}
       className={clsx(
-        'absolute bottom-[50] mx-[80] flex-row items-center justify-between rounded-[35] bg-slate-700 py-[18] shadow-sm',
+        'absolute bottom-[50] z-[99999] mx-[80] flex-row items-center justify-between rounded-[35] bg-slate-700 py-[18] shadow-sm',
       )}
     >
       <Animated.View
