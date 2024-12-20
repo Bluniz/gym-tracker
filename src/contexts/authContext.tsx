@@ -45,6 +45,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     supabaseClient.auth.getSession().then(({ data: { session } }) => {
+      console.log('session', session);
       if (session) {
         setSession(session);
         router.replace('/(app)/training');
@@ -54,10 +55,6 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
     supabaseClient.auth.onAuthStateChange((_event, session) => {
       setSession(session);
-
-      if (!session) {
-        router.replace('/');
-      }
     });
   }, []);
 

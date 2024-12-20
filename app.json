@@ -14,14 +14,16 @@
     },
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.bluniz.gymTracker"
+      "bundleIdentifier": "com.bluniz.gymTracker",
+      "googleServicesFile": "./google_services.plist"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.bluniz.gymTracker"
+      "package": "com.bluniz.gymTracker",
+      "googleServicesFile": "./google_services.json"
     },
     "web": {
       "bundler": "metro",
@@ -30,7 +32,12 @@
     },
     "plugins": [
       "expo-router",
-      "@react-native-google-signin/google-signin",
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.259388373049-ueinfv8c9ia67uehdddg17s05uijk401"
+        }
+      ],
       [
         "expo-build-properties",
         {
@@ -42,6 +49,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "a48d17b8-5ac2-4cb4-b516-856f39b85c37"
+      }
     }
   }
 }

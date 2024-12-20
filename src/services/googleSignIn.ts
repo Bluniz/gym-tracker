@@ -6,11 +6,13 @@ export const onSignIn = async () => {
   try {
     await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
 
-    const hasPreviousLogin = await GoogleSignin.hasPreviousSignIn();
+    //const hasPreviousLogin = await GoogleSignin.hasPreviousSignIn();
 
-    const response = hasPreviousLogin
-      ? await GoogleSignin.signInSilently()
-      : await GoogleSignin.signIn();
+    // const response = hasPreviousLogin
+    //   ? await GoogleSignin.signInSilently()
+    //   : await GoogleSignin.signIn();
+
+    const response = await GoogleSignin.signIn();
 
     if (response.data?.idToken) {
       const { data } = await supabaseClient.auth.signInWithIdToken({

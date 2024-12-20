@@ -14,6 +14,8 @@ import { ConfirmAlert } from '@/src/components/ConfirmAlert';
 import { useAuth } from '@/src/contexts/authContext';
 import { useCustomToast } from '@/src/hooks/toast';
 import { CustomInput } from '@/src/components/CustomInput';
+import { KeyboardView } from '@/src/components/KeyboardView';
+import { Keyboard } from 'react-native';
 
 export function CreateExerciseTemplate() {
   const [types, setTypes] = useState<Tables<'exercises_types'>[] | null>([]);
@@ -74,64 +76,68 @@ export function CreateExerciseTemplate() {
 
   return (
     <Container className="flex h-full flex-col" animate>
-      <ScreenHeader title="Criar exercicios" />
+      <KeyboardView>
+        <ScreenHeader title="Criar exercicios" />
 
-      <VStack className="flex-1 justify-between px-5 pt-6">
-        <VStack space="xl">
-          <CustomInput
-            label="Nome*"
-            placeholder="Digite o nome do exercicio"
-            value={exerciseName}
-            onChangeText={setExerciseName}
-            returnKeyType="next"
-            onSubmitEditing={() => descriptionRef?.current?.focus()}
-          />
-          <CustomInput
-            label="Descrição"
-            ref={descriptionRef}
-            placeholder="Digite a descrição do seu exercicio"
-            value={exerciseDescription}
-            onChangeText={setExerciseDescription}
-            returnKeyType="next"
-            onSubmitEditing={() => urlPhotoRef?.current?.focus()}
-            maxLength={30}
-            className="max-h-5 overflow-hidden"
-          />
-          <CustomInput
-            label="Foto"
-            placeholder="Adicione a URL da foto do exercicio"
-            value={exercisePhotoUrl}
-            onChangeText={setExercisePhotoUrl}
-            returnKeyType="next"
-            className="max-h-5"
-          />
+        <VStack className="flex-1 justify-between px-5 pt-6">
+          <VStack space="xl">
+            <CustomInput
+              label="Nome*"
+              placeholder="Digite o nome do exercicio"
+              value={exerciseName}
+              onChangeText={setExerciseName}
+              returnKeyType="next"
+              onSubmitEditing={() => descriptionRef?.current?.focus()}
+            />
+            <CustomInput
+              label="Descrição"
+              ref={descriptionRef}
+              placeholder="Digite a descrição do seu exercicio"
+              value={exerciseDescription}
+              onChangeText={setExerciseDescription}
+              returnKeyType="next"
+              onSubmitEditing={() => urlPhotoRef?.current?.focus()}
+              maxLength={30}
+              className="max-h-5 overflow-hidden"
+            />
+            <CustomInput
+              label="Foto"
+              placeholder="Adicione a URL da foto do exercicio"
+              value={exercisePhotoUrl}
+              onChangeText={setExercisePhotoUrl}
+              returnKeyType="next"
+              className="max-h-5"
+            />
 
-          <TypesField
-            types={types}
-            setSelectedTypes={setSelectedTypes}
-            selectedTypes={selectedTypes}
-            isLoading={isLoadingTypes}
-            hasError={hasErrorOnTypes}
-          />
+            <TypesField
+              types={types}
+              setSelectedTypes={setSelectedTypes}
+              selectedTypes={selectedTypes}
+              isLoading={isLoadingTypes}
+              hasError={hasErrorOnTypes}
+            />
+          </VStack>
+          <Button
+            className="mb-10 w-full rounded-xl bg-red-700 disabled:opacity-50"
+            size="xl"
+            onPress={() => {
+              Keyboard.dismiss();
+              setShowConfirmAlert(true);
+            }}
+            disabled={!exerciseName || !selectedTypes.length}
+          >
+            <ButtonText className="text-white">Criar</ButtonText>
+          </Button>
         </VStack>
-        <Button
-          className="mb-10 w-full rounded-xl bg-red-700 disabled:opacity-75"
-          size="xl"
-          onPress={() => setShowConfirmAlert(true)}
-          disabled={!exerciseName || !selectedTypes.length}
-        >
-          <ButtonText className="text-white">Criar</ButtonText>
-        </Button>
-      </VStack>
-
-      <ConfirmAlert
-        title="Tem certeza que deseja criar este treino?"
-        onClose={() => setShowConfirmAlert(false)}
-        isOpen={showConfirmAlert}
-        onConfirm={onConfirm}
-        confirmText="Criar"
-        cancelText="Cancelar"
-      />
+        <ConfirmAlert
+          title="Tem certeza que deseja criar este treino?"
+          onClose={() => setShowConfirmAlert(false)}
+          isOpen={showConfirmAlert}
+          onConfirm={onConfirm}
+          confirmText="Criar"
+          cancelText="Cancelar"
+        />
+      </KeyboardView>
     </Container>
   );
 }
