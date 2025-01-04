@@ -13,7 +13,7 @@ export const onSignIn = async () => {
     //   : await GoogleSignin.signIn();
 
     const response = await GoogleSignin.signIn();
-
+    console.log('response', response);
     if (response.data?.idToken) {
       const { data } = await supabaseClient.auth.signInWithIdToken({
         provider: 'google',
