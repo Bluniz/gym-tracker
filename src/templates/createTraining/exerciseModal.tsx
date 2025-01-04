@@ -26,7 +26,7 @@ import { Card } from '@/src/components/ui/card';
 import { HStack } from '@/src/components/ui/hstack';
 import { Button, ButtonText } from '@/src/components/ui/button';
 import { Dispatch } from 'react';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 
 interface ExerciseModalProps {
   isOpen: boolean;
@@ -67,6 +67,14 @@ export function ExerciseModal({
                   {!exercises?.length && (
                     <>
                       <Text>Nenhum exercicio cadastrado. Por favor, crie alguns</Text>
+                      <Button
+                        className="rounded-xl bg-red-700"
+                        onPress={() => router.navigate('/(app)/(tabs)/exercises')}
+                      >
+                        <ButtonText className="text-center font-bold text-white">
+                          Criar exercicios
+                        </ButtonText>
+                      </Button>
                     </>
                   )}
                   {exercises.map((item) => {

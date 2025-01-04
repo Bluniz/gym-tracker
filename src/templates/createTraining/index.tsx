@@ -38,6 +38,7 @@ import { FlatList, ScrollView } from 'react-native';
 import { Card } from '@/src/components/ui/card';
 import { HStack } from '@/src/components/ui/hstack';
 import { ExerciseModal } from './exerciseModal';
+import { KeyboardView } from '@/src/components/KeyboardView';
 
 export const CreateTrainingTemplate = () => {
   const [name, setName] = useState('');
@@ -50,6 +51,8 @@ export const CreateTrainingTemplate = () => {
   const { session } = useAuth();
   const { isOpen, closeBottomTab, openBottomTab } = useBottomTab();
   const { showNewToast } = useCustomToast();
+
+  const isConfirmButtonDisabled = !name || !selectedExercises.length;
 
   const fetchExercises = useCallback(async () => {
     try {
@@ -82,44 +85,60 @@ export const CreateTrainingTemplate = () => {
   }, [fetchExercises]);
 
   return (
-    <Container animate className="relative h-full">
-      <ScreenHeader title="Criar Treino" />
-      <VStack className="mt-4 px-4" space="md">
-        <Heading>Informações gerais</Heading>
+    <Container animate className="relative flex h-full flex-col">
+      <KeyboardView>
+        <ScreenHeader title="Criar Treino" />
+        <VStack className="mt-4 flex-1 justify-between px-4">
+          <VStack space="md">
+            <Heading>Informações gerais</Heading>
 
-        <CustomInput label="Nome" value={name} onChangeText={setName} />
-        <CustomInput
-          label="Observações"
-          className="max-h-5 overflow-hidden"
-          value={observations}
-          onChangeText={setObservations}
+            <CustomInput label="Nome" value={name} onChangeText={setName} />
+            <CustomInput
+              label="Observações"
+              className="max-h-5 overflow-hidden"
+              value={observations}
+              onChangeText={setObservations}
+            />
+
+            <Heading>Exercicios</Heading>
+            <Button
+              variant="outline"
+              className="rounded-xl"
+              onPress={() => setOpenExerciseSheet(true)}
+            >
+              <ButtonText>Adicionar exercicio</ButtonText>
+            </Button>
+            <FlatList
+              data={selectedExercises}
+              keyExtractor={(item) => item}
+              contentContainerClassName="gap-2 mt-2"
+              renderItem={({ item }) => (
+                <HStack className="ml-2 items-center" space="md">
+                  <Box className="h-3 w-3 rounded-full bg-red-700" />
+                  <Text className="text-lg">{item}</Text>
+                </HStack>
+              )}
+            />
+          </VStack>
+
+          <Button
+            className="mb-10 rounded-xl bg-red-700 disabled:opacity-50"
+            size="xl"
+            disabled={isConfirmButtonDisabled}
+          >
+            <ButtonText className="text-white">Criar</ButtonText>
+          </Button>
+        </VStack>
+
+        <ExerciseModal
+          isOpen={openExerciseSheet}
+          handleClose={() => setOpenExerciseSheet(false)}
+          exercises={exercises}
+          selectedExercises={selectedExercises}
+          isLoadingExercises={isLoadingExercises}
+          setSelectedExercises={setSelectedExercises}
         />
-
-        <Heading>Exercicios</Heading>
-        <Button variant="outline" className="rounded-xl" onPress={() => setOpenExerciseSheet(true)}>
-          <ButtonText>Adicionar exercicio</ButtonText>
-        </Button>
-        <FlatList
-          data={selectedExercises}
-          keyExtractor={(item) => item}
-          contentContainerClassName="gap-2 mt-2"
-          renderItem={({ item }) => (
-            <HStack className="ml-2 items-center" space="md">
-              <Box className="h-3 w-3 rounded-full bg-red-700" />
-              <Text className="text-lg">{item}</Text>
-            </HStack>
-          )}
-        />
-      </VStack>
-
-      <ExerciseModal
-        isOpen={openExerciseSheet}
-        handleClose={() => setOpenExerciseSheet(false)}
-        exercises={exercises}
-        selectedExercises={selectedExercises}
-        isLoadingExercises={isLoadingExercises}
-        setSelectedExercises={setSelectedExercises}
-      />
+      </KeyboardView>
     </Container>
   );
 };
