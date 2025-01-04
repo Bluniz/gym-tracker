@@ -46,7 +46,10 @@ export default function Index() {
 
           <GoogleSigninButton
             size={GoogleSigninButton.Size.Wide}
-            color={GoogleSigninButton.Color.Dark}
+            color={GoogleSigninButton.Color.Light}
+            style={{
+              borderRadius: 16,
+            }}
             onPress={() => {
               signIn();
             }}
