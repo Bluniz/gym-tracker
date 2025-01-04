@@ -20,7 +20,6 @@ export const BottomTabBar = ({ navigation, state, descriptors }: BottomTabBarPro
   const { isOpen } = useBottomTab();
 
   const [dimensions, setDimensions] = useState({ height: 20, width: 100 }); // Initial Values
-
   const buttonWidth = dimensions.width / state.routes.length;
 
   const tabOpacity = useSharedValue(1);
@@ -32,6 +31,7 @@ export const BottomTabBar = ({ navigation, state, descriptors }: BottomTabBarPro
   });
 
   const tabPositionX = useSharedValue(0);
+
   const animatedStyle = useAnimatedStyle(() => {
     return {
       transform: [{ translateX: tabPositionX.value }],
@@ -53,13 +53,17 @@ export const BottomTabBar = ({ navigation, state, descriptors }: BottomTabBarPro
     }
   }, [isOpen, tabOpacity]);
 
+  useEffect(() => {
+    tabPositionX.value = withSpring(buttonWidth * state.index, { duration: 1500 });
+  }, [state.index, buttonWidth, tabPositionX]);
+
   return (
     <Animated.View
       style={[animatedtabOpacityStyle]}
       onLayout={onTabBarLayout}
       className={clsx(
         'absolute bottom-[50] z-[99999] mx-[80] flex-row items-center justify-between rounded-[35] bg-slate-700 py-[18] shadow-sm',
-        !isOpen && 'hidden',
+        !isOpen && 'pointer-events-none hidden',
       )}
     >
       <Animated.View
@@ -86,9 +90,7 @@ export const BottomTabBar = ({ navigation, state, descriptors }: BottomTabBarPro
 
         const icon = options.tabBarIcon ? options.tabBarIcon : Hourglass;
         const isFocused = state.index === index;
-
         const onPress = () => {
-          tabPositionX.value = withSpring(buttonWidth * index, { duration: 1500 });
           const event = navigation.emit({
             type: 'tabPress',
             target: route.key,
