@@ -27,8 +27,8 @@ export const ExerciseList = ({ data, refetchList }: ExerciseListProps) => {
 
   if (data.length === 0) {
     return (
-      <Center className="h-full">
-        <Heading>Você não possui treinos criados no momento.</Heading>
+      <Center className="h-full px-4">
+        <Heading className="text-center">Você não possui treinos criados no momento.</Heading>
       </Center>
     );
   }

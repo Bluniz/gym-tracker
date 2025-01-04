@@ -64,6 +64,7 @@ export function CreateExerciseTemplate() {
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
+  console.log(session);
 
   const onConfirm = async () => {
     try {
@@ -128,10 +129,11 @@ export function CreateExerciseTemplate() {
             />
           </VStack>
           <Button
-            className="mb-10 w-full rounded-xl bg-red-700 disabled:opacity-50"
+            className="z-999 mb-10 w-full rounded-xl border bg-red-700 disabled:opacity-50"
             size="xl"
             onPress={() => {
               Keyboard.dismiss();
+              console.log('press');
               setShowConfirmAlert(true);
             }}
             disabled={!exerciseName || !selectedTypes.length}

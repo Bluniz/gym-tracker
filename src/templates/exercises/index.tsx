@@ -4,15 +4,12 @@ import { Box } from '@/src/components/ui/box';
 import { Heading } from '@/src/components/ui/heading';
 import { useAuth } from '@/src/contexts/authContext';
 import { getExercises } from '@/src/services/exercises';
-import Constants from 'expo-constants';
 import { useCallback, useState } from 'react';
 import { ExerciseError } from './exerciseError';
 import { ExerciseLoading } from './exerciseLoading';
-import { VStack } from '@/src/components/ui/vstack';
-import { Card } from '@/src/components/ui/card';
 import { ExerciseList } from './exerciseList';
 import { router, useFocusEffect } from 'expo-router';
-import { Fab, FabIcon, FabLabel } from '@/src/components/ui/fab';
+import { Fab, FabIcon } from '@/src/components/ui/fab';
 import { Plus } from 'lucide-react-native';
 import { Container } from '@/src/components/Container';
 
