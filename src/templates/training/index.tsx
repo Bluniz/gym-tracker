@@ -51,6 +51,7 @@ export default function TrainingTemplate() {
           <Spinner size="large" color={colors.red[700]} />
         </Center>
       )}
+
       {listState === 'error' && (
         <Center className="h-full w-full">
           <Text className="px-10 text-center">
@@ -67,7 +68,7 @@ export default function TrainingTemplate() {
           <FlatList
             data={data}
             keyExtractor={(item) => item.id.toString()}
-            contentContainerClassName="px-4 gap-4"
+            contentContainerClassName="px-4 gap-4 h-[95%]"
             refreshControl={
               <RefreshControl
                 refreshing={listState === 'refreshing'}
@@ -82,8 +83,15 @@ export default function TrainingTemplate() {
                 title="Treinos"
                 description="O que vamos treinar hoje?"
                 canGoBack={false}
-                containerClassname="pt-2"
+                containerClassname="pt-3"
               />
+            }
+            ListEmptyComponent={
+              <Center className="h-full w-full">
+                <Heading className="px-10 text-center">
+                  Você não possui treinos criados no momento
+                </Heading>
+              </Center>
             }
             renderItem={({ item }) => {
               return (
