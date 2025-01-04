@@ -1,6 +1,6 @@
 import { Center } from '@/src/components/ui/center';
 import { useAuth } from '@/src/contexts/authContext';
-import { Redirect, Tabs } from 'expo-router';
+import { Redirect, Slot, Tabs } from 'expo-router';
 import { BottomTabBar } from '@/src/components/BottomTabBar';
 import { Dumbbell, Home } from 'lucide-react-native';
 import { StatusBar } from 'expo-status-bar';
@@ -22,34 +22,5 @@ export default function AppLayout() {
     return <Redirect href="/signIn" />;
   }
 
-  return (
-    <>
-      <StatusBar style="light" />
-      <Tabs
-        tabBar={(props) => <BottomTabBar {...props} />}
-        screenOptions={{
-          headerShown: false,
-          unmountOnBlur: true,
-        }}
-        sceneContainerStyle={{
-          backgroundColor: colors.slate['800'],
-        }}
-      >
-        <Tabs.Screen
-          name="training"
-          options={{
-            tabBarIcon: Home,
-            tabBarLabel: 'Home',
-          }}
-        />
-        <Tabs.Screen
-          name="exercises"
-          options={{
-            tabBarLabel: 'Exercises',
-            tabBarIcon: Dumbbell,
-          }}
-        />
-      </Tabs>
-    </>
-  );
+  return <Slot />;
 }
