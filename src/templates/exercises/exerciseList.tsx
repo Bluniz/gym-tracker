@@ -25,14 +25,6 @@ export const ExerciseList = ({ data, refetchList }: ExerciseListProps) => {
 
   const { showNewToast } = useCustomToast();
 
-  if (data.length === 0) {
-    return (
-      <Center className="h-full px-4">
-        <Heading className="text-center">Você não possui treinos criados no momento.</Heading>
-      </Center>
-    );
-  }
-
   const onOpenDeleteConfirmModal = (exerciseId: string, name: string) => {
     setDeleteConfirmModalData({ isOpen: true, id: exerciseId, name });
   };
@@ -72,7 +64,7 @@ export const ExerciseList = ({ data, refetchList }: ExerciseListProps) => {
     <>
       <FlatList
         data={data}
-        contentContainerClassName="px-4 py-6 gap-4"
+        contentContainerClassName="px-4 py-6 gap-4 h-[95%]"
         keyExtractor={(item) => `${item.id}`}
         refreshControl={
           <RefreshControl
@@ -82,6 +74,13 @@ export const ExerciseList = ({ data, refetchList }: ExerciseListProps) => {
             tintColor={colors.red['700']}
             title="Carregando..."
           />
+        }
+        ListEmptyComponent={
+          <Center className="h-full px-4">
+            <Heading className="text-center">
+              Você não possui exercicios criados no momento.
+            </Heading>
+          </Center>
         }
         renderItem={({ item }) => {
           return (
