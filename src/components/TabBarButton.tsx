@@ -23,7 +23,6 @@ export const TabBarButton = ({
   onPress,
   onLongPress,
 }: TabBarButtonProps) => {
-  console.log(`${label} - ${isFocused}`);
   const scale = useSharedValue(0);
   const animatedTextStyle = useAnimatedStyle(() => {
     const opacity = interpolate(scale.value, [0, 1], [1, 0]);
@@ -45,11 +44,6 @@ export const TabBarButton = ({
       duration: 350,
     });
   }, [scale, isFocused]);
-
-  console.log('isFocused component', isFocused);
-  console.log('label component', label);
-
-  console.log('renderizei', label);
 
   return (
     <Button
