@@ -64,7 +64,6 @@ export function CreateExerciseTemplate() {
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
-  console.log(session);
 
   const onConfirm = async () => {
     try {
@@ -133,7 +132,6 @@ export function CreateExerciseTemplate() {
             size="xl"
             onPress={() => {
               Keyboard.dismiss();
-              console.log('press');
               setShowConfirmAlert(true);
             }}
             disabled={!exerciseName || !selectedTypes.length}

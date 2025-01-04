@@ -1,6 +1,5 @@
 import { Box } from '../components/ui/box';
 import { Heading } from '../components/ui/heading';
-import { Text } from '../components/ui/text';
 
 import Constants from 'expo-constants';
 
@@ -8,7 +7,6 @@ import { Image } from '../components/ui/image';
 import { Center } from '../components/ui/center';
 import { VStack } from '../components/ui/vstack';
 import { useAuth } from '../contexts/authContext';
-import { router } from 'expo-router';
 import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
 import { AppState } from 'react-native';
 import { supabaseClient } from '../services/supabase';
