@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     setIsLoading(true);
     const data = await GoogleService.onSignIn();
     setSession(data.session);
-    router.replace('/(app)/training');
+    router.replace('/(app)/(tabs)/training');
     setIsLoading(false);
   };
   const signOut = async () => {
@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       console.log('session', session);
       if (session) {
         setSession(session);
-        router.replace('/(app)/training');
+        router.replace('/(app)/(tabs)/training');
       }
       setIsLoading(false);
     });
