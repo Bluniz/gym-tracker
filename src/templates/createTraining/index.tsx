@@ -7,38 +7,21 @@ import { Heading } from '@/src/components/ui/heading';
 import { Text } from '@/src/components/ui/text';
 import { VStack } from '@/src/components/ui/vstack';
 import { useCallback, useEffect, useState } from 'react';
-import { useFocusEffect } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { useBottomTab } from '@/src/contexts/bottomTabContext';
-import {
-  Modal,
-  ModalBackdrop,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-} from '@/src/components/ui/modal';
-import { CheckIcon, CloseIcon, Icon } from '@/src/components/ui/icon';
+
 import { useAuth } from '@/src/contexts/authContext';
 import { Tables } from '@/database.types';
 import { getExercises } from '@/src/services/exercises';
 import { useCustomToast } from '@/src/hooks/toast';
-import { Center } from '@/src/components/ui/center';
-import { Spinner } from '@/src/components/ui/spinner';
-import colors from 'tailwindcss/colors';
 import { Box } from '@/src/components/ui/box';
-import {
-  Checkbox,
-  CheckboxGroup,
-  CheckboxIcon,
-  CheckboxIndicator,
-  CheckboxLabel,
-} from '@/src/components/ui/checkbox';
-import { FlatList, ScrollView } from 'react-native';
-import { Card } from '@/src/components/ui/card';
+
+import { FlatList } from 'react-native';
 import { HStack } from '@/src/components/ui/hstack';
 import { ExerciseModal } from './exerciseModal';
 import { KeyboardView } from '@/src/components/KeyboardView';
+import { SelectedExercisesProps } from './types';
+import { createTraining } from '@/src/services/training';
 
 export const CreateTrainingTemplate = () => {
   const [name, setName] = useState('');
@@ -46,13 +29,30 @@ export const CreateTrainingTemplate = () => {
   const [openExerciseSheet, setOpenExerciseSheet] = useState(false);
   const [isLoadingExercises, setIsLoadingExercises] = useState(true);
   const [exercises, setExercises] = useState<Tables<'exercises'>[]>([]);
-  const [selectedExercises, setSelectedExercises] = useState<string[]>([]);
+  const [selectedExercises, setSelectedExercises] = useState<SelectedExercisesProps[]>([]);
 
   const { session } = useAuth();
   const { isOpen, closeBottomTab, openBottomTab } = useBottomTab();
   const { showNewToast } = useCustomToast();
 
   const isConfirmButtonDisabled = !name || !selectedExercises.length;
+
+  const handleCreateWorkout = async () => {
+    try {
+      console.log('created', name, observations, selectedExercises);
+      const id = await createTraining({
+        user_id: session?.user.id!,
+        exercise_name: name,
+        exercise_observation: observations,
+        selectedExercises,
+      });
+
+      showNewToast('Treino criado com sucesso!');
+      router.navigate(`/(app)/(tabs)/training/${id}`);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
 
   const fetchExercises = useCallback(async () => {
     try {
@@ -110,12 +110,14 @@ export const CreateTrainingTemplate = () => {
             </Button>
             <FlatList
               data={selectedExercises}
-              keyExtractor={(item) => item}
+              keyExtractor={(item) => item.id}
               contentContainerClassName="gap-2 mt-2"
               renderItem={({ item }) => (
                 <HStack className="ml-2 items-center" space="md">
                   <Box className="h-3 w-3 rounded-full bg-red-700" />
-                  <Text className="text-lg">{item}</Text>
+                  <Text className="text-lg">{item.name}</Text>
+                  <Text className="text-lg">Repetições: {item.reps}</Text>
+                  <Text className="text-lg">Series: {item.series}</Text>
                 </HStack>
               )}
             />
@@ -125,6 +127,7 @@ export const CreateTrainingTemplate = () => {
             className="mb-10 rounded-xl bg-red-700 disabled:opacity-50"
             size="xl"
             disabled={isConfirmButtonDisabled}
+            onPress={handleCreateWorkout}
           >
             <ButtonText className="text-white">Criar</ButtonText>
           </Button>

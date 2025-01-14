@@ -8,32 +8,26 @@ import {
   ModalFooter,
   ModalHeader,
 } from '@/src/components/ui/modal';
-import { CheckIcon, CloseIcon, Icon } from '@/src/components/ui/icon';
+import { CloseIcon, Icon } from '@/src/components/ui/icon';
 import { Center } from '@/src/components/ui/center';
 import { Spinner } from '@/src/components/ui/spinner';
 import colors from 'tailwindcss/colors';
 import { Text } from '@/src/components/ui/text';
 import { ScrollView } from 'react-native';
 import { VStack } from '@/src/components/ui/vstack';
-import {
-  Checkbox,
-  CheckboxGroup,
-  CheckboxIcon,
-  CheckboxIndicator,
-  CheckboxLabel,
-} from '@/src/components/ui/checkbox';
-import { Card } from '@/src/components/ui/card';
-import { HStack } from '@/src/components/ui/hstack';
+import { CheckboxGroup } from '@/src/components/ui/checkbox';
 import { Button, ButtonText } from '@/src/components/ui/button';
-import { Dispatch } from 'react';
-import { Link, router } from 'expo-router';
+import { Dispatch, useEffect, useState } from 'react';
+import { router } from 'expo-router';
+import { ExerciseItem } from './exerciseItem';
+import { SelectedExercisesProps } from './types';
 
 interface ExerciseModalProps {
   isOpen: boolean;
   handleClose: () => void;
   exercises: Tables<'exercises'>[];
-  setSelectedExercises: Dispatch<React.SetStateAction<string[]>>;
-  selectedExercises: string[];
+  setSelectedExercises: Dispatch<React.SetStateAction<SelectedExercisesProps[]>>;
+  selectedExercises: SelectedExercisesProps[];
   isLoadingExercises: boolean;
 }
 
@@ -45,6 +39,53 @@ export function ExerciseModal({
   isLoadingExercises,
   setSelectedExercises,
 }: ExerciseModalProps) {
+  const [localSelectedExercises, setLocalSelectedExercises] =
+    useState<SelectedExercisesProps[]>(selectedExercises);
+
+  const parsedSelectedExercises = localSelectedExercises.map((item) => item.id.toString());
+
+  const handleSelectExercise = (exercise: SelectedExercisesProps) => {
+    const index = localSelectedExercises.findIndex((item) => item.id === exercise.id);
+
+    if (index === -1) {
+      setLocalSelectedExercises((prevState) => [...prevState, exercise]);
+    } else {
+      setLocalSelectedExercises((prevState) => prevState.filter((item) => item.id !== exercise.id));
+    }
+  };
+
+  const handleUpdateSelectedExercise = (exercise: SelectedExercisesProps) => {
+    const index = localSelectedExercises.findIndex((item) => item.id === exercise.id);
+
+    if (index === -1) {
+      return;
+    } else {
+      const copy = [...localSelectedExercises];
+      copy[index] = exercise;
+      setLocalSelectedExercises(copy);
+    }
+  };
+
+  const handleSave = () => {
+    setSelectedExercises(localSelectedExercises);
+    handleClose();
+  };
+
+  const getInitialRepsOrSeriesFromSelectedExercises = (id: string) => {
+    const exercise = localSelectedExercises.find((item) => item.id === id);
+
+    if (exercise) {
+      return {
+        reps: exercise.reps,
+        series: exercise.series,
+      };
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen) setLocalSelectedExercises(selectedExercises);
+  }, [isOpen, selectedExercises]);
+
   return (
     <Modal isOpen={isOpen} className="justify-end">
       <ModalBackdrop />
@@ -60,7 +101,7 @@ export function ExerciseModal({
               <Spinner size="large" color={colors.red[700]} />
             </Center>
           ) : (
-            <CheckboxGroup value={selectedExercises} onChange={setSelectedExercises}>
+            <CheckboxGroup value={parsedSelectedExercises}>
               <Text className="mb-4 text-lg">Selecione os exercicios:</Text>
               <ScrollView className="h-full">
                 <VStack space="md">
@@ -78,19 +119,19 @@ export function ExerciseModal({
                     </>
                   )}
                   {exercises.map((item) => {
+                    const initialValues = getInitialRepsOrSeriesFromSelectedExercises(
+                      item.id.toString(),
+                    );
                     return (
-                      <Checkbox value={item.name} key={item.id}>
-                        <Card variant="elevated" className="w-full rounded-xl bg-gray-700">
-                          <HStack className="items-center gap-2">
-                            <CheckboxIndicator>
-                              <CheckboxIcon as={CheckIcon} className="text-red-700" size="lg" />
-                            </CheckboxIndicator>
-                            <CheckboxLabel className="text-bold text-lg text-white">
-                              {item.name}
-                            </CheckboxLabel>
-                          </HStack>
-                        </Card>
-                      </Checkbox>
+                      <ExerciseItem
+                        name={item.name}
+                        id={item.id.toString()}
+                        key={item.id}
+                        onSelect={handleSelectExercise}
+                        onUpdate={handleUpdateSelectedExercise}
+                        initialReps={initialValues?.reps}
+                        initialSeries={initialValues?.series}
+                      />
                     );
                   })}
                 </VStack>
@@ -99,8 +140,11 @@ export function ExerciseModal({
           )}
         </ModalBody>
         <ModalFooter className="pb-2">
-          <Button className="flex-1 rounded-xl bg-red-700" size="xl" onPress={handleClose}>
-            <ButtonText className="text-white">Fechar</ButtonText>
+          <Button className="flex-1 rounded-xl" size="xl" onPress={handleClose}>
+            <ButtonText className="text-black">Fechar</ButtonText>
+          </Button>
+          <Button className="flex-1 rounded-xl bg-red-700" size="xl" onPress={handleSave}>
+            <ButtonText className="text-white">Salvar</ButtonText>
           </Button>
         </ModalFooter>
       </ModalContent>
