@@ -14,3 +14,14 @@ export interface EditExerciseInput {
   exercise_type: string[];
   user_id: string;
 }
+
+export interface CreateTrainingInput {
+  user_id: string;
+  exercise_name: string;
+  exercise_observation: string;
+  selectedExercises: {
+    id: string;
+    reps: string;
+    series: string;
+  }[];
+}
