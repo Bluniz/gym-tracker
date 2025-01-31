@@ -2,6 +2,29 @@ import { Tables } from '@/database.types';
 import { supabaseClient } from './supabase';
 import { CreateTrainingInput } from './types';
 
+export const getTrainingExercises = async (trainingId: string) => {
+  return supabaseClient
+    .from('exercises_training')
+    .select(
+      `
+      series,
+      reps,
+      training (
+        name,
+        observation
+      ),
+      exercises (
+        name
+      )
+    `,
+    )
+    .eq('training_id', trainingId)
+    .throwOnError();
+};
+
+export const getTrainingById = async (id: string) => {
+  return supabaseClient.from('training').select().eq('id', id).single().throwOnError();
+};
 export const getTrainings = async (userId: string) => {
   return supabaseClient
     .from('training')

@@ -25,3 +25,15 @@ export interface CreateTrainingInput {
     series: string;
   }[];
 }
+
+export interface TrainingExercises {
+  series: number | null;
+  reps: string | null;
+  training: {
+    name: string;
+    observation: string | null;
+  } | null;
+  exercises: {
+    name: string;
+  } | null;
+}
