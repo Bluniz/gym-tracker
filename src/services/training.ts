@@ -2,6 +2,10 @@ import { Tables } from '@/database.types';
 import { supabaseClient } from './supabase';
 import { CreateTrainingInput } from './types';
 
+export const getTrainingDetails = async (trainingId: string) => {
+  return supabaseClient.from('training').select().eq('id', trainingId).single().throwOnError();
+};
+
 export const getTrainingExercises = async (trainingId: string) => {
   return supabaseClient
     .from('exercises_training')
@@ -9,11 +13,9 @@ export const getTrainingExercises = async (trainingId: string) => {
       `
       series,
       reps,
-      training (
-        name,
-        observation
-      ),
+      id,
       exercises (
+        
         name
       )
     `,

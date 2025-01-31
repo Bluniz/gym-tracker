@@ -23,7 +23,9 @@ export function ScreenHeader({
   containerClassname,
 }: ScreenHeaderProps) {
   return (
-    <HStack className={clsx('items-center justify-between px-5', containerClassname)}>
+    <HStack
+      className={clsx('z-50 items-center justify-between bg-slate-800 px-5', containerClassname)}
+    >
       <Show when={canGoBack}>
         <Button variant="link" onPress={() => router.back()} size="xl">
           <ButtonIcon as={MoveLeft} size="xl" />

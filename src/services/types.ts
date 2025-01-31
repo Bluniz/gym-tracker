@@ -26,13 +26,17 @@ export interface CreateTrainingInput {
   }[];
 }
 
+export interface TrainingDetails {
+  id: number;
+  name: string;
+  observation: string | null;
+  created_at: string;
+}
+
 export interface TrainingExercises {
   series: number | null;
   reps: string | null;
-  training: {
-    name: string;
-    observation: string | null;
-  } | null;
+  id: number;
   exercises: {
     name: string;
   } | null;
