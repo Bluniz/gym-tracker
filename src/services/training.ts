@@ -1,6 +1,6 @@
 import { Tables } from '@/database.types';
 import { supabaseClient } from './supabase';
-import { CreateTrainingInput } from './types';
+import { CompleteTrainingInput, CreateTrainingInput } from './types';
 
 export const getTrainingDetails = async (trainingId: string) => {
   return supabaseClient.from('training').select().eq('id', trainingId).single().throwOnError();
@@ -68,4 +68,8 @@ export const createTraining = async ({
   } else {
     throw new Error('Training not created');
   }
+};
+
+export const completeTraining = ({ id, completed_count }: CompleteTrainingInput) => {
+  return supabaseClient.from('training').update({ completed_count }).eq('id', id).throwOnError();
 };
