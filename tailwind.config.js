@@ -167,6 +167,7 @@ module.exports = {
           info: 'rgb(var(--color-indicator-info)/<alpha-value>)',
           error: 'rgb(var(--color-indicator-error)/<alpha-value>)',
         },
+        'black-rgba': 'rgba(0, 0, 0, 0.54)',
       },
       fontFamily: {
         heading: undefined,
