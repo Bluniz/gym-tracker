@@ -31,6 +31,7 @@ export interface TrainingDetails {
   name: string;
   observation: string | null;
   created_at: string;
+  complete_count: number;
 }
 
 export interface TrainingExercises {
