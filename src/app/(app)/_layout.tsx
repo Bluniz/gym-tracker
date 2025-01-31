@@ -1,22 +1,12 @@
-import { Center } from '@/src/components/ui/center';
 import { useAuth } from '@/src/contexts/authContext';
-import { Redirect, Slot, Tabs } from 'expo-router';
-import { BottomTabBar } from '@/src/components/BottomTabBar';
-import { Dumbbell, Home } from 'lucide-react-native';
-import { StatusBar } from 'expo-status-bar';
+import { Redirect, Slot } from 'expo-router';
 import React from 'react';
-import colors from 'tailwindcss/colors';
-import { Spinner } from '@/src/components/ui/spinner';
+import { Loading } from '@/src/components/Loading';
 
 export default function AppLayout() {
   const { session, isLoading } = useAuth();
 
-  if (isLoading)
-    return (
-      <Center className="h-full w-full flex-1 bg-slate-800">
-        <Spinner size="large" color={colors.red[700]} />
-      </Center>
-    );
+  if (isLoading) return <Loading className="flex-1 bg-slate-800" />;
 
   if (!session) {
     return <Redirect href="/signIn" />;

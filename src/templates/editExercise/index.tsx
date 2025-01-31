@@ -16,9 +16,8 @@ import { useCustomToast } from '@/src/hooks/toast';
 import { CustomInput } from '@/src/components/CustomInput';
 import { Center } from '@/src/components/ui/center';
 import { Heading } from '@/src/components/ui/heading';
-import colors from 'tailwindcss/colors';
-import { Spinner } from '@/src/components/ui/spinner';
 import { useBottomTab } from '@/src/contexts/bottomTabContext';
+import { Loading } from '@/src/components/Loading';
 
 interface EditExerciseTemplateProps {
   id: string;
@@ -97,9 +96,7 @@ export function EditExerciseTemplate({ id }: EditExerciseTemplateProps) {
   if (isLoadingScreen) {
     return (
       <Container className="h-full" animate>
-        <Center className="h-full">
-          <Spinner size="large" color={colors.red[700]} />
-        </Center>
+        <Loading />
       </Container>
     );
   }

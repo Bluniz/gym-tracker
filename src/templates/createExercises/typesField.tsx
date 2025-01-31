@@ -21,10 +21,9 @@ import { HStack } from '@/src/components/ui/hstack';
 import { ChevronUpIcon, ChevronDownIcon, CheckIcon } from 'lucide-react-native';
 import { FlatList, Keyboard } from 'react-native';
 import { Tables } from '@/database.types';
-import { Spinner } from '@/src/components/ui/spinner';
-import colors from 'tailwindcss/colors';
 import { Center } from '@/src/components/ui/center';
 import { Text } from '@/src/components/ui/text';
+import { Loading } from '@/src/components/Loading';
 
 interface TypesFieldProps {
   types: Tables<'exercises_types'>[] | null;
@@ -42,7 +41,7 @@ export function TypesField({
   hasError,
 }: TypesFieldProps) {
   if (isLoading) {
-    return <Spinner size="large" color={colors.red[700]} />;
+    return <Loading className="justify-start" />;
   }
 
   if (!isLoading && hasError) {

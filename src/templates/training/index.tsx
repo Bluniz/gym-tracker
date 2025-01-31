@@ -1,11 +1,11 @@
 import { Tables } from '@/database.types';
 import { Container } from '@/src/components/Container';
+import { Loading } from '@/src/components/Loading';
 import { ScreenHeader } from '@/src/components/ScreenHeader';
 import { Card } from '@/src/components/ui/card';
 import { Center } from '@/src/components/ui/center';
 import { Fab, FabIcon } from '@/src/components/ui/fab';
 import { Heading } from '@/src/components/ui/heading';
-import { Spinner } from '@/src/components/ui/spinner';
 import { Text } from '@/src/components/ui/text';
 import { useAuth } from '@/src/contexts/authContext';
 import { getTrainings } from '@/src/services/training';
@@ -46,11 +46,7 @@ export default function TrainingTemplate() {
 
   return (
     <Container animate className="h-full max-h-[88%]">
-      {listState === 'loading' && (
-        <Center className="h-full w-full">
-          <Spinner size="large" color={colors.red[700]} />
-        </Center>
-      )}
+      {listState === 'loading' && <Loading />}
 
       {listState === 'error' && (
         <Center className="h-full w-full">

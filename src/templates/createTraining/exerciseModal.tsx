@@ -9,9 +9,6 @@ import {
   ModalHeader,
 } from '@/src/components/ui/modal';
 import { CloseIcon, Icon } from '@/src/components/ui/icon';
-import { Center } from '@/src/components/ui/center';
-import { Spinner } from '@/src/components/ui/spinner';
-import colors from 'tailwindcss/colors';
 import { Text } from '@/src/components/ui/text';
 import { ScrollView } from 'react-native';
 import { VStack } from '@/src/components/ui/vstack';
@@ -21,6 +18,7 @@ import { Dispatch, useEffect, useState } from 'react';
 import { router } from 'expo-router';
 import { ExerciseItem } from './exerciseItem';
 import { SelectedExercisesProps } from './types';
+import { Loading } from '@/src/components/Loading';
 
 interface ExerciseModalProps {
   isOpen: boolean;
@@ -97,9 +95,7 @@ export function ExerciseModal({
         </ModalHeader>
         <ModalBody>
           {isLoadingExercises ? (
-            <Center className="flex min-h-full">
-              <Spinner size="large" color={colors.red[700]} />
-            </Center>
+            <Loading className="flex min-h-full" />
           ) : (
             <CheckboxGroup value={parsedSelectedExercises}>
               <Text className="mb-4 text-lg">Selecione os exercicios:</Text>

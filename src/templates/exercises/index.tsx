@@ -6,12 +6,12 @@ import { useAuth } from '@/src/contexts/authContext';
 import { getExercises } from '@/src/services/exercises';
 import { useCallback, useState } from 'react';
 import { ExerciseError } from './exerciseError';
-import { ExerciseLoading } from './exerciseLoading';
 import { ExerciseList } from './exerciseList';
 import { router, useFocusEffect } from 'expo-router';
 import { Fab, FabIcon } from '@/src/components/ui/fab';
 import { Plus } from 'lucide-react-native';
 import { Container } from '@/src/components/Container';
+import { Loading } from '@/src/components/Loading';
 
 export default function ExercisesTemplate() {
   const [exercises, setExercises] = useState<Tables<'exercises'>[]>([]);
@@ -48,7 +48,7 @@ export default function ExercisesTemplate() {
       <Heading className="pt-8 text-center text-white">Exercises</Heading>
 
       {isLoading ? (
-        <ExerciseLoading />
+        <Loading className="flex-1" />
       ) : (
         <Box>
           {hasError ? (

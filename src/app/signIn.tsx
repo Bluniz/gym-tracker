@@ -10,8 +10,7 @@ import { useAuth } from '../contexts/authContext';
 import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
 import { AppState } from 'react-native';
 import { supabaseClient } from '../services/supabase';
-import { Spinner } from '../components/ui/spinner';
-import colors from 'tailwindcss/colors';
+import { Loading } from '../components/Loading';
 
 AppState.addEventListener('change', (state) => {
   if (state === 'active') {
@@ -24,12 +23,7 @@ AppState.addEventListener('change', (state) => {
 export default function Index() {
   const { signIn, isLoading } = useAuth();
 
-  if (isLoading)
-    return (
-      <Center className="h-full w-full flex-1 bg-slate-800">
-        <Spinner size="large" color={colors.red[700]} />
-      </Center>
-    );
+  if (isLoading) return <Loading />;
 
   return (
     <Box className="h-full flex-1 bg-slate-800" style={{ paddingTop: Constants.statusBarHeight }}>
