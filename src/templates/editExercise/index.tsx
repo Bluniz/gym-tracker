@@ -2,8 +2,6 @@ import { Tables } from '@/database.types';
 import { Container } from '@/src/components/Container';
 import { ScreenHeader } from '@/src/components/ScreenHeader';
 
-import { Button, ButtonText } from '@/src/components/ui/button';
-
 import { VStack } from '@/src/components/ui/vstack';
 import { getExerciseById, getExerciseTypes, updateExercise } from '@/src/services/exercises';
 import { router, useFocusEffect } from 'expo-router';
@@ -18,6 +16,7 @@ import { Center } from '@/src/components/ui/center';
 import { Heading } from '@/src/components/ui/heading';
 import { useBottomTab } from '@/src/contexts/bottomTabContext';
 import { Loading } from '@/src/components/Loading';
+import { CustomButton } from '@/src/components/CustomButton';
 
 interface EditExerciseTemplateProps {
   id: string;
@@ -149,14 +148,14 @@ export function EditExerciseTemplate({ id }: EditExerciseTemplateProps) {
                 hasError={false}
               />
             </VStack>
-            <Button
-              className="mb-10 w-full rounded-xl bg-red-700 disabled:opacity-75"
+            <CustomButton
               size="xl"
-              onPress={() => setShowConfirmAlert(true)}
+              className="mb-10 w-full"
+              action="primary"
+              text="Atualizar"
               disabled={!exerciseName || !selectedTypes.length}
-            >
-              <ButtonText className="text-white">Atualizar</ButtonText>
-            </Button>
+              onPress={() => setShowConfirmAlert(true)}
+            />
           </VStack>
 
           <ConfirmAlert

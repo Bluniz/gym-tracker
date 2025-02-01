@@ -1,9 +1,11 @@
 import clsx from 'clsx';
 import { Button, ButtonSpinner, ButtonText, IButtonProps } from './ui/button';
+import { ViewProps } from 'react-native';
 
 interface CustomButtonProps extends IButtonProps {
   isLoading?: boolean;
   text: string;
+  textClassName?: ViewProps['className'];
 }
 
 export const CustomButton = ({
@@ -11,6 +13,7 @@ export const CustomButton = ({
   className,
   action,
   text,
+  textClassName,
   ...rest
 }: CustomButtonProps) => {
   const isPrimaryAction = action === 'primary';
@@ -30,7 +33,11 @@ export const CustomButton = ({
         <ButtonSpinner />
       ) : (
         <ButtonText
-          className={clsx(isPrimaryAction && 'text-white', isSecondaryAction && 'text-black')}
+          className={clsx(
+            isPrimaryAction && 'text-white',
+            isSecondaryAction && 'text-black',
+            textClassName,
+          )}
         >
           {text}
         </ButtonText>

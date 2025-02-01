@@ -13,12 +13,12 @@ import { Text } from '@/src/components/ui/text';
 import { ScrollView } from 'react-native';
 import { VStack } from '@/src/components/ui/vstack';
 import { CheckboxGroup } from '@/src/components/ui/checkbox';
-import { Button, ButtonText } from '@/src/components/ui/button';
 import { Dispatch, useEffect, useState } from 'react';
 import { router } from 'expo-router';
 import { ExerciseItem } from './exerciseItem';
 import { SelectedExercisesProps } from './types';
 import { Loading } from '@/src/components/Loading';
+import { CustomButton } from '@/src/components/CustomButton';
 
 interface ExerciseModalProps {
   isOpen: boolean;
@@ -104,14 +104,12 @@ export function ExerciseModal({
                   {!exercises?.length && (
                     <>
                       <Text>Nenhum exercicio cadastrado. Por favor, crie alguns</Text>
-                      <Button
-                        className="rounded-xl bg-red-700"
+                      <CustomButton
+                        text="Criar exercicio"
+                        action="primary"
+                        textClassName="font-bold"
                         onPress={() => router.navigate('/(app)/(tabs)/exercises')}
-                      >
-                        <ButtonText className="text-center font-bold text-white">
-                          Criar exercicios
-                        </ButtonText>
-                      </Button>
+                      />
                     </>
                   )}
                   {exercises.map((item) => {
@@ -136,12 +134,20 @@ export function ExerciseModal({
           )}
         </ModalBody>
         <ModalFooter className="pb-2">
-          <Button className="flex-1 rounded-xl" size="xl" onPress={handleClose}>
-            <ButtonText className="text-black">Fechar</ButtonText>
-          </Button>
-          <Button className="flex-1 rounded-xl bg-red-700" size="xl" onPress={handleSave}>
-            <ButtonText className="text-white">Salvar</ButtonText>
-          </Button>
+          <CustomButton
+            action="secondary"
+            text="Fechar"
+            className="flex-1"
+            size="xl"
+            onPress={handleClose}
+          />
+          <CustomButton
+            action="primary"
+            text="Salvar"
+            className="flex-1"
+            size="xl"
+            onPress={handleSave}
+          />
         </ModalFooter>
       </ModalContent>
     </Modal>

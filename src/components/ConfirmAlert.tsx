@@ -6,9 +6,9 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
 } from '@/src/components/ui/alert-dialog';
-import { Button, ButtonSpinner, ButtonText } from '@/src/components/ui/button';
 import { Heading } from '@/src/components/ui/heading';
 import { Text } from '@/src/components/ui/text';
+import { CustomButton } from './CustomButton';
 
 interface ConfirmAlertProps {
   isOpen: boolean;
@@ -45,28 +45,21 @@ export function ConfirmAlert({
           <Text size="sm">{description}</Text>
         </AlertDialogBody>
         <AlertDialogFooter className="">
-          <Button
-            variant="outline"
+          <CustomButton
+            text={cancelText}
+            size="sm"
+            disabled={isLoading}
             action="secondary"
             onPress={handleClose}
+          />
+          <CustomButton
+            text={confirmText}
             size="sm"
             disabled={isLoading}
-            className="disabled:opacity-75"
-          >
-            <ButtonText>{cancelText}</ButtonText>
-          </Button>
-          <Button
-            size="sm"
+            isLoading={isLoading}
+            action="primary"
             onPress={onConfirm}
-            className="bg-red-700 disabled:opacity-75"
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <ButtonSpinner />
-            ) : (
-              <ButtonText className="text-white">{confirmText}</ButtonText>
-            )}
-          </Button>
+          />
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

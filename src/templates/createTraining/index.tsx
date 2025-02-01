@@ -2,7 +2,6 @@ import { Container } from '@/src/components/Container';
 import { CustomInput } from '@/src/components/CustomInput';
 import { ScreenHeader } from '@/src/components/ScreenHeader';
 
-import { Button, ButtonText } from '@/src/components/ui/button';
 import { Heading } from '@/src/components/ui/heading';
 import { Text } from '@/src/components/ui/text';
 import { VStack } from '@/src/components/ui/vstack';
@@ -22,6 +21,7 @@ import { ExerciseModal } from './exerciseModal';
 import { KeyboardView } from '@/src/components/KeyboardView';
 import { SelectedExercisesProps } from './types';
 import { createTraining } from '@/src/services/training';
+import { CustomButton } from '@/src/components/CustomButton';
 
 export const CreateTrainingTemplate = () => {
   const [name, setName] = useState('');
@@ -101,13 +101,12 @@ export const CreateTrainingTemplate = () => {
             />
 
             <Heading>Exercicios</Heading>
-            <Button
+            <CustomButton
+              text="Adicionar exercicio"
               variant="outline"
-              className="rounded-xl"
               onPress={() => setOpenExerciseSheet(true)}
-            >
-              <ButtonText>Adicionar exercicio</ButtonText>
-            </Button>
+            />
+
             <FlatList
               data={selectedExercises}
               keyExtractor={(item) => item.id}
@@ -123,14 +122,13 @@ export const CreateTrainingTemplate = () => {
             />
           </VStack>
 
-          <Button
-            className="mb-10 rounded-xl bg-red-700 disabled:opacity-50"
-            size="xl"
+          <CustomButton
+            text="Criar"
+            action="primary"
+            className="mb-10"
             disabled={isConfirmButtonDisabled}
             onPress={handleCreateWorkout}
-          >
-            <ButtonText className="text-white">Criar</ButtonText>
-          </Button>
+          />
         </VStack>
 
         <ExerciseModal
