@@ -23,12 +23,16 @@ import {
 } from '@/src/services/training';
 import { TrainingDetails, TrainingExercises } from '@/src/services/types';
 import { router, useFocusEffect } from 'expo-router';
-import { CheckIcon } from 'lucide-react-native';
-import { useCallback, useEffect, useState } from 'react';
+import { CheckIcon, PencilLine, Trash2 } from 'lucide-react-native';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FlatList } from 'react-native';
 import Animated, { FadeIn, FadeOut, Easing } from 'react-native-reanimated';
 import { CompleteModal } from './CompleteModal';
 import { useCustomToast } from '@/src/hooks/toast';
+import { useModal } from '@/src/hooks/useModal';
+import { DeleteModal } from './DeleteModal';
+import { OptionsMenu, OptionsMenuItem } from '@/src/components/OptionsMenu';
+import { deleteTraining } from '../../services/training';
 
 interface TrainingDetailsTemplateProps {
   id: string;
@@ -47,6 +51,12 @@ export const TrainingDetailsTemplate = ({ id }: TrainingDetailsTemplateProps) =>
   const [completedModalWasOpenedButNotCompleted, setCompletedModalWasOpenedButNotCompleted] =
     useState(false);
   const [isCompletingState, setIsCompletingState] = useState<CompletingState>('default');
+  const [isDeleting, setIsDeleting] = useState(false);
+  const {
+    isOpen: isDeleteModalOpen,
+    handleOpen: handleOpenDeleteModal,
+    handleClose: handleCloseDeleteModal,
+  } = useModal();
 
   const { isOpen, openBottomTab, closeBottomTab } = useBottomTab();
   const { showNewToast } = useCustomToast();
@@ -65,6 +75,21 @@ export const TrainingDetailsTemplate = ({ id }: TrainingDetailsTemplateProps) =>
       console.error(error);
       setDetailsState('error');
     }
+  }, [id]);
+
+  const handleDeleteTraining = useCallback(async () => {
+    try {
+      setIsDeleting(true);
+      await deleteTraining(id);
+      showNewToast('Treino apagado com sucesso!');
+      router.navigate('/(app)/(tabs)/training');
+    } catch (error) {
+      console.error(error);
+      showNewToast('Ocorreu um erro inesperado! Por favor, tente novamente!');
+    } finally {
+      setIsDeleting(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const onChangeSelectExercises = (data: string[]) => {
@@ -122,6 +147,26 @@ export const TrainingDetailsTemplate = ({ id }: TrainingDetailsTemplateProps) =>
   const isCompleting = isCompletingState === 'loading';
   const isCompleted = isCompletingState === 'success';
 
+  const itemOptions = useMemo<OptionsMenuItem[]>(
+    () => [
+      {
+        key: 'edit',
+        name: 'Editar',
+        icon: PencilLine,
+        action: () => console.log('edit'),
+      },
+      {
+        key: 'delete',
+        name: 'Apagar',
+        labelClassname: 'text-red-700',
+        icon: Trash2,
+        action: handleOpenDeleteModal,
+      },
+    ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
+
   return (
     <Container animate className="h-full">
       {detailsState === 'loading' && <Loading />}
@@ -133,6 +178,7 @@ export const TrainingDetailsTemplate = ({ id }: TrainingDetailsTemplateProps) =>
                 <ScreenHeader
                   title={trainingDetails?.name || ''}
                   description={`Completado: ${trainingDetails?.completed_count} vezes`}
+                  rightComponent={<OptionsMenu items={itemOptions} />}
                 />
               }
               data={trainingData}
@@ -163,7 +209,7 @@ export const TrainingDetailsTemplate = ({ id }: TrainingDetailsTemplateProps) =>
 
                       {completedExercises.includes(item.id.toString()) && (
                         <Animated.View
-                          className="bg-black-rgba absolute bottom-0 left-0 right-0 top-0 rounded"
+                          className="absolute bottom-0 left-0 right-0 top-0 rounded bg-black-rgba"
                           entering={FadeIn.duration(300).easing(Easing.inOut(Easing.quad))}
                           exiting={FadeOut.duration(300).easing(Easing.inOut(Easing.quad))}
                         >
@@ -189,6 +235,13 @@ export const TrainingDetailsTemplate = ({ id }: TrainingDetailsTemplateProps) =>
               />
             </HStack>
           )}
+
+          <DeleteModal
+            isOpen={isDeleteModalOpen}
+            onCancel={handleCloseDeleteModal}
+            onConfirm={handleDeleteTraining}
+            isLoading={isDeleting}
+          />
 
           <CompleteModal
             isOpen={isCompletedModalOpen}

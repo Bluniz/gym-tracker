@@ -73,3 +73,7 @@ export const createTraining = async ({
 export const completeTraining = ({ id, completed_count }: CompleteTrainingInput) => {
   return supabaseClient.from('training').update({ completed_count }).eq('id', id).throwOnError();
 };
+
+export const deleteTraining = async (id: string) => {
+  return supabaseClient.from('training').delete().eq('id', id).throwOnError();
+};

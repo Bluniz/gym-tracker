@@ -7,13 +7,14 @@ import { MoveLeft } from 'lucide-react-native';
 import { Show } from './Show';
 import { VStack } from './ui/vstack';
 import clsx from 'clsx';
-import { Box } from './ui/box';
+import { ReactNode } from 'react';
 
 interface ScreenHeaderProps {
   title: string;
   description?: string;
   canGoBack?: boolean;
   containerClassname?: string;
+  rightComponent?: ReactNode;
 }
 
 export function ScreenHeader({
@@ -21,13 +22,14 @@ export function ScreenHeader({
   canGoBack = true,
   description,
   containerClassname,
+  rightComponent,
 }: ScreenHeaderProps) {
   return (
     <HStack
       className={clsx('z-50 items-center justify-between bg-slate-800 px-5', containerClassname)}
     >
       <Show when={canGoBack}>
-        <Button variant="link" onPress={() => router.back()} size="xl">
+        <Button className="z-40" variant="link" onPress={() => router.back()} size="xl">
           <ButtonIcon as={MoveLeft} size="xl" />
         </Button>
       </Show>
@@ -36,6 +38,8 @@ export function ScreenHeader({
         <Heading>{title}</Heading>
         {description && <Text>{description}</Text>}
       </VStack>
+
+      {rightComponent}
     </HStack>
   );
 }
