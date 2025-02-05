@@ -13,6 +13,7 @@ interface ScreenHeaderProps {
   title: string;
   description?: string;
   canGoBack?: boolean;
+  goBackRoute?: string;
   containerClassname?: string;
   rightComponent?: ReactNode;
 }
@@ -20,6 +21,7 @@ interface ScreenHeaderProps {
 export function ScreenHeader({
   title,
   canGoBack = true,
+  goBackRoute,
   description,
   containerClassname,
   rightComponent,
@@ -29,7 +31,12 @@ export function ScreenHeader({
       className={clsx('z-50 items-center justify-between bg-slate-800 px-5', containerClassname)}
     >
       <Show when={canGoBack}>
-        <Button className="z-40" variant="link" onPress={() => router.back()} size="xl">
+        <Button
+          className="z-40"
+          variant="link"
+          onPress={() => (goBackRoute ? router.navigate(goBackRoute as any) : router.back())}
+          size="xl"
+        >
           <ButtonIcon as={MoveLeft} size="xl" />
         </Button>
       </Show>

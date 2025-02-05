@@ -4,11 +4,10 @@ import { Heading } from '@/src/components/ui/heading';
 import { HStack } from '@/src/components/ui/hstack';
 import { VStack } from '@/src/components/ui/vstack';
 import { Text } from '@/src/components/ui/text';
-import { Menu, MenuItem, MenuItemLabel } from '@/src/components/ui/menu';
-import { Button, ButtonIcon } from '@/src/components/ui/button';
-import { EllipsisVertical, PencilLine, Trash2 } from 'lucide-react-native';
-import { Icon } from '@/src/components/ui/icon';
+import { PencilLine, Trash2 } from 'lucide-react-native';
 import { router } from 'expo-router';
+import { OptionsMenu, OptionsMenuItem } from '@/src/components/OptionsMenu';
+import { useMemo } from 'react';
 
 interface ExerciseItemProps {
   exercise: Tables<'exercises'>;
@@ -16,6 +15,29 @@ interface ExerciseItemProps {
 }
 
 export const ExerciseItem = ({ exercise, onDelete }: ExerciseItemProps) => {
+  const menuItems = useMemo<OptionsMenuItem[]>(
+    () => [
+      {
+        key: 'Editar',
+        name: 'Editar',
+        icon: PencilLine,
+        action: () =>
+          router.navigate({
+            pathname: '/exercises/editExercise',
+            params: {
+              id: exercise.id,
+            },
+          }),
+      },
+      {
+        key: 'Apagar',
+        name: 'Apagar',
+        icon: Trash2,
+        action: onDelete,
+      },
+    ],
+    [exercise.id, onDelete],
+  );
   return (
     <Card key={exercise.id} className="h-20 justify-between bg-slate-700" size="md">
       <HStack className="items-center justify-between">
@@ -23,37 +45,7 @@ export const ExerciseItem = ({ exercise, onDelete }: ExerciseItemProps) => {
           <Heading size="md">{exercise.name}</Heading>
           <Text>{exercise?.description || '---'}</Text>
         </VStack>
-        <Menu
-          offset={5}
-          className="bg-gray-800"
-          trigger={({ ...trigerProps }) => {
-            return (
-              <Button {...trigerProps} variant="link">
-                <ButtonIcon as={EllipsisVertical} />
-              </Button>
-            );
-          }}
-        >
-          <MenuItem
-            key="Editar"
-            textValue="Editar"
-            onPress={() =>
-              router.navigate({
-                pathname: '/exercises/editExercise',
-                params: {
-                  id: exercise.id,
-                },
-              })
-            }
-          >
-            <Icon as={PencilLine} size="sm" className="mr-2" />
-            <MenuItemLabel size="sm">Editar</MenuItemLabel>
-          </MenuItem>
-          <MenuItem key="Apagar" textValue="Apagar" onPress={onDelete}>
-            <Icon as={Trash2} size="sm" className="mr-2 text-red-700" />
-            <MenuItemLabel size="sm">Apagar</MenuItemLabel>
-          </MenuItem>
-        </Menu>
+        <OptionsMenu items={menuItems} />
       </HStack>
     </Card>
   );

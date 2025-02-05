@@ -179,6 +179,7 @@ export const TrainingDetailsTemplate = ({ id }: TrainingDetailsTemplateProps) =>
                   title={trainingDetails?.name || ''}
                   description={`Completado: ${trainingDetails?.completed_count} vezes`}
                   rightComponent={<OptionsMenu items={itemOptions} />}
+                  goBackRoute="(app)/(tabs)/training"
                 />
               }
               data={trainingData}
