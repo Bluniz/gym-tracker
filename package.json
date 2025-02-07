@@ -21,6 +21,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@dev-plugins/react-query": "^0.1.0",
     "@expo/html-elements": "0.4.2",
     "@expo/vector-icons": "^14.0.2",
     "@gluestack-ui/accordion": "^1.0.8",
@@ -40,9 +41,11 @@
     "@gluestack-ui/toast": "^1.0.8",
     "@legendapp/motion": "^2.4.0",
     "@react-native-async-storage/async-storage": "1.23.1",
+    "@react-native-community/netinfo": "11.3.1",
     "@react-native-google-signin/google-signin": "^13.1.0",
     "@react-navigation/native": "^6.0.2",
     "@supabase/supabase-js": "^2.46.1",
+    "@tanstack/react-query": "^5.66.0",
     "babel-plugin-module-resolver": "^5.0.2",
     "clsx": "^2.1.1",
     "expo": "~51.0.28",
@@ -73,6 +76,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@tanstack/eslint-plugin-query": "^5.66.0",
     "@types/react": "~18.2.45",
     "eslint": "^8.57.0",
     "eslint-config-expo": "~7.1.2",
@@ -85,6 +89,7 @@
     "prettier-plugin-tailwindcss": "^0.6.8",
     "react-test-renderer": "18.2.0",
     "reactotron-react-native": "^5.1.9",
+    "reactotron-react-query": "^1.0.4",
     "typescript": "~5.3.3"
   },
   "private": true
