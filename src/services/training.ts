@@ -1,6 +1,13 @@
 import { Tables } from '@/database.types';
 import { supabaseClient } from './supabase';
-import { CompleteTrainingInput, CreateTrainingInput } from './types';
+import {
+  CompleteTrainingInput,
+  CreateTrainingInput,
+  UpdateExerciseTrainingInput,
+  UpdateTrainingInput,
+} from './types';
+import { verifyNextAction } from './utils';
+import { UpdateExerciseTrainingAction } from './enums';
 
 export const getTrainingDetails = async (trainingId: string) => {
   return supabaseClient.from('training').select().eq('id', trainingId).single().throwOnError();
@@ -15,7 +22,7 @@ export const getTrainingExercises = async (trainingId: string) => {
       reps,
       id,
       exercises (
-        
+        id,
         name
       )
     `,
@@ -27,6 +34,7 @@ export const getTrainingExercises = async (trainingId: string) => {
 export const getTrainingById = async (id: string) => {
   return supabaseClient.from('training').select().eq('id', id).single().throwOnError();
 };
+
 export const getTrainings = async (userId: string) => {
   return supabaseClient
     .from('training')
@@ -42,6 +50,12 @@ export const createTraining = async ({
   exercise_observation,
   selectedExercises,
 }: CreateTrainingInput) => {
+  const currentTrainings = await getTrainings(user_id);
+
+  if (currentTrainings?.data?.some((training) => training.name === exercise_name)) {
+    throw new Error("You can't have two trainings with the same name");
+  }
+
   const training = await supabaseClient
     .from('training')
     .upsert({
@@ -55,9 +69,11 @@ export const createTraining = async ({
 
   if (training.data) {
     const training_id = training.data.id;
-    const exercise_training_data = selectedExercises.map(({ id, series, ...rest }) => ({
+
+    const exercise_training_data = selectedExercises.map(({ id, series, reps, ...rest }) => ({
       exercise_id: Number(id),
       series: Number(series),
+      reps: reps,
       training_id,
       annotation: '',
     }));
@@ -76,4 +92,79 @@ export const completeTraining = ({ id, completed_count }: CompleteTrainingInput)
 
 export const deleteTraining = async (id: string) => {
   return supabaseClient.from('training').delete().eq('id', id).throwOnError();
+};
+
+export const updateTraining = async ({ id, name, observation }: UpdateTrainingInput) => {
+  return supabaseClient.from('training').update({ name, observation }).eq('id', id).throwOnError();
+};
+
+export const updateExerciseTraining = async ({
+  selectedExercises,
+  trainingId,
+}: UpdateExerciseTrainingInput) => {
+  const { data } = await supabaseClient
+    .from('exercises_training')
+    .select()
+    .eq('training_id', trainingId)
+    .throwOnError();
+
+  if (data?.length === 0) {
+    const exercise_training_data = selectedExercises.map(({ id, series, reps, ...rest }) => ({
+      exercise_id: Number(id),
+      series: Number(series),
+      reps: reps,
+      training_id: Number(trainingId),
+      annotation: '',
+    }));
+
+    return await supabaseClient
+      .from('exercises_training')
+      .insert(exercise_training_data)
+      .throwOnError();
+  }
+
+  const verifiedData = verifyNextAction(selectedExercises, data);
+
+  verifiedData?.actions.forEach(async (action) => {
+    switch (action) {
+      case UpdateExerciseTrainingAction.CREATE:
+        verifiedData.data.create.forEach(async (item) => {
+          await supabaseClient
+            .from('exercises_training')
+            .insert({
+              exercise_id: Number(item.id),
+              series: Number(item.series),
+              reps: item.reps,
+              training_id: Number(trainingId),
+              annotation: '',
+            })
+            .throwOnError();
+        });
+        break;
+      case UpdateExerciseTrainingAction.UPDATE:
+        verifiedData.data.update.forEach(async (item) => {
+          await supabaseClient
+            .from('exercises_training')
+            .update({
+              series: Number(item.series),
+              reps: item.reps,
+            })
+            .eq('training_id', trainingId)
+            .eq('exercise_id', item.id)
+            .throwOnError();
+        });
+        break;
+      case UpdateExerciseTrainingAction.DELETE:
+        verifiedData.data.delete.forEach(async (item) => {
+          await supabaseClient
+            .from('exercises_training')
+            .delete()
+            .eq('training_id', trainingId)
+            .eq('exercise_id', item.exercise_id)
+            .throwOnError();
+        });
+        break;
+      default:
+    }
+  });
 };

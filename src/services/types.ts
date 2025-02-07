@@ -15,15 +15,17 @@ export interface EditExerciseInput {
   user_id: string;
 }
 
+export interface SelectedExercises {
+  id: string;
+  reps: string;
+  series: string;
+}
+
 export interface CreateTrainingInput {
   user_id: string;
   exercise_name: string;
   exercise_observation: string;
-  selectedExercises: {
-    id: string;
-    reps: string;
-    series: string;
-  }[];
+  selectedExercises: SelectedExercises[];
 }
 
 export interface TrainingDetails {
@@ -46,4 +48,15 @@ export interface TrainingExercises {
 export interface CompleteTrainingInput {
   id: number;
   completed_count: number;
+}
+
+export interface UpdateTrainingInput {
+  id: string;
+  name?: string;
+  observation?: string;
+}
+
+export interface UpdateExerciseTrainingInput {
+  trainingId: string;
+  selectedExercises: SelectedExercises[];
 }
