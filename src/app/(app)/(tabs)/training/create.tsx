@@ -1,4 +1,4 @@
-import { CreateTrainingTemplate } from '@/src/templates/createTraining';
+import { CreateTrainingTemplate } from '@/src/templates/training/create';
 
 export default function CreateTrainingScreen() {
   return <CreateTrainingTemplate />;

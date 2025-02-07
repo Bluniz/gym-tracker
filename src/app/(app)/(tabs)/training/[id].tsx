@@ -1,4 +1,4 @@
-import { TrainingDetailsTemplate } from '@/src/templates/trainingDetails';
+import { TrainingDetailsTemplate } from '@/src/templates/training/details';
 import { useLocalSearchParams } from 'expo-router';
 
 export default function TrainingDetails() {
