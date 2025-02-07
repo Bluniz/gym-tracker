@@ -10,8 +10,10 @@ import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect } from 'react';
 import 'react-native-reanimated';
 import { AuthProvider } from '../contexts/authContext';
-import { StatusBar } from 'expo-status-bar';
 import { BottomTabContextProvider } from '../contexts/bottomTabContext';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from '../configs/queryClient';
+import '../configs/networkOnlineManager';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -48,15 +50,15 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <GluestackUIProvider mode="dark">
-        <StatusBar style="light" />
-
-        <AuthProvider>
-          <BottomTabContextProvider>
-            <RootLayoutComponent />
-          </BottomTabContextProvider>
-        </AuthProvider>
-      </GluestackUIProvider>
+      <QueryClientProvider client={queryClient}>
+        <GluestackUIProvider>
+          <AuthProvider>
+            <BottomTabContextProvider>
+              <RootLayoutComponent />
+            </BottomTabContextProvider>
+          </AuthProvider>
+        </GluestackUIProvider>
+      </QueryClientProvider>
     </GestureHandlerRootView>
   );
 }
