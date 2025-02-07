@@ -32,7 +32,7 @@ import { useCustomToast } from '@/src/hooks/toast';
 import { useModal } from '@/src/hooks/useModal';
 import { DeleteModal } from './DeleteModal';
 import { OptionsMenu, OptionsMenuItem } from '@/src/components/OptionsMenu';
-import { deleteTraining } from '../../services/training';
+import { deleteTraining } from '../../../services/training';
 
 interface TrainingDetailsTemplateProps {
   id: string;
@@ -58,7 +58,7 @@ export const TrainingDetailsTemplate = ({ id }: TrainingDetailsTemplateProps) =>
     handleClose: handleCloseDeleteModal,
   } = useModal();
 
-  const { isOpen, openBottomTab, closeBottomTab } = useBottomTab();
+  const { isOpen, closeBottomTab } = useBottomTab();
   const { showNewToast } = useCustomToast();
 
   const getData = useCallback(async () => {
@@ -133,9 +133,7 @@ export const TrainingDetailsTemplate = ({ id }: TrainingDetailsTemplateProps) =>
         closeBottomTab();
       }
       getData();
-      return () => {
-        openBottomTab();
-      };
+
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [getData]),
   );
@@ -153,7 +151,7 @@ export const TrainingDetailsTemplate = ({ id }: TrainingDetailsTemplateProps) =>
         key: 'edit',
         name: 'Editar',
         icon: PencilLine,
-        action: () => console.log('edit'),
+        action: () => router.navigate(`/(app)/(tabs)/training/edit/${id}`),
       },
       {
         key: 'delete',

@@ -17,9 +17,9 @@ import { Box } from '@/src/components/ui/box';
 
 import { FlatList } from 'react-native';
 import { HStack } from '@/src/components/ui/hstack';
-import { ExerciseModal } from './exerciseModal';
+import { ExerciseModal } from '../components/exerciseModal';
 import { KeyboardView } from '@/src/components/KeyboardView';
-import { SelectedExercisesProps } from './types';
+import { SelectedExercisesProps } from '../types';
 import { createTraining } from '@/src/services/training';
 import { CustomButton } from '@/src/components/CustomButton';
 
@@ -39,7 +39,6 @@ export const CreateTrainingTemplate = () => {
 
   const handleCreateWorkout = async () => {
     try {
-      console.log('created', name, observations, selectedExercises);
       const id = await createTraining({
         user_id: session?.user.id!,
         exercise_name: name,

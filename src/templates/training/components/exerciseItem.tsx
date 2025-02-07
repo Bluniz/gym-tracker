@@ -11,8 +11,8 @@ import { Input, InputField } from '@/src/components/ui/input';
 import { Text } from '@/src/components/ui/text';
 import { VStack } from '@/src/components/ui/vstack';
 import { CheckIcon, Minus, Plus } from 'lucide-react-native';
-import { useState } from 'react';
-import { SelectedExercisesProps } from './types';
+import { useEffect, useState } from 'react';
+import { SelectedExercisesProps } from '../types';
 
 interface ExerciseItemProps {
   name: string;
@@ -29,11 +29,11 @@ export const ExerciseItem = ({
   onSelect,
   onUpdate,
   id,
-  initialReps = '0',
-  initialSeries = '0',
+  initialReps,
+  initialSeries,
 }: ExerciseItemProps) => {
-  const [series, setSeries] = useState(initialSeries);
-  const [reps, setReps] = useState(initialReps);
+  const [series, setSeries] = useState('0');
+  const [reps, setReps] = useState('0');
 
   const exercise = { name, id, series, reps };
 
@@ -62,6 +62,11 @@ export const ExerciseItem = ({
       onUpdate({ ...exercise, reps: newValue });
       return newValue;
     });
+
+  useEffect(() => {
+    if (initialReps) setReps(String(initialReps));
+    if (initialSeries) setSeries(String(initialSeries));
+  }, [initialSeries, initialReps]);
 
   return (
     <Checkbox value={id} onChange={() => onSelect(exercise)}>

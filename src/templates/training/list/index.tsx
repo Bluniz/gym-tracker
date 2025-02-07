@@ -8,6 +8,7 @@ import { Fab, FabIcon } from '@/src/components/ui/fab';
 import { Heading } from '@/src/components/ui/heading';
 import { Text } from '@/src/components/ui/text';
 import { useAuth } from '@/src/contexts/authContext';
+import { useBottomTab } from '@/src/contexts/bottomTabContext';
 import { getTrainings } from '@/src/services/training';
 import { router, useFocusEffect } from 'expo-router';
 import { Plus } from 'lucide-react-native';
@@ -22,6 +23,7 @@ export default function TrainingTemplate() {
   const [listState, setListState] = useState<ListState>('loading');
   const [data, setData] = useState<Tables<'training'>[]>([]);
   const { session } = useAuth();
+  const { isOpen, openBottomTab } = useBottomTab();
 
   const fetchWorkouts = useCallback(
     async (state: 'loading' | 'refreshing' = 'loading') => {
@@ -41,6 +43,8 @@ export default function TrainingTemplate() {
   useFocusEffect(
     useCallback(() => {
       fetchWorkouts();
+      if (!isOpen) openBottomTab();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fetchWorkouts]),
   );
 

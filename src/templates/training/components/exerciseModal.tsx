@@ -16,7 +16,7 @@ import { CheckboxGroup } from '@/src/components/ui/checkbox';
 import { Dispatch, useEffect, useState } from 'react';
 import { router } from 'expo-router';
 import { ExerciseItem } from './exerciseItem';
-import { SelectedExercisesProps } from './types';
+import { SelectedExercisesProps } from '../types';
 import { Loading } from '@/src/components/Loading';
 import { CustomButton } from '@/src/components/CustomButton';
 
@@ -39,21 +39,25 @@ export function ExerciseModal({
 }: ExerciseModalProps) {
   const [localSelectedExercises, setLocalSelectedExercises] =
     useState<SelectedExercisesProps[]>(selectedExercises);
-
   const parsedSelectedExercises = localSelectedExercises.map((item) => item.id.toString());
 
   const handleSelectExercise = (exercise: SelectedExercisesProps) => {
-    const index = localSelectedExercises.findIndex((item) => item.id === exercise.id);
-
+    const index = localSelectedExercises.findIndex(
+      (item) => String(item.id) === String(exercise.id),
+    );
     if (index === -1) {
       setLocalSelectedExercises((prevState) => [...prevState, exercise]);
     } else {
-      setLocalSelectedExercises((prevState) => prevState.filter((item) => item.id !== exercise.id));
+      setLocalSelectedExercises((prevState) =>
+        prevState.filter((item) => String(item.id) !== String(exercise.id)),
+      );
     }
   };
 
   const handleUpdateSelectedExercise = (exercise: SelectedExercisesProps) => {
-    const index = localSelectedExercises.findIndex((item) => item.id === exercise.id);
+    const index = localSelectedExercises.findIndex(
+      (item) => String(item.id) === String(exercise.id),
+    );
 
     if (index === -1) {
       return;
@@ -70,7 +74,9 @@ export function ExerciseModal({
   };
 
   const getInitialRepsOrSeriesFromSelectedExercises = (id: string) => {
-    const exercise = localSelectedExercises.find((item) => item.id === id);
+    const exercise = localSelectedExercises.find((item) => {
+      return item.id.toString() === id;
+    });
 
     if (exercise) {
       return {
@@ -81,7 +87,9 @@ export function ExerciseModal({
   };
 
   useEffect(() => {
-    if (isOpen) setLocalSelectedExercises(selectedExercises);
+    if (isOpen) {
+      setLocalSelectedExercises(selectedExercises);
+    }
   }, [isOpen, selectedExercises]);
 
   return (
@@ -116,6 +124,7 @@ export function ExerciseModal({
                     const initialValues = getInitialRepsOrSeriesFromSelectedExercises(
                       item.id.toString(),
                     );
+
                     return (
                       <ExerciseItem
                         name={item.name}
