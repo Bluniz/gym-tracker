@@ -1,4 +1,3 @@
-import { Tables } from '@/database.types';
 import { Container } from '@/src/components/Container';
 import { Loading } from '@/src/components/Loading';
 import { ScreenHeader } from '@/src/components/ScreenHeader';
@@ -10,20 +9,22 @@ import { Text } from '@/src/components/ui/text';
 import { useAuth } from '@/src/contexts/authContext';
 import { useBottomTab } from '@/src/contexts/bottomTabContext';
 import { getTrainings } from '@/src/services/training';
+import { useQuery } from '@tanstack/react-query';
 import { router, useFocusEffect } from 'expo-router';
 import { Plus } from 'lucide-react-native';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { FlatList, RefreshControl, TouchableWithoutFeedback } from 'react-native';
 import Animated, { Easing, FadeIn, FadeOut } from 'react-native-reanimated';
 import colors from 'tailwindcss/colors';
 
-type ListState = 'loading' | 'loaded' | 'refreshing' | 'error';
-
 export default function TrainingTemplate() {
-  const [listState, setListState] = useState<ListState>('loading');
-  const [data, setData] = useState<Tables<'training'>[]>([]);
   const { session } = useAuth();
   const { isOpen, openBottomTab } = useBottomTab();
+
+  const { data, status, isFetching, refetch, isRefetching } = useQuery({
+    queryKey: ['trainings', session?.user?.id!],
+    queryFn: () => getTrainings(session?.user?.id!),
+  });
 
   const fetchWorkouts = useCallback(
     async (state: 'loading' | 'refreshing' = 'loading') => {
@@ -42,7 +43,7 @@ export default function TrainingTemplate() {
 
   useFocusEffect(
     useCallback(() => {
-      fetchWorkouts();
+      // fetchWorkouts();
       if (!isOpen) openBottomTab();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fetchWorkouts]),
@@ -50,29 +51,29 @@ export default function TrainingTemplate() {
 
   return (
     <Container animate className="h-full max-h-[88%]">
-      {listState === 'loading' && <Loading />}
+      {status === 'pending' && <Loading />}
 
-      {listState === 'error' && (
+      {status === 'error' && (
         <Center className="h-full w-full">
           <Text className="px-10 text-center">
             Ocorreu um erro inesperado ao recuperar os dados. Por favor, tente novamente
           </Text>
         </Center>
       )}
-      {(listState === 'loaded' || listState === 'refreshing') && (
+      {(status === 'success' || isFetching) && (
         <Animated.View
           className="h-full"
           entering={FadeIn.duration(300).easing(Easing.inOut(Easing.quad))}
           exiting={FadeOut.duration(300).easing(Easing.inOut(Easing.quad))}
         >
           <FlatList
-            data={data}
+            data={data?.data}
             keyExtractor={(item) => item.id.toString()}
             contentContainerClassName="px-4 gap-4 h-[95%]"
             refreshControl={
               <RefreshControl
-                refreshing={listState === 'refreshing'}
-                onRefresh={() => fetchWorkouts('refreshing')}
+                refreshing={isRefetching}
+                onRefresh={refetch}
                 colors={[colors.red['700']]}
                 tintColor={colors.red['700']}
                 title="Carregando..."
