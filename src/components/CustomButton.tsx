@@ -24,7 +24,7 @@ export const CustomButton = ({
       action={action}
       className={clsx(
         className,
-        'rounded-xl disabled:opacity-75',
+        'rounded-xl disabled:opacity-50',
         isPrimaryAction && 'bg-red-700',
         isSecondaryAction && 'bg-white',
       )}
