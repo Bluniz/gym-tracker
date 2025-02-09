@@ -7,7 +7,7 @@ import { getExerciseById, getExerciseTypes, updateExercise } from '@/src/service
 import { router, useFocusEffect } from 'expo-router';
 import React, { useRef } from 'react';
 import { useCallback, useState } from 'react';
-import { TypesField } from '../createExercises/typesField';
+import { TypesField } from '../create/typesField';
 import { ConfirmAlert } from '@/src/components/ConfirmAlert';
 import { useAuth } from '@/src/contexts/authContext';
 import { useCustomToast } from '@/src/hooks/toast';

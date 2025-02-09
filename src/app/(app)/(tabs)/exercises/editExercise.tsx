@@ -1,4 +1,4 @@
-import { EditExerciseTemplate } from '@/src/templates/editExercise';
+import { EditExerciseTemplate } from '@/src/templates/exercises/edit';
 import { useLocalSearchParams } from 'expo-router';
 
 export default function EditExerciseScreen() {
