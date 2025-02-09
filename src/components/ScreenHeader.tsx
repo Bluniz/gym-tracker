@@ -16,6 +16,7 @@ interface ScreenHeaderProps {
   goBackRoute?: string;
   containerClassname?: string;
   rightComponent?: ReactNode;
+  goBackCallback?: () => void;
 }
 
 export function ScreenHeader({
@@ -25,6 +26,7 @@ export function ScreenHeader({
   description,
   containerClassname,
   rightComponent,
+  goBackCallback,
 }: ScreenHeaderProps) {
   return (
     <HStack
@@ -34,7 +36,14 @@ export function ScreenHeader({
         <Button
           className="z-40"
           variant="link"
-          onPress={() => (goBackRoute ? router.navigate(goBackRoute as any) : router.back())}
+          onPress={() => {
+            goBackCallback?.();
+            if (goBackRoute) {
+              router.navigate(goBackRoute as any);
+            } else {
+              router.back();
+            }
+          }}
           size="xl"
         >
           <ButtonIcon as={MoveLeft} size="xl" />
