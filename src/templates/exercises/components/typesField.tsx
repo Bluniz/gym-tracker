@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import {
   Accordion,
@@ -20,31 +20,28 @@ import {
 import { HStack } from '@/src/components/ui/hstack';
 import { ChevronUpIcon, ChevronDownIcon, CheckIcon } from 'lucide-react-native';
 import { FlatList, Keyboard } from 'react-native';
-import { Tables } from '@/database.types';
 import { Center } from '@/src/components/ui/center';
 import { Text } from '@/src/components/ui/text';
 import { Loading } from '@/src/components/Loading';
+import { useQuery } from '@tanstack/react-query';
+import { getExerciseTypes } from '@/src/services/exercises';
 
 interface TypesFieldProps {
-  types: Tables<'exercises_types'>[] | null;
   selectedTypes: string[];
   setSelectedTypes: (value: string[]) => void;
-  isLoading: boolean;
-  hasError: boolean;
 }
 
-export function TypesField({
-  types,
-  selectedTypes,
-  setSelectedTypes,
-  isLoading,
-  hasError,
-}: TypesFieldProps) {
+function TypesFieldComponent({ selectedTypes, setSelectedTypes }: TypesFieldProps) {
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['exerciseTypes'],
+    queryFn: getExerciseTypes,
+  });
+
   if (isLoading) {
     return <Loading className="justify-start" />;
   }
 
-  if (!isLoading && hasError) {
+  if (!isLoading && isError) {
     return (
       <Center>
         <Text>Desculpe, ocorreu algum problema ao recuperar os dados.</Text>
@@ -74,7 +71,7 @@ export function TypesField({
         <AccordionContent className="max-h-[30rem]">
           <CheckboxGroup value={selectedTypes} onChange={setSelectedTypes}>
             <FlatList
-              data={types}
+              data={data?.data}
               keyExtractor={(item) => item.id}
               contentContainerClassName="gap-2 "
               removeClippedSubviews={true}
@@ -100,3 +97,5 @@ export function TypesField({
     </Accordion>
   );
 }
+
+export const TypesField = memo(TypesFieldComponent);

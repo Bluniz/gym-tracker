@@ -28,7 +28,7 @@ export const getExerciseTypes = async () => {
     .throwOnError();
 };
 
-export const createExercise = ({
+export const createExercise = async ({
   name,
   user_id,
   photo_url,

@@ -1,28 +1,38 @@
-import { Tables } from '@/database.types';
 import { Container } from '@/src/components/Container';
 import { ScreenHeader } from '@/src/components/ScreenHeader';
 
-import { Button, ButtonText } from '@/src/components/ui/button';
-
 import { VStack } from '@/src/components/ui/vstack';
-import { createExercise, getExerciseTypes } from '@/src/services/exercises';
-import { router, useFocusEffect } from 'expo-router';
+import { createExercise } from '@/src/services/exercises';
+import { router } from 'expo-router';
 import React, { useRef } from 'react';
-import { useCallback, useState } from 'react';
-import { TypesField } from './typesField';
+import { useState } from 'react';
+import { TypesField } from '../components/typesField';
 import { ConfirmAlert } from '@/src/components/ConfirmAlert';
 import { useAuth } from '@/src/contexts/authContext';
 import { useCustomToast } from '@/src/hooks/toast';
 import { CustomInput } from '@/src/components/CustomInput';
 import { KeyboardView } from '@/src/components/KeyboardView';
 import { Keyboard } from 'react-native';
-import { useBottomTab } from '@/src/contexts/bottomTabContext';
+import { useMutation } from '@tanstack/react-query';
+import { CreateExerciseInput } from '@/src/services/types';
+import { queryClient } from '@/src/configs/queryClient';
+import { useHideBottomTab } from '@/src/hooks/useHideBottomTab';
+import { CustomButton } from '@/src/components/CustomButton';
 
 export function CreateExerciseTemplate() {
-  const [types, setTypes] = useState<Tables<'exercises_types'>[] | null>([]);
-  const [isLoadingTypes, setIsLoadingTypes] = useState(true);
+  const mutation = useMutation({
+    mutationFn: (exerciseData: CreateExerciseInput) => createExercise(exerciseData),
+    onSuccess: () => {
+      showNewToast('Exercicio criado com sucesso!');
+      queryClient.invalidateQueries({ queryKey: ['exercises'] });
+      router.navigate('/(app)/exercises');
+    },
+    onError: (error) => {
+      showNewToast(error?.message || 'Ocorreu um erro inesperado!');
+      setShowConfirmAlert(false);
+    },
+  });
 
-  const [hasErrorOnTypes, setHasErrorOnTypes] = useState(false);
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
 
   const [exerciseName, setExerciseName] = useState('');
@@ -32,57 +42,12 @@ export function CreateExerciseTemplate() {
   const [showConfirmAlert, setShowConfirmAlert] = useState(false);
 
   const { session } = useAuth();
-  const { isOpen, openBottomTab, closeBottomTab } = useBottomTab();
   const { showNewToast } = useCustomToast();
 
   const descriptionRef = useRef(null);
   const urlPhotoRef = useRef(null);
 
-  useFocusEffect(
-    useCallback(() => {
-      if (isOpen) {
-        closeBottomTab();
-      }
-      (async () => {
-        try {
-          setHasErrorOnTypes(false);
-          setIsLoadingTypes(true);
-
-          const response = await getExerciseTypes();
-          setTypes(response.data);
-        } catch (error) {
-          console.log(error);
-          setHasErrorOnTypes(true);
-        } finally {
-          setIsLoadingTypes(false);
-        }
-      })();
-
-      return () => {
-        openBottomTab();
-      };
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []),
-  );
-
-  const onConfirm = async () => {
-    try {
-      await createExercise({
-        exercise_type: selectedTypes,
-        name: exerciseName,
-        user_id: session?.user.id!,
-        photo_url: exercisePhotoUrl,
-        description: exerciseDescription,
-      });
-      showNewToast('Exercicio criado com sucesso!');
-
-      router.navigate('/(app)/exercises');
-    } catch (error: any) {
-      console.log('deu erro tio', error);
-      setShowConfirmAlert(false);
-      showNewToast(error?.message || 'Ocorreu um erro inesperado!');
-    }
-  };
+  useHideBottomTab();
 
   return (
     <Container className="flex h-full flex-col" animate>
@@ -119,31 +84,34 @@ export function CreateExerciseTemplate() {
               className="max-h-5"
             />
 
-            <TypesField
-              types={types}
-              setSelectedTypes={setSelectedTypes}
-              selectedTypes={selectedTypes}
-              isLoading={isLoadingTypes}
-              hasError={hasErrorOnTypes}
-            />
+            <TypesField setSelectedTypes={setSelectedTypes} selectedTypes={selectedTypes} />
           </VStack>
-          <Button
-            className="z-999 mb-10 w-full rounded-xl bg-red-700 disabled:opacity-50"
-            size="xl"
+
+          <CustomButton
+            text="Criar"
             onPress={() => {
               Keyboard.dismiss();
               setShowConfirmAlert(true);
             }}
+            action="primary"
+            size="xl"
             disabled={!exerciseName || !selectedTypes.length}
-          >
-            <ButtonText className="text-white">Criar</ButtonText>
-          </Button>
+            className="mb-10"
+          />
         </VStack>
         <ConfirmAlert
           title="Tem certeza que deseja criar este treino?"
           onClose={() => setShowConfirmAlert(false)}
           isOpen={showConfirmAlert}
-          onConfirm={onConfirm}
+          onConfirm={() =>
+            mutation.mutate({
+              exercise_type: selectedTypes,
+              name: exerciseName,
+              user_id: session?.user.id!,
+              photo_url: exercisePhotoUrl,
+              description: exerciseDescription,
+            })
+          }
           confirmText="Criar"
           cancelText="Cancelar"
         />

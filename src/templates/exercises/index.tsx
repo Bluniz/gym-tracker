@@ -15,10 +15,12 @@ import { useQuery } from '@tanstack/react-query';
 export default function ExercisesTemplate() {
   const { session } = useAuth();
 
-  const { data, isLoading, refetch, isRefetching, isError } = useQuery({
+  const { data, isLoading, refetch, isRefetching, isError, status } = useQuery({
     queryKey: ['exercises', session?.user?.id!],
     queryFn: () => getExercises(session?.user?.id!),
   });
+
+  console.log({ isLoading, isRefetching, status });
 
   return (
     <Container animate className="h-full max-h-[88%] w-full flex-1">
