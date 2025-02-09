@@ -58,7 +58,7 @@ export const TrainingDetailsTemplate = ({ id }: TrainingDetailsTemplateProps) =>
     handleClose: handleCloseDeleteModal,
   } = useModal();
 
-  const { isOpen, closeBottomTab } = useBottomTab();
+  const { isOpen, closeBottomTab, openBottomTab } = useBottomTab();
   const { showNewToast } = useCustomToast();
 
   const getData = useCallback(async () => {
@@ -178,6 +178,7 @@ export const TrainingDetailsTemplate = ({ id }: TrainingDetailsTemplateProps) =>
                   description={`Completado: ${trainingDetails?.completed_count} vezes`}
                   rightComponent={<OptionsMenu items={itemOptions} />}
                   goBackRoute="(app)/(tabs)/training"
+                  goBackCallback={() => openBottomTab()}
                 />
               }
               data={trainingData}
