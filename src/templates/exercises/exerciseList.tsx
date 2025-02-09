@@ -8,13 +8,18 @@ import { ConfirmAlert } from '@/src/components/ConfirmAlert';
 import { deleteExercise } from '@/src/services/exercises';
 import { useCustomToast } from '@/src/hooks/toast';
 import colors from 'tailwindcss/colors';
+import { QueryObserverResult, RefetchOptions } from '@tanstack/react-query';
+import { PostgrestSingleResponse } from '@supabase/supabase-js';
 
 interface ExerciseListProps {
   data: Tables<'exercises'>[];
-  refetchList: () => Promise<void>;
+  isRefetching: boolean;
+  refetchList: (
+    options?: RefetchOptions,
+  ) => Promise<QueryObserverResult<PostgrestSingleResponse<Tables<'exercises'>[]>, Error>>;
 }
 
-export const ExerciseList = ({ data, refetchList }: ExerciseListProps) => {
+export const ExerciseList = ({ data, refetchList, isRefetching }: ExerciseListProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [deleteConfirmModalData, setDeleteConfirmModalData] = useState({
@@ -50,13 +55,11 @@ export const ExerciseList = ({ data, refetchList }: ExerciseListProps) => {
 
   const onRefresh = async () => {
     try {
-      setIsRefreshing(true);
       await refetchList();
     } catch (error) {
       console.log(error);
       showNewToast('Erro ao atualizar lista');
     } finally {
-      setIsRefreshing(false);
     }
   };
 
@@ -68,7 +71,7 @@ export const ExerciseList = ({ data, refetchList }: ExerciseListProps) => {
         keyExtractor={(item) => `${item.id}`}
         refreshControl={
           <RefreshControl
-            refreshing={isRefreshing}
+            refreshing={isRefetching}
             onRefresh={onRefresh}
             colors={[colors.red['700']]}
             tintColor={colors.red['700']}

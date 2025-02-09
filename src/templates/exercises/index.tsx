@@ -1,47 +1,24 @@
 import React from 'react';
-import { Tables } from '@/database.types';
 import { Box } from '@/src/components/ui/box';
 import { Heading } from '@/src/components/ui/heading';
 import { useAuth } from '@/src/contexts/authContext';
 import { getExercises } from '@/src/services/exercises';
-import { useCallback, useState } from 'react';
 import { ExerciseError } from './exerciseError';
 import { ExerciseList } from './exerciseList';
-import { router, useFocusEffect } from 'expo-router';
+import { router } from 'expo-router';
 import { Fab, FabIcon } from '@/src/components/ui/fab';
 import { Plus } from 'lucide-react-native';
 import { Container } from '@/src/components/Container';
 import { Loading } from '@/src/components/Loading';
+import { useQuery } from '@tanstack/react-query';
 
 export default function ExercisesTemplate() {
-  const [exercises, setExercises] = useState<Tables<'exercises'>[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasError, setHasError] = useState(false);
-
   const { session } = useAuth();
 
-  const fetchExercises = useCallback(async () => {
-    try {
-      setHasError(false);
-      setIsLoading(true);
-      const { data } = await getExercises(session?.user.id!);
-      setExercises(data || []);
-    } catch (error) {
-      setHasError(true);
-      console.log('error', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [session?.user?.id]);
-
-  useFocusEffect(
-    useCallback(() => {
-      const fetchExercisess = async () => {
-        await fetchExercises();
-      };
-      fetchExercisess();
-    }, [fetchExercises]),
-  );
+  const { data, isLoading, refetch, isRefetching, isError } = useQuery({
+    queryKey: ['exercises', session?.user?.id!],
+    queryFn: () => getExercises(session?.user?.id!),
+  });
 
   return (
     <Container animate className="h-full max-h-[88%] w-full flex-1">
@@ -51,10 +28,14 @@ export default function ExercisesTemplate() {
         <Loading className="flex-1" />
       ) : (
         <Box>
-          {hasError ? (
+          {isError ? (
             <ExerciseError />
           ) : (
-            <ExerciseList data={exercises} refetchList={fetchExercises} />
+            <ExerciseList
+              data={data?.data || []}
+              refetchList={refetch}
+              isRefetching={isRefetching}
+            />
           )}
         </Box>
       )}
