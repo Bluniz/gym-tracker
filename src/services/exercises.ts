@@ -61,6 +61,6 @@ export const updateExercise = (input: EditExerciseInput) => {
     .throwOnError();
 };
 
-export const deleteExercise = (exerciseId: string) => {
+export const deleteExercise = async (exerciseId: string) => {
   return supabaseClient.from('exercises').delete().match({ id: exerciseId }).throwOnError();
 };

@@ -8,8 +8,9 @@ import { ConfirmAlert } from '@/src/components/ConfirmAlert';
 import { deleteExercise } from '@/src/services/exercises';
 import { useCustomToast } from '@/src/hooks/toast';
 import colors from 'tailwindcss/colors';
-import { QueryObserverResult, RefetchOptions } from '@tanstack/react-query';
+import { QueryObserverResult, RefetchOptions, useMutation } from '@tanstack/react-query';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
+import { queryClient } from '@/src/configs/queryClient';
 
 interface ExerciseListProps {
   data: Tables<'exercises'>[];
@@ -20,8 +21,6 @@ interface ExerciseListProps {
 }
 
 export const ExerciseList = ({ data, refetchList, isRefetching }: ExerciseListProps) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isRefreshing, setIsRefreshing] = useState(false);
   const [deleteConfirmModalData, setDeleteConfirmModalData] = useState({
     isOpen: false,
     id: '',
@@ -29,6 +28,19 @@ export const ExerciseList = ({ data, refetchList, isRefetching }: ExerciseListPr
   });
 
   const { showNewToast } = useCustomToast();
+  const mutation = useMutation({
+    mutationFn: (id: string) => deleteExercise(id),
+    onError: (error) => {
+      showNewToast('Erro ao deletar exercício');
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['exercises'] });
+      showNewToast('Exercício deletado com sucesso');
+    },
+    onSettled: () => {
+      onCloseDeleteConfirmModal();
+    },
+  });
 
   const onOpenDeleteConfirmModal = (exerciseId: string, name: string) => {
     setDeleteConfirmModalData({ isOpen: true, id: exerciseId, name });
@@ -36,21 +48,6 @@ export const ExerciseList = ({ data, refetchList, isRefetching }: ExerciseListPr
 
   const onCloseDeleteConfirmModal = () => {
     setDeleteConfirmModalData({ isOpen: false, id: '', name: '' });
-  };
-
-  const onDelete = async () => {
-    try {
-      setIsLoading(true);
-      await deleteExercise(deleteConfirmModalData.id);
-      showNewToast('Exercício deletado com sucesso');
-      refetchList();
-    } catch (error) {
-      console.log(error);
-      showNewToast('Erro ao deletar exercício');
-    } finally {
-      setIsLoading(false);
-      onCloseDeleteConfirmModal();
-    }
   };
 
   const onRefresh = async () => {
@@ -99,9 +96,9 @@ export const ExerciseList = ({ data, refetchList, isRefetching }: ExerciseListPr
       <ConfirmAlert
         isOpen={deleteConfirmModalData.isOpen}
         title={`Tem certeza que deseja apagar ${deleteConfirmModalData.name}?`}
-        onConfirm={onDelete}
+        onConfirm={() => mutation.mutate(deleteConfirmModalData.id)}
         onClose={onCloseDeleteConfirmModal}
-        isLoading={isLoading}
+        isLoading={mutation.isPending}
       />
     </>
   );
