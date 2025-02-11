@@ -3,7 +3,7 @@ import { useBottomTab } from '../contexts/bottomTabContext';
 import { useCallback } from 'react';
 
 export const useHideBottomTab = () => {
-  const { isOpen, openBottomTab, closeBottomTab } = useBottomTab();
+  const { isOpen, closeBottomTab } = useBottomTab();
 
   useFocusEffect(
     useCallback(() => {
@@ -11,9 +11,6 @@ export const useHideBottomTab = () => {
         closeBottomTab();
       }
 
-      return () => {
-        openBottomTab();
-      };
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
