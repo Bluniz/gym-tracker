@@ -65,7 +65,6 @@ export const ExerciseList = ({ data, refetchList, isRefetching }: ExerciseListPr
     <>
       <FlatList
         data={data}
-        className="mb-28"
         contentContainerClassName="px-4 py-6 gap-4 "
         keyExtractor={(item) => `${item.id}`}
         refreshControl={

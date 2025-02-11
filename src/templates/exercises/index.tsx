@@ -27,7 +27,7 @@ export default function ExercisesTemplate() {
       {isLoading ? (
         <Loading className="flex-1" />
       ) : (
-        <Box>
+        <Box className="mb-24">
           {isError ? (
             <ExerciseError />
           ) : (
