@@ -1,4 +1,3 @@
-import { Tables } from '@/database.types';
 import {
   Modal,
   ModalBackdrop,
@@ -10,8 +9,7 @@ import {
 } from '@/src/components/ui/modal';
 import { CloseIcon, Icon } from '@/src/components/ui/icon';
 import { Text } from '@/src/components/ui/text';
-import { ScrollView } from 'react-native';
-import { VStack } from '@/src/components/ui/vstack';
+import { FlatList } from 'react-native';
 import { CheckboxGroup } from '@/src/components/ui/checkbox';
 import { Dispatch, useEffect, useState } from 'react';
 import { router } from 'expo-router';
@@ -19,24 +17,30 @@ import { ExerciseItem } from './exerciseItem';
 import { SelectedExercisesProps } from '../types';
 import { Loading } from '@/src/components/Loading';
 import { CustomButton } from '@/src/components/CustomButton';
+import { useQuery } from '@tanstack/react-query';
+import { useAuth } from '@/src/contexts/authContext';
+import { getExercises } from '@/src/services/exercises';
 
 interface ExerciseModalProps {
   isOpen: boolean;
   handleClose: () => void;
-  exercises: Tables<'exercises'>[];
   setSelectedExercises: Dispatch<React.SetStateAction<SelectedExercisesProps[]>>;
   selectedExercises: SelectedExercisesProps[];
-  isLoadingExercises: boolean;
 }
 
 export function ExerciseModal({
   isOpen,
   handleClose,
-  exercises,
   selectedExercises,
-  isLoadingExercises,
   setSelectedExercises,
 }: ExerciseModalProps) {
+  const { session } = useAuth();
+
+  const { data: response, isLoading } = useQuery({
+    queryKey: ['exercises', session?.user?.id!],
+    queryFn: () => getExercises(session?.user?.id!),
+  });
+
   const [localSelectedExercises, setLocalSelectedExercises] =
     useState<SelectedExercisesProps[]>(selectedExercises);
   const parsedSelectedExercises = localSelectedExercises.map((item) => item.id.toString());
@@ -101,44 +105,47 @@ export function ExerciseModal({
             <Icon as={CloseIcon} size="lg" />
           </ModalCloseButton>
         </ModalHeader>
-        <ModalBody>
-          {isLoadingExercises ? (
+        <ModalBody scrollEnabled={false}>
+          {isLoading ? (
             <Loading className="flex min-h-full" />
           ) : (
             <CheckboxGroup value={parsedSelectedExercises}>
-              <Text className="mb-4 text-lg">Selecione os exercicios:</Text>
-              <ScrollView className="h-full">
-                <VStack space="md">
-                  {!exercises?.length && (
-                    <>
-                      <Text>Nenhum exercicio cadastrado. Por favor, crie alguns</Text>
-                      <CustomButton
-                        text="Criar exercicio"
-                        action="primary"
-                        textClassName="font-bold"
-                        onPress={() => router.navigate('/(app)/(tabs)/exercises')}
-                      />
-                    </>
-                  )}
-                  {exercises.map((item) => {
-                    const initialValues = getInitialRepsOrSeriesFromSelectedExercises(
-                      item.id.toString(),
-                    );
-
-                    return (
-                      <ExerciseItem
-                        name={item.name}
-                        id={item.id.toString()}
-                        key={item.id}
-                        onSelect={handleSelectExercise}
-                        onUpdate={handleUpdateSelectedExercise}
-                        initialReps={initialValues?.reps}
-                        initialSeries={initialValues?.series}
-                      />
-                    );
-                  })}
-                </VStack>
-              </ScrollView>
+              <FlatList
+                data={response?.data}
+                keyExtractor={(data) => String(data.id)}
+                contentContainerClassName="gap-4"
+                ListHeaderComponent={
+                  <Text className="mb-4 bg-gray-800 pb-1 text-lg">Selecione os exercicios:</Text>
+                }
+                stickyHeaderIndices={[0]}
+                renderItem={({ item }) => {
+                  const initialValues = getInitialRepsOrSeriesFromSelectedExercises(
+                    item.id.toString(),
+                  );
+                  return (
+                    <ExerciseItem
+                      name={item.name}
+                      id={item.id.toString()}
+                      key={item.id}
+                      onSelect={handleSelectExercise}
+                      onUpdate={handleUpdateSelectedExercise}
+                      initialReps={initialValues?.reps}
+                      initialSeries={initialValues?.series}
+                    />
+                  );
+                }}
+                ListEmptyComponent={
+                  <>
+                    <Text>Nenhum exercicio cadastrado. Por favor, crie alguns</Text>
+                    <CustomButton
+                      text="Criar exercicio"
+                      action="primary"
+                      textClassName="font-bold"
+                      onPress={() => router.navigate('/(app)/(tabs)/exercises')}
+                    />
+                  </>
+                }
+              />
             </CheckboxGroup>
           )}
         </ModalBody>
