@@ -11,8 +11,9 @@ import React, { useEffect } from 'react';
 import 'react-native-reanimated';
 import { AuthProvider } from '../contexts/authContext';
 import { BottomTabContextProvider } from '../contexts/bottomTabContext';
-import { QueryClientProvider } from '@tanstack/react-query';
-import { queryClient } from '../configs/queryClient';
+import { asyncStoragePersister, queryClient } from '../configs/queryClient';
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
+
 import '../configs/networkOnlineManager';
 
 export {
@@ -50,7 +51,10 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <QueryClientProvider client={queryClient}>
+      <PersistQueryClientProvider
+        client={queryClient}
+        persistOptions={{ persister: asyncStoragePersister }}
+      >
         <GluestackUIProvider>
           <AuthProvider>
             <BottomTabContextProvider>
@@ -58,7 +62,7 @@ export default function RootLayout() {
             </BottomTabContextProvider>
           </AuthProvider>
         </GluestackUIProvider>
-      </QueryClientProvider>
+      </PersistQueryClientProvider>
     </GestureHandlerRootView>
   );
 }
