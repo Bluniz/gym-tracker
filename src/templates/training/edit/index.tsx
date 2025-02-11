@@ -43,6 +43,8 @@ export const EditTrainingTemplate = ({ id }: EditTrainingTemplateProps) => {
 
   const { showNewToast } = useCustomToast();
 
+  useHideBottomTab();
+
   const {
     data: detailsResponse,
     isLoading,
@@ -81,7 +83,6 @@ export const EditTrainingTemplate = ({ id }: EditTrainingTemplateProps) => {
       }),
   });
 
-  useHideBottomTab();
   useEffect(() => {
     if (detailsResponse?.data && !error && !name) {
       setName(detailsResponse?.data?.name);
