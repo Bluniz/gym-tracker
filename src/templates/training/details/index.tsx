@@ -21,10 +21,9 @@ import {
   getTrainingDetails,
   getTrainingExercises,
 } from '@/src/services/training';
-import { TrainingDetails, TrainingExercises } from '@/src/services/types';
-import { router, useFocusEffect } from 'expo-router';
+import { router } from 'expo-router';
 import { CheckIcon, PencilLine, Trash2 } from 'lucide-react-native';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { FlatList } from 'react-native';
 import Animated, { FadeIn, FadeOut, Easing } from 'react-native-reanimated';
 import { CompleteModal } from './CompleteModal';
@@ -33,61 +32,69 @@ import { useModal } from '@/src/hooks/useModal';
 import { DeleteModal } from './DeleteModal';
 import { OptionsMenu, OptionsMenuItem } from '@/src/components/OptionsMenu';
 import { deleteTraining } from '../../../services/training';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useHideBottomTab } from '@/src/hooks/useHideBottomTab';
+import { queryClient } from '@/src/configs/queryClient';
 
 interface TrainingDetailsTemplateProps {
   id: string;
 }
 
-type DetailState = 'loading' | 'loaded' | 'error';
 type CompletingState = 'default' | 'loading' | 'success' | 'error';
 
 export const TrainingDetailsTemplate = ({ id }: TrainingDetailsTemplateProps) => {
-  const [detailsState, setDetailsState] = useState<DetailState>('loading');
-  const [trainingData, setTrainingData] = useState<TrainingExercises[]>([]);
-  const [trainingDetails, setTrainingDetails] = useState<TrainingDetails | null>();
   const [completedExercises, setCompletedExercises] = useState<string[]>([]);
 
   const [isCompletedModalOpen, setIsCompletedModalOpen] = useState(false);
   const [completedModalWasOpenedButNotCompleted, setCompletedModalWasOpenedButNotCompleted] =
     useState(false);
   const [isCompletingState, setIsCompletingState] = useState<CompletingState>('default');
-  const [isDeleting, setIsDeleting] = useState(false);
+
+  const {
+    data: trainingDetailsResponse,
+    isLoading: trainingDetailsLoading,
+    isSuccess: trainingDetailsSuccess,
+  } = useQuery({
+    queryKey: ['training-detail', id],
+    queryFn: () => getTrainingDetails(id),
+  });
+
+  const {
+    data: trainingResponse,
+    isLoading: trainingLoading,
+    isSuccess: trainingSuccess,
+  } = useQuery({
+    queryKey: ['training-exercises', id],
+    queryFn: () => getTrainingExercises(id),
+  });
+
   const {
     isOpen: isDeleteModalOpen,
     handleOpen: handleOpenDeleteModal,
     handleClose: handleCloseDeleteModal,
   } = useModal();
 
-  const { isOpen, closeBottomTab, openBottomTab } = useBottomTab();
+  const deleteTrainingMutation = useMutation({
+    mutationFn: deleteTraining,
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: ['trainings'],
+      }),
+  });
+
+  const { openBottomTab } = useBottomTab();
   const { showNewToast } = useCustomToast();
 
-  const getData = useCallback(async () => {
-    try {
-      const trainingDetailsResponse = await getTrainingDetails(id);
-
-      const response = await getTrainingExercises(id);
-
-      setTrainingData(response.data || []);
-      setTrainingDetails(trainingDetailsResponse.data);
-
-      setDetailsState('loaded');
-    } catch (error) {
-      console.error(error);
-      setDetailsState('error');
-    }
-  }, [id]);
+  useHideBottomTab();
 
   const handleDeleteTraining = useCallback(async () => {
     try {
-      setIsDeleting(true);
-      await deleteTraining(id);
+      await deleteTrainingMutation.mutateAsync(id);
       showNewToast('Treino apagado com sucesso!');
       router.navigate('/(app)/(tabs)/training');
     } catch (error) {
       console.error(error);
       showNewToast('Ocorreu um erro inesperado! Por favor, tente novamente!');
-    } finally {
-      setIsDeleting(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
@@ -127,23 +134,10 @@ export const TrainingDetailsTemplate = ({ id }: TrainingDetailsTemplateProps) =>
 
   const onFinish = () => router.navigate('/(app)/(tabs)/training');
 
-  useFocusEffect(
-    useCallback(() => {
-      if (isOpen) {
-        closeBottomTab();
-      }
-      getData();
-
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [getData]),
-  );
-
-  useEffect(() => {
-    getData();
-  }, [getData]);
+  const isLoading = trainingDetailsLoading && trainingLoading;
+  const isCompleted = trainingDetailsSuccess && trainingSuccess;
 
   const isCompleting = isCompletingState === 'loading';
-  const isCompleted = isCompletingState === 'success';
 
   const itemOptions = useMemo<OptionsMenuItem[]>(
     () => [
@@ -151,7 +145,7 @@ export const TrainingDetailsTemplate = ({ id }: TrainingDetailsTemplateProps) =>
         key: 'edit',
         name: 'Editar',
         icon: PencilLine,
-        action: () => router.navigate(`/(app)/(tabs)/training/edit/${id}`),
+        action: () => router.push(`/(app)/(tabs)/training/edit/${id}`),
       },
       {
         key: 'delete',
@@ -167,21 +161,21 @@ export const TrainingDetailsTemplate = ({ id }: TrainingDetailsTemplateProps) =>
 
   return (
     <Container animate className="h-full">
-      {detailsState === 'loading' && <Loading />}
-      {detailsState === 'loaded' && (
+      {isLoading && <Loading />}
+      {isCompleted && (
         <Box className="flex flex-1 flex-col justify-between">
           <CheckboxGroup value={completedExercises} onChange={onChangeSelectExercises}>
             <FlatList
               ListHeaderComponent={
                 <ScreenHeader
-                  title={trainingDetails?.name || ''}
-                  description={`Completado: ${trainingDetails?.completed_count} vezes`}
+                  title={trainingDetailsResponse?.data?.name || ''}
+                  description={`Completado: ${trainingDetailsResponse?.data?.completed_count} vezes`}
                   rightComponent={<OptionsMenu items={itemOptions} />}
                   goBackRoute="(app)/(tabs)/training"
                   goBackCallback={() => openBottomTab()}
                 />
               }
-              data={trainingData}
+              data={trainingResponse?.data || []}
               keyExtractor={(data) => data.id.toString()}
               contentContainerClassName="gap-4 px-4"
               stickyHeaderIndices={[0]}
@@ -240,7 +234,7 @@ export const TrainingDetailsTemplate = ({ id }: TrainingDetailsTemplateProps) =>
             isOpen={isDeleteModalOpen}
             onCancel={handleCloseDeleteModal}
             onConfirm={handleDeleteTraining}
-            isLoading={isDeleting}
+            isLoading={deleteTrainingMutation.isPending}
           />
 
           <CompleteModal
