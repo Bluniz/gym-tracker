@@ -11,7 +11,7 @@ export const getExercises = async (userId: string) => {
     .throwOnError();
 };
 
-export const getExerciseById = (exerciseId: string, userId: string) => {
+export const getExerciseById = async (exerciseId: string, userId: string) => {
   return supabaseClient
     .from('exercises')
     .select()
@@ -48,7 +48,7 @@ export const createExercise = async ({
     .throwOnError();
 };
 
-export const updateExercise = (input: EditExerciseInput) => {
+export const updateExercise = async (input: EditExerciseInput) => {
   return supabaseClient
     .from('exercises')
     .update({
@@ -58,6 +58,7 @@ export const updateExercise = (input: EditExerciseInput) => {
       exercise_type: input.exercise_type,
     })
     .match({ id: input.id, user_id: input.user_id })
+    .single()
     .throwOnError();
 };
 

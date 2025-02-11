@@ -15,7 +15,7 @@ import { useQuery } from '@tanstack/react-query';
 export default function ExercisesTemplate() {
   const { session } = useAuth();
 
-  const { data, isLoading, refetch, isError, isFetching, isPending } = useQuery({
+  const { data, isLoading, refetch, isError, isFetching, isPending, status } = useQuery({
     queryKey: ['exercises', session?.user?.id!],
     queryFn: () => getExercises(session?.user?.id!),
   });
