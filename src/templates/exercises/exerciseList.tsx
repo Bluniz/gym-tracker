@@ -21,6 +21,7 @@ interface ExerciseListProps {
 }
 
 export const ExerciseList = ({ data, refetchList, isRefetching }: ExerciseListProps) => {
+  const [refreshing] = useState(isRefetching);
   const [deleteConfirmModalData, setDeleteConfirmModalData] = useState({
     isOpen: false,
     id: '',
@@ -64,11 +65,11 @@ export const ExerciseList = ({ data, refetchList, isRefetching }: ExerciseListPr
     <>
       <FlatList
         data={data}
-        contentContainerClassName="px-4 py-6 gap-4 h-[95%]"
+        contentContainerClassName="px-4 py-6 gap-4 h-[90%]"
         keyExtractor={(item) => `${item.id}`}
         refreshControl={
           <RefreshControl
-            refreshing={isRefetching}
+            refreshing={refreshing}
             onRefresh={onRefresh}
             colors={[colors.red['700']]}
             tintColor={colors.red['700']}
